@@ -37,7 +37,7 @@ function App() {
                         <div
                             key={index}
                             className={
-                                `px-5 py-3 rounded-md` +
+                                `px-5 py-3 rounded-md cursor-default` +
                                 (index === 0 ? " bg-cyan-500" : "")
                             }
                         >
