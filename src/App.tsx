@@ -33,35 +33,38 @@ function App() {
             <div className="flex w-full h-full">
                 {/* list email */}
                 <div className="w-80 h-full overflow-y-auto flex flex-col text-white px-2 py-2">
-                    {emails(20).map((email, index) => (
-                        <div
-                            key={index}
-                            className={
-                                `px-5 py-3 rounded-md cursor-default` +
-                                (index === 0 ? " bg-cyan-500" : "")
-                            }
-                        >
-                            <div className="flex flex-col gap-y-1">
-                                <div className="flex justify-between">
-                                    <h3 className="font-semibold text-sm text-gray-800">
-                                        {email.sender}
-                                    </h3>
-                                    <time
-                                        dateTime={email.date}
-                                        className="text-xs text-gray-600"
-                                    >
-                                        {email.date}
-                                    </time>
+                    {emails(20).map((email, index) => {
+                        const active = index === 1;
+                        return (
+                            <div
+                                key={index}
+                                className={
+                                    `pl-7 pr-3 py-3 rounded-md cursor-default` +
+                                    (active ? " bg-cyan-500" : "")
+                                }
+                            >
+                                <div className="relative flex flex-col gap-y-1">
+                                    <div className="flex justify-between">
+                                        <h3 className="font-semibold text-sm text-gray-800">
+                                            {email.sender}
+                                        </h3>
+                                        <time
+                                            dateTime={email.date}
+                                            className="text-xs text-gray-600"
+                                        >
+                                            {email.date}
+                                        </time>
+                                    </div>
+                                    <div className="text-xs text-gray-900">
+                                        {email.subject}
+                                    </div>
+                                    <p className="text-xs text-gray-600">
+                                        {email.content.substring(0, 50)}
+                                    </p>
                                 </div>
-                                <div className="text-xs text-gray-900">
-                                    {email.subject}
-                                </div>
-                                <p className="text-xs text-gray-600">
-                                    {email.content.substring(0, 50)}
-                                </p>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 {/* view email content */}
