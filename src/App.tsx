@@ -7,7 +7,7 @@ type Email = {
     date: string;
 };
 
-function emails(total): Email[] {
+function emails(total: number): Email[] {
     const emails: Email[] = [];
     for (let i = 0; i < total; i++) {
         emails.push({
