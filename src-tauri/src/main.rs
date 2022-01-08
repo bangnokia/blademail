@@ -4,6 +4,8 @@
 )]
 
 use email_parser::email::Email;
+use std::mem::drop;
+use std::net::TcpListener;
 // use mailin_embedded::err::Error;
 use mailin_embedded::response::OK;
 use mailin_embedded::{Handler, Response, Server, SslConfig};
@@ -40,13 +42,20 @@ impl Handler for MyHandler {
 #[tauri::command]
 async fn start_server(address: Option<String>) -> Result<String, String> {
     let mut server = Server::new(MyHandler::new());
+    let address = address.unwrap_or("127.0.0.1:1025".into());
+    let listener = TcpListener::bind(&address).unwrap();
+    // listener
+    //     .set_nonblocking(true)
+    //     .expect("set_nonblocking call failed");
 
     server
         .with_name("blade mail")
+        .with_tcp_listener(listener)
         .with_ssl(SslConfig::None)
         .unwrap()
-        .with_addr(address.unwrap_or("127.0.0.1:1025".into()))
-        .unwrap();
+        // .with_addr(address)
+        // .unwrap()
+        ;
 
     // println!("{:?}", );
 
@@ -58,15 +67,35 @@ async fn start_server(address: Option<String>) -> Result<String, String> {
     }
 }
 
+#[tauri::command]
+fn stop_server() -> String {
+    "SMTP server stopped.".into()
+}
+
 fn parse(mime: String) {
     let email = Email::parse(mime.as_bytes()).unwrap();
 
     println!("{:?}", email.to);
 }
 
+struct State {
+    tcp_listener: Option<TcpListener>,
+}
+
+impl State {
+    pub fn new() -> State {
+        State { tcp_listener: None }
+    }
+
+    pub fn set_tcp_listener(&mut self, tcp_listener: TcpListener) {
+        self.tcp_listener = Some(tcp_listener);
+    }
+}
+
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![start_server])
+        .manage(State::new())
+        .invoke_handler(tauri::generate_handler![start_server, stop_server])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
