@@ -6,7 +6,7 @@
 use email_parser::email::Email;
 use std::net::TcpListener;
 // use mailin_embedded::err::Error;
-use email_parser::address::Mailbox;
+use email_parser::address::*;
 use mailin_embedded::response::OK;
 use mailin_embedded::{Handler, Response, Server, SslConfig};
 
@@ -68,7 +68,7 @@ fn stop_server() -> String {
 
 struct EmailPayload {
     from: Vec<Mailbox>,
-    to: Vec<Mailbox>,
+    to: Option<Vec<Address>>,
 }
 
 fn parse(mime: String) -> EmailPayload {
