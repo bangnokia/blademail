@@ -6,6 +6,7 @@
 use email_parser::email::Email;
 use std::net::TcpListener;
 // use mailin_embedded::err::Error;
+use email_parser::address::Mailbox;
 use mailin_embedded::response::OK;
 use mailin_embedded::{Handler, Response, Server, SslConfig};
 
@@ -65,22 +66,21 @@ fn stop_server() -> String {
     "SMTP server stopped.".into()
 }
 
-struct EmailPayload<'a> {
-    email: Email<'a>,
+struct EmailPayload {
+    from: Vec<Mailbox>,
+    to: Vec<Mailbox>,
 }
 
-impl EmailPayload<'static> {
-    pub fn new(email: Email) -> EmailPayload {
-        EmailPayload { email }
-    }
-}
-
-fn parse(mime: String) -> EmailPayload<'static> {
+fn parse(mime: String) -> EmailPayload {
     let email = Email::parse(mime.as_bytes()).unwrap();
 
+    println!("{:?}", email.from);
     println!("{:?}", email.to);
 
-    EmailPayload { email: email }
+    EmailPayload {
+        from: email.from,
+        to: email.to,
+    }
 }
 
 fn main() {
