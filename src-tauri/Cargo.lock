@@ -44,6 +44,7 @@ version = "0.1.0"
 dependencies = [
  "email-parser",
  "mailin-embedded",
+ "once_cell",
  "serde",
  "serde_json",
  "tauri",

@@ -19,11 +19,11 @@ export default function SmtpServer() {
             .catch((error) => console.log(error));
     }
 
-    // useEffect(function () {
-    //     invoke("start_server")
-    //         .then((msg) => console.log(msg))
-    //         .catch((error) => console.log(error));
-    // }, []);
+     useEffect(function () {
+         invoke("start_server")
+             .then((msg) => console.log(msg))
+             .catch((error) => console.log(error));
+     }, []);
 
     return (
         <div className="w-full h-full">

@@ -4,11 +4,16 @@
 )]
 
 use email_parser::email::Email;
+use email_parser::prelude::DateTime;
+use once_cell::sync::OnceCell;
+use serde::Serialize;
+use std::fmt::Debug;
 use std::net::TcpListener;
+use tauri::Window;
 // use mailin_embedded::err::Error;
-use email_parser::address::*;
 use mailin_embedded::response::OK;
 use mailin_embedded::{Handler, Response, Server, SslConfig};
+use tauri::Manager;
 
 #[derive(Clone, Debug)]
 struct MyHandler {
@@ -29,9 +34,10 @@ impl Handler for MyHandler {
 
     fn data_end(&mut self) -> Response {
         let mime = self.mime.join("");
-        parse(mime);
+        let payload = parse(mime);
 
         // emit email to the UI
+        let _ = MAIN_WINDOW.get().unwrap().emit_all("new-email", payload);
         OK
     }
 }
@@ -66,25 +72,53 @@ fn stop_server() -> String {
     "SMTP server stopped.".into()
 }
 
+// MailBox = (Name: String, EmailAddress: String)
+#[derive(Serialize, Clone)]
 struct EmailPayload {
-    from: Vec<Mailbox>,
-    to: Option<Vec<Address>>,
+    mime: String,
+    body: String,
+    from: Vec<(String, String)>,
+    sender: (String, String),
+    subject: String,
+    date: String,
+    to: Option<Vec<(String, String)>>,
 }
 
 fn parse(mime: String) -> EmailPayload {
     let email = Email::parse(mime.as_bytes()).unwrap();
 
-    println!("{:?}", email.from);
-    println!("{:?}", email.to);
+    println!("{:#?}", mime);
+    println!("{:#?}", email);
+    // println!("{:?}", email);
 
     EmailPayload {
-        from: email.from,
-        to: email.to,
+        mime: mime.clone(),
+        body: String::from(""),
+        from: email.from.iter().map(|mailbox| {
+            (
+                mailbox.name.as_ref().unwrap().join(" "),
+                format!("{}@{}", mailbox.address.local_part, mailbox.address.domain)
+            )
+        }).collect(),
+        sender: (email.sender.name.unwrap().join(" "), "".into()),
+        subject: email.subject.unwrap().to_string(),
+        date: "".into(),
+        to: Some(vec![("".into(), "".into())]),
     }
 }
 
+static MAIN_WINDOW: OnceCell<Window> = OnceCell::new();
+
 fn main() {
     tauri::Builder::default()
+        .setup(|app| {
+            // how we make app to globaly access from other function
+            let main_window = app.get_window("main").unwrap();
+
+            let _ = MAIN_WINDOW.set(main_window);
+
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![start_server, stop_server])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
