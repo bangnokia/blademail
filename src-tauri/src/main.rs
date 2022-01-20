@@ -3,8 +3,8 @@
     windows_subsystem = "windows"
 )]
 
+use email_parser::address::Address;
 use email_parser::email::Email;
-use email_parser::prelude::DateTime;
 use once_cell::sync::OnceCell;
 use serde::Serialize;
 use std::fmt::Debug;
@@ -76,12 +76,14 @@ fn stop_server() -> String {
 #[derive(Serialize, Clone)]
 struct EmailPayload {
     mime: String,
-    body: String,
-    from: Vec<(String, String)>,
     sender: (String, String),
+    from: Vec<(String, String)>,
+    to: Option<Vec<String>>,
+    cc: Option<Vec<(String, String)>>,
+    bcc: Option<Vec<(String, String)>>,
     subject: String,
     date: String,
-    to: Option<Vec<(String, String)>>,
+    body: String,
 }
 
 fn parse(mime: String) -> EmailPayload {
@@ -93,19 +95,41 @@ fn parse(mime: String) -> EmailPayload {
 
     EmailPayload {
         mime: mime.clone(),
-        body: String::from(""),
-        from: email.from.iter().map(|mailbox| {
-            (
-                mailbox.name.as_ref().unwrap().join(" "),
-                format!("{}@{}", mailbox.address.local_part, mailbox.address.domain)
-            )
-        }).collect(),
+        body: email.body.unwrap().to_string(),
+        from: email
+            .from
+            .iter()
+            .map(|mailbox| {
+                (
+                    mailbox.name.as_ref().unwrap().join(" "),
+                    format!("{}@{}", mailbox.address.local_part, mailbox.address.domain),
+                )
+            })
+            .collect(),
         sender: (email.sender.name.unwrap().join(" "), "".into()),
+        to: match email.to {
+            Some(addresses) => addresses
+                .iter()
+                .map(|add| match add {
+                    Address::Mailbox(mailbox) => Some(format!(
+                        "{}@{}",
+                        mailbox.address.local_part, mailbox.address.domain
+                    )),
+                    _ => None,
+                })
+                .collect(),
+            _ => None,
+        },
+
+        // to: Some(vec![("".into(), "".into())]),
+        cc: Some(vec![("".into(), "".into())]),
+        bcc: Some(vec![("".into(), "".into())]),
         subject: email.subject.unwrap().to_string(),
-        date: "".into(),
-        to: Some(vec![("".into(), "".into())]),
+        date: String::from(""),
     }
 }
+
+// welcome to viet nam
 
 static MAIN_WINDOW: OnceCell<Window> = OnceCell::new();
 
