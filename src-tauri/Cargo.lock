@@ -747,6 +747,9 @@ name = "email-parser"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fd45adbcbe4247e0a92f13ae66d10b11a6fc05f6184a8f573755afab21f18799"
+dependencies = [
+ "textcode",
+]
 
 [[package]]
 name = "embed_plist"
@@ -3180,6 +3183,12 @@ name = "ternop"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9d4ae32d0a4605a89c28534371b056919c12e7a070ee07505af75130ff030111"
+
+[[package]]
+name = "textcode"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "13de2d432b3eea016f6a010139c8b5a5bf050b5a05b8993d04033ca5232e44a9"
 
 [[package]]
 name = "thin-slice"

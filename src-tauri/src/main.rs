@@ -82,19 +82,19 @@ struct EmailPayload {
     cc: Option<Vec<String>>,
     subject: String,
     date: String,
-    body: String,
+    // body: String,
     message_id: String,
 }
 
 fn parse(raw: String) -> EmailPayload {
     let email = Email::parse(raw.as_bytes()).unwrap();
 
-    println!("{:#?}", raw);
-    println!("{:#?}", email);
+    // println!("{:#?}", raw);
+    println!("{:#?}", email.mime_entity.parse());
 
     EmailPayload {
         raw: raw.clone(),
-        body: email.body.unwrap().to_string(),
+        // body: email.body.unwrap().to_string(),
         message_id: "123".to_string(),
         from: email
             .from
