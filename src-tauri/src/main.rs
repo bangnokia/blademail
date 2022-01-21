@@ -17,24 +17,24 @@ use tauri::Manager;
 
 #[derive(Clone, Debug)]
 struct MyHandler {
-    mime: Vec<String>,
+    lines: Vec<String>,
 }
 
 impl MyHandler {
     pub fn new() -> MyHandler {
-        MyHandler { mime: vec![] }
+        MyHandler { lines: vec![] }
     }
 }
 
 impl Handler for MyHandler {
     fn data(&mut self, buf: &[u8]) -> std::io::Result<()> {
-        self.mime.push(String::from_utf8(Vec::from(buf)).unwrap());
+        self.lines.push(String::from_utf8(Vec::from(buf)).unwrap());
         Ok(())
     }
 
     fn data_end(&mut self) -> Response {
-        let mime = self.mime.join("");
-        let payload = parse(mime);
+        let raw = self.lines.join("");
+        let payload = parse(raw);
 
         // emit email to the UI
         let _ = MAIN_WINDOW.get().unwrap().emit_all("new-email", payload);
@@ -75,27 +75,27 @@ fn stop_server() -> String {
 // MailBox = (Name: String, EmailAddress: String)
 #[derive(Serialize, Clone)]
 struct EmailPayload {
-    mime: String,
+    raw: String,
     sender: (String, String),
     from: Vec<(String, String)>,
     to: Option<Vec<String>>,
-    cc: Option<Vec<(String, String)>>,
-    bcc: Option<Vec<(String, String)>>,
+    cc: Option<Vec<String>>,
     subject: String,
     date: String,
     body: String,
+    message_id: String,
 }
 
-fn parse(mime: String) -> EmailPayload {
-    let email = Email::parse(mime.as_bytes()).unwrap();
+fn parse(raw: String) -> EmailPayload {
+    let email = Email::parse(raw.as_bytes()).unwrap();
 
-    println!("{:#?}", mime);
+    println!("{:#?}", raw);
     println!("{:#?}", email);
-    // println!("{:?}", email);
 
     EmailPayload {
-        mime: mime.clone(),
+        raw: raw.clone(),
         body: email.body.unwrap().to_string(),
+        message_id: "123".to_string(),
         from: email
             .from
             .iter()
@@ -120,12 +120,28 @@ fn parse(mime: String) -> EmailPayload {
                 .collect(),
             _ => None,
         },
-
-        // to: Some(vec![("".into(), "".into())]),
-        cc: Some(vec![("".into(), "".into())]),
-        bcc: Some(vec![("".into(), "".into())]),
+        cc: match email.cc {
+            Some(addresses) => addresses
+                .iter()
+                .map(|add| match add {
+                    Address::Mailbox(mailbox) => Some(format!(
+                        "{}@{}",
+                        mailbox.address.local_part, mailbox.address.domain
+                    )),
+                    _ => None,
+                })
+                .collect(),
+            _ => None,
+        },
         subject: email.subject.unwrap().to_string(),
-        date: String::from(""),
+        date: format!(
+            "{} {} {} {} {}",
+            format!("{:?}", email.date.day_name.unwrap()),
+            email.date.date.day,
+            format!("{:?}", email.date.date.month),
+            email.date.date.year,
+            email.date.time.time.hour
+        ),
     }
 }
 

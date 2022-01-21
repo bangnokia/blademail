@@ -3,14 +3,15 @@ import Mailbox from "./Mailbox";
 import SmtpServer from "./SmtpServer";
 import { Event, listen } from "@tauri-apps/api/event";
 
-type EmailPayload = {
-    mime: string;
+type Email = {
+    raw: string;
     body: string;
-    from: [string, string][];
-    sender: [string, string];
     subject: string;
+    from: [string, string][]; // author of message, not the sender
+    sender: [string, string]; // [name, email]
+    to: string[];
+    cc: string[];
     date: string;
-    to: [string, string][];
 };
 
 function s(obj: Object): Object {
@@ -18,11 +19,12 @@ function s(obj: Object): Object {
 }
 
 function App() {
-    const [emails, setEmails] = useState<Array<EmailPayload>>([]);
+    const [emails, setEmails] = useState<Array<Email>>([]);
 
     useEffect(function () {
-        listen("new-email", (event: Event<EmailPayload>) => {
+        listen("new-email", (event: Event<Email>) => {
             // console.log("new email", event);
+
             setEmails((emails) => [event.payload, ...emails]);
         });
     }, []);
@@ -34,9 +36,14 @@ function App() {
                 <div>
                     {emails.map((email, index) => (
                         <pre className="border" key={index}>
-                            {email.mime}
-                            {s(email.cc)}
-                            {/* {JSON.stringify(email.sender)} */}
+                            {/* date: {email.date} {"\n"}
+                            subject: {email.subject} {"\n"}
+                            sender: {email.sender[0]} - {email.sender[1]} {"\n"}
+                            to: {email.to.join(", ")} {"\n"}
+                            cc: {email.cc.join(", ")} {"\n"}
+                            html: "" {"\n"}
+                            text: "" {"\n"} */}
+                            {email.raw}
                         </pre>
                     ))}
                 </div>
