@@ -5,6 +5,8 @@
 
 use email_parser::address::Address;
 use email_parser::email::Email;
+use email_parser::mime::ContentType;
+use email_parser::mime::Entity;
 use once_cell::sync::OnceCell;
 use serde::Serialize;
 use std::fmt::Debug;
@@ -82,19 +84,79 @@ struct EmailPayload {
     cc: Option<Vec<String>>,
     subject: String,
     date: String,
-    // body: String,
     message_id: String,
+    html: String,
+    text: String,
 }
+
+// impl EmailPayload {
+//     pub fn new() -> EmailPayload {
+//         EmailPayload {
+//             raw: String::new(),
+//             sender: (String::new(), String::new()),
+//             from: vec![],
+//             to: None,
+//             cc: None,
+//             subject: String::new(),
+//             date: String::new(),
+//             message_id: String::new(),
+//             html: String::new(),
+//             text: String::new(),
+//         }
+//     }
+// }
 
 fn parse(raw: String) -> EmailPayload {
     let email = Email::parse(raw.as_bytes()).unwrap();
 
     // println!("{:#?}", raw);
-    println!("{:#?}", email.mime_entity.parse());
+    let parsed = email.mime_entity.parse().unwrap();
+    // println!("{:#?}", parsed);
+
+    match parsed {
+        Entity::Text { subtype, value, .. } => {
+            // println!("text {:#?}", value);
+            println!("text");
+        }
+        Entity::Multipart { subtype, content } => {
+            // println!("multipart {:#?}", content);
+            println!("multipart");
+            for entity in content {
+                println!(
+                    "mime_type: {:#?}, subtype {:#?}, parameters {:#?} disposition {:#?}",
+                    entity.mime_type, entity.subtype, entity.parameters, entity.disposition
+                );
+
+                match entity.mime_type {
+                    ContentType::Multipart => {
+                        println!("parsing mutlipart");
+                        let parsed = entity.parse().unwrap();
+
+                        match parsed {
+                            Entity::Multipart { subtype, content } => {
+                                for entity in content {
+                                    println!(
+                                        "mime_type: {:#?}, subtype {:#?}, parameters {:#?} disposition {:#?}",
+                                        entity.mime_type, entity.subtype, entity.parameters, entity.disposition
+                                    );
+                                }
+                            }
+                            _ => println!("not multipart"),
+                        }
+                    }
+                    _ => println!("..."),
+                }
+
+                // println!("value {:#?}", String::from_utf8(entity.value.to_vec()));
+            }
+        }
+        _ => println!("other"),
+    }
+
+    // let mut payload = EmailPayload::new();
 
     EmailPayload {
         raw: raw.clone(),
-        // body: email.body.unwrap().to_string(),
         message_id: "123".to_string(),
         from: email
             .from
@@ -142,6 +204,8 @@ fn parse(raw: String) -> EmailPayload {
             email.date.date.year,
             email.date.time.time.hour
         ),
+        html: "".into(),
+        text: "".into(),
     }
 }
 
