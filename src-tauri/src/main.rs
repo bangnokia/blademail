@@ -113,49 +113,7 @@ fn parse(raw: String) -> EmailPayload {
     let parsed = email.mime_entity.parse().unwrap();
     // println!("{:#?}", parsed);
 
-    match parsed {
-        Entity::Text { subtype, value, .. } => {
-            // println!("text {:#?}", value);
-            println!("text");
-        }
-        Entity::Multipart { subtype, content } => {
-            // println!("multipart {:#?}", content);
-            println!("multipart");
-            for entity in content {
-                println!(
-                    "mime_type: {:#?}, subtype {:#?}, parameters {:#?} disposition {:#?}",
-                    entity.mime_type, entity.subtype, entity.parameters, entity.disposition
-                );
-
-                match entity.mime_type {
-                    ContentType::Multipart => {
-                        println!("parsing mutlipart");
-                        let parsed = entity.parse().unwrap();
-
-                        match parsed {
-                            Entity::Multipart { subtype, content } => {
-                                for entity in content {
-                                    println!(
-                                        "mime_type: {:#?}, subtype {:#?}, parameters {:#?} disposition {:#?}",
-                                        entity.mime_type, entity.subtype, entity.parameters, entity.disposition
-                                    );
-                                }
-                            }
-                            _ => println!("not multipart"),
-                        }
-                    }
-                    _ => println!("..."),
-                }
-
-                // println!("value {:#?}", String::from_utf8(entity.value.to_vec()));
-            }
-        }
-        _ => println!("other"),
-    }
-
-    // let mut payload = EmailPayload::new();
-
-    EmailPayload {
+    let payload = EmailPayload {
         raw: raw.clone(),
         message_id: "123".to_string(),
         from: email
@@ -206,7 +164,49 @@ fn parse(raw: String) -> EmailPayload {
         ),
         html: "".into(),
         text: "".into(),
+    };
+
+    match parsed {
+        Entity::Text { subtype, value, .. } => {
+            // println!("text {:#?}", value);
+            println!("text");
+        }
+        Entity::Multipart { subtype, content } => {
+            // println!("multipart {:#?}", content);
+            println!("multipart");
+            for entity in content {
+                println!(
+                    "mime_type: {:#?}, subtype {:#?}, parameters {:#?} disposition {:#?}",
+                    entity.mime_type, entity.subtype, entity.parameters, entity.disposition
+                );
+
+                match entity.mime_type {
+                    ContentType::Multipart => {
+                        println!("parsing mutlipart");
+                        let parsed = entity.parse().unwrap();
+
+                        match parsed {
+                            Entity::Multipart { subtype, content } => {
+                                for entity in content {
+                                    println!(
+                                        "mime_type: {:#?}, subtype {:#?}, parameters {:#?} disposition {:#?}",
+                                        entity.mime_type, entity.subtype, entity.parameters, entity.disposition
+                                    );
+                                }
+                            }
+                            _ => println!("not multipart"),
+                        }
+                    }
+                    _ => println!("..."),
+                }
+
+                // println!("value {:#?}", String::from_utf8(entity.value.to_vec()));
+            }
+        }
+        _ => println!("other"),
     }
+
+    payload
 }
 
 // welcome to viet nam
