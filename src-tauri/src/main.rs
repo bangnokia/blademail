@@ -113,7 +113,7 @@ fn parse(raw: String) -> EmailPayload {
     let parsed = email.mime_entity.parse().unwrap();
     // println!("{:#?}", parsed);
 
-    let payload = EmailPayload {
+    let mut payload = EmailPayload {
         raw: raw.clone(),
         message_id: "123".to_string(),
         from: email
@@ -188,6 +188,10 @@ fn parse(raw: String) -> EmailPayload {
                         match parsed {
                             Entity::Multipart { subtype, content } => {
                                 for entity in content {
+                                    if entity.subtype == "html" {
+                                        payload.html =
+                                            String::from_utf8(entity.value.to_vec()).unwrap();
+                                    }
                                     println!(
                                         "mime_type: {:#?}, subtype {:#?}, parameters {:#?} disposition {:#?}",
                                         entity.mime_type, entity.subtype, entity.parameters, entity.disposition
