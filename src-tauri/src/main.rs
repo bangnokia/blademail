@@ -168,14 +168,14 @@ fn parse(raw: String) -> EmailPayload {
 
     match parsed {
         Entity::Text { subtype, value, .. } => {
-            // println!("text {:#?}", value);
             println!("text, subtype: {}", subtype);
-            if subtype == "html" {
-                payload.html = value.to_string();
+            match subtype.to_string().as_str() {
+                "html" => payload.html = value.to_string(),
+                "plain" => payload.text = value.to_string(),
+                _ => (),
             }
         }
         Entity::Multipart { subtype, content } => {
-            // println!("multipart {:#?}", content);
             println!("multipart");
             for entity in content {
                 println!(
@@ -191,14 +191,16 @@ fn parse(raw: String) -> EmailPayload {
                         match parsed {
                             Entity::Multipart { subtype, content } => {
                                 for entity in content {
-                                    if entity.subtype == "html" {
-                                        payload.html =
-                                            String::from_utf8(entity.value.to_vec()).unwrap();
-                                    }
-
-                                    if entity.subtype == "plain" {
-                                        payload.text =
-                                            String::from_utf8(entity.value.to_vec()).unwrap();
+                                    match subtype.to_string().as_str() {
+                                        "html" => {
+                                            payload.html =
+                                                String::from_utf8(entity.value.to_vec()).unwrap()
+                                        }
+                                        "plain" => {
+                                            payload.text =
+                                                String::from_utf8(entity.value.to_vec()).unwrap()
+                                        }
+                                        _ => (),
                                     }
                                     println!(
                                         "mime_type: {:#?}, subtype {:#?}, parameters {:#?} disposition {:#?}",
