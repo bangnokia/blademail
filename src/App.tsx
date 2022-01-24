@@ -5,13 +5,14 @@ import { Event, listen } from "@tauri-apps/api/event";
 
 type Email = {
     raw: string;
-    body: string;
     subject: string;
     from: [string, string][]; // author of message, not the sender
     sender: [string, string]; // [name, email]
     to: string[];
     cc: string[];
     date: string;
+    html: string;
+    text: string;
 };
 
 function s(obj: Object): Object {
@@ -43,6 +44,10 @@ function App() {
                             cc: {email.cc.join(", ")} {"\n"}
                             html: "" {"\n"}
                             text: "" {"\n"} */}
+                            {email.text}
+                            ----------------- {"\n"}
+                            {email.html}
+                            ----------------- {"\n"}
                             {email.raw}
                         </pre>
                     ))}

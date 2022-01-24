@@ -169,7 +169,10 @@ fn parse(raw: String) -> EmailPayload {
     match parsed {
         Entity::Text { subtype, value, .. } => {
             // println!("text {:#?}", value);
-            println!("text");
+            println!("text, subtype: {}", subtype);
+            if subtype == "html" {
+                payload.html = value.to_string();
+            }
         }
         Entity::Multipart { subtype, content } => {
             // println!("multipart {:#?}", content);
@@ -192,12 +195,18 @@ fn parse(raw: String) -> EmailPayload {
                                         payload.html =
                                             String::from_utf8(entity.value.to_vec()).unwrap();
                                     }
+
+                                    if entity.subtype == "plain" {
+                                        payload.text =
+                                            String::from_utf8(entity.value.to_vec()).unwrap();
+                                    }
                                     println!(
                                         "mime_type: {:#?}, subtype {:#?}, parameters {:#?} disposition {:#?}",
                                         entity.mime_type, entity.subtype, entity.parameters, entity.disposition
                                     );
                                 }
                             }
+                            Entity::Text { subtype, value } => {}
                             _ => println!("not multipart"),
                         }
                     }
