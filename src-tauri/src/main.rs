@@ -75,7 +75,7 @@ fn stop_server() -> String {
 }
 
 // MailBox = (Name: String, EmailAddress: String)
-#[derive(Serialize, Clone)]
+#[derive(Serialize, Clone, Debug)]
 struct EmailPayload {
     raw: String,
     sender: (String, String),
@@ -83,28 +83,11 @@ struct EmailPayload {
     to: Option<Vec<String>>,
     cc: Option<Vec<String>>,
     subject: String,
-    date: String,
-    message_id: String,
+    // date: String,
+    // message_id: String,
     html: String,
     text: String,
 }
-
-// impl EmailPayload {
-//     pub fn new() -> EmailPayload {
-//         EmailPayload {
-//             raw: String::new(),
-//             sender: (String::new(), String::new()),
-//             from: vec![],
-//             to: None,
-//             cc: None,
-//             subject: String::new(),
-//             date: String::new(),
-//             message_id: String::new(),
-//             html: String::new(),
-//             text: String::new(),
-//         }
-//     }
-// }
 
 fn parse(raw: String) -> EmailPayload {
     let email = Email::parse(raw.as_bytes()).unwrap();
@@ -115,7 +98,7 @@ fn parse(raw: String) -> EmailPayload {
 
     let mut payload = EmailPayload {
         raw: raw.clone(),
-        message_id: "123".to_string(),
+        // message_id: email.message_id.unwrap().to_string(),
         from: email
             .from
             .iter()
@@ -154,14 +137,14 @@ fn parse(raw: String) -> EmailPayload {
             _ => None,
         },
         subject: email.subject.unwrap().to_string(),
-        date: format!(
-            "{} {} {} {} {}",
-            format!("{:?}", email.date.day_name.unwrap()),
-            email.date.date.day,
-            format!("{:?}", email.date.date.month),
-            email.date.date.year,
-            email.date.time.time.hour
-        ),
+        // date: format!(
+        //     "{} {} {} {} {}",
+        //     format!("{:?}", email.date.day_name.unwrap()),
+        //     email.date.date.day,
+        //     format!("{:?}", email.date.date.month),
+        //     email.date.date.year,
+        //     email.date.time.time.hour
+        // ),
         html: "".into(),
         text: "".into(),
     };
@@ -180,10 +163,10 @@ fn parse(raw: String) -> EmailPayload {
         Entity::Multipart { subtype, content } => {
             println!("multipart, subtype: {}", subtype);
             for entity in content {
-                println!(
-                    "mime_type: {:#?}, subtype {:#?}, parameters {:#?} disposition {:#?}",
-                    entity.mime_type, entity.subtype, entity.parameters, entity.disposition
-                );
+                // println!(
+                //     "mime_type: {:#?}, subtype {:#?}, parameters {:#?} disposition {:#?}",
+                //     entity.mime_type, entity.subtype, entity.parameters, entity.disposition
+                // );
 
                 match entity.mime_type {
                     ContentType::Multipart => {
@@ -193,28 +176,31 @@ fn parse(raw: String) -> EmailPayload {
                         match parsed {
                             Entity::Multipart { subtype, content } => {
                                 for entity in content {
-                                    match subtype.to_string().as_str() {
+                                    println!("before match {}", subtype);
+                                    match entity.subtype.to_string().as_str() {
                                         "html" => {
                                             payload.html =
                                                 String::from_utf8(entity.value.to_vec()).unwrap()
                                         }
+
                                         "plain" => {
                                             payload.text =
                                                 String::from_utf8(entity.value.to_vec()).unwrap()
                                         }
-                                        _ => (),
+
+                                        _ => println!("unknown subtype: {}", subtype),
                                     }
                                     println!(
                                         "mime_type: {:#?}, subtype {:#?}, parameters {:#?} disposition {:#?}",
-                                        entity.mime_type, entity.subtype, entity.parameters, entity.disposition
+                                        entity.mime_type, entity.subtype.to_string().as_str(), entity.parameters, entity.disposition
                                     );
                                 }
                             }
                             Entity::Text { subtype, value } => {}
-                            _ => println!("not multipart"),
+                            _ => println!("not multipart or text"),
                         }
                     }
-                    _ => println!("..."),
+                    _ => println!("not multipart"),
                 }
             }
         }
