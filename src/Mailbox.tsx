@@ -48,8 +48,8 @@ export default function Mailbox() {
     }, []);
 
     return (
-        <div className="flex w-full h-full">
-            <div className="w-80 h-full overflow-y-auto flex flex-col text-white px-2 py-2">
+        <div className="flex h-full w-full">
+            <div className="flex h-full w-80 flex-col overflow-y-auto px-2 py-2 text-white">
                 {emails.map((email, index) => {
                     return (
                         <div onClick={() => openEmail(email)} key={index}>

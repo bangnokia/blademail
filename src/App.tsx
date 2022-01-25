@@ -9,8 +9,8 @@ function App() {
     }, []);
 
     return (
-        <div className="bg-white w-screen h-screen flex">
-            <div className="h-full w-14 bg-stone-800 hidden"></div>
+        <div className="flex h-screen w-screen bg-white">
+            <div className="hidden h-full w-14 bg-stone-800"></div>
             <Mailbox />
             <DisplayEmail email={null} />
         </div>
