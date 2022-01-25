@@ -1,17 +1,18 @@
+import { useLayoutEffect } from "react";
+import DisplayEmail from "./DisplayEmail";
 import Mailbox from "./Mailbox";
-import SmtpServer from "./SmtpServer";
-
-function s(obj: Object): Object {
-    return JSON.stringify(obj);
-}
+import { startSmtpServer } from "./smtp";
 
 function App() {
+    useLayoutEffect(function () {
+        startSmtpServer().then(() => console.log("SMTP server started"));
+    }, []);
+
     return (
         <div className="bg-white w-screen h-screen flex">
-            {/* sidebar */}
             <div className="h-full w-14 bg-stone-800 hidden"></div>
             <Mailbox />
-            <SmtpServer />
+            <DisplayEmail email={null} />
         </div>
     );
 }

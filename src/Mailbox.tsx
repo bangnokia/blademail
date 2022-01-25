@@ -31,26 +31,33 @@ function makeExcerpt(email: Email) {
 export default function Mailbox() {
     const [emails, setEmails] = useState<Email[]>([]);
 
+    function openEmail(email: Email) {
+        console.log("Opening email:", email);
+    }
+
     useEffect(function () {
         listen("new-email", (event: Event<Email>) => {
-            const email: Email = event.payload;
-            email.excerpt = makeExcerpt(email);
-            email.date = new Date();
+            const email: Email = {
+                ...event.payload,
+                excerpt: makeExcerpt(event.payload),
+                date: new Date(),
+            };
+
             setEmails((emails) => [email, ...emails]);
         });
     }, []);
 
     return (
         <div className="flex w-full h-full">
-            {/* list email */}
             <div className="w-80 h-full overflow-y-auto flex flex-col text-white px-2 py-2">
                 {emails.map((email, index) => {
-                    return <MailItem key={index} email={email} active={false} />;
+                    return (
+                        <div onClick={() => openEmail(email)} key={index}>
+                            <MailItem email={email} active={false} />
+                        </div>
+                    );
                 })}
             </div>
-
-            {/* view email content */}
-            <div></div>
         </div>
     );
 }
