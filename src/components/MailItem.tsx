@@ -14,7 +14,7 @@ export default function MailItem({ email }: MailItemProps) {
     const active = useStore((state) => state.currentEmailId === email.id);
 
     return (
-        <div className={`cursor-default rounded-md py-3 pl-7 pr-3` + (active ? " bg-cyan-500" : "")}>
+        <div className={`cursor-default rounded-md py-3 pl-7 pr-3` + (active ? " bg-sky-300" : "")}>
             <div className="relative flex flex-col gap-y-1">
                 <div className="flex justify-between">
                     <h3 className="text-sm font-semibold text-gray-800">{email.sender[0]}</h3>

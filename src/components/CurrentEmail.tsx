@@ -14,8 +14,8 @@ export default function CurrentEmail() {
         return <div>There is no selected email</div>;
     }
     return (
-        <div className="h-full w-full overflow-auto border p-5">
-            <header className="grid grid-cols-1 divide-y">
+        <div className="relative h-full w-full overflow-auto border">
+            <header className="grid grid-cols-1 px-5 py-3 shadow-lg">
                 <div className="flex gap-x-5 py-1 text-sm">
                     <div className="w-24 font-semibold">From:</div>
                     <div>
@@ -36,24 +36,29 @@ export default function CurrentEmail() {
                 </div>
             </header>
 
-            <main>
-                <ul className="flex space-x-5 py-2 text-sm">
+            <main className="h-full w-full">
+                <ul className="flex w-full items-center justify-center space-x-3  py-2 text-sm">
                     {tabs.map((tab) => (
                         <li
                             key={tab}
-                            className={`rounded px-3 ${tab === activeTab ? "bg-gray-300" : ""}`}
+                            className={`rounded px-3 ${tab === activeTab ? "bg-sky-300" : ""}`}
                             onClick={() => setActiveTab(tab)}
                         >
                             {tab}
                         </li>
                     ))}
                 </ul>
-                <div
-                    className={activeTab === "html" ? "block" : "hidden"}
-                    dangerouslySetInnerHTML={{ __html: email.html }}
-                ></div>
-                <pre className={activeTab === "text" ? "block" : "hidden"}>{email.text}</pre>
-                <pre className={activeTab === "raw" ? "block" : "hidden"}>{email.raw}</pre>
+                <div className="h-full w-full p-5">
+                    <div className="h-full w-full rounded-xl bg-white">
+                        <iframe
+                            srcDoc={email.html}
+                            frameBorder="0"
+                            className={`h-full w-full ${activeTab === "html" ? "block" : "hidden"}`}
+                        ></iframe>
+                        <pre className={activeTab === "text" ? "block" : "hidden"}>{email.text}</pre>
+                        <pre className={activeTab === "raw" ? "block" : "hidden"}>{email.raw}</pre>
+                    </div>
+                </div>
             </main>
         </div>
     );
