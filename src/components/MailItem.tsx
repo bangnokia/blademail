@@ -1,5 +1,5 @@
 import * as dayjs from "dayjs";
-import { Email } from "./Mailbox";
+import useStore, { Email } from "../store";
 
 type MailItemProps = {
     email: Email;
@@ -10,16 +10,18 @@ function formatTime(date: Date) {
     return dayjs(date).format("HH:mm:ss");
 }
 
-export default function MailItem({ email, active }: MailItemProps) {
+export default function MailItem({ email }: MailItemProps) {
+    const active = useStore((state) => state.currentEmailId === email.id);
+
     return (
-        <div className={`pl-7 pr-3 py-3 rounded-md cursor-default` + (active ? " bg-cyan-500" : "")}>
+        <div className={`cursor-default rounded-md py-3 pl-7 pr-3` + (active ? " bg-cyan-500" : "")}>
             <div className="relative flex flex-col gap-y-1">
                 <div className="flex justify-between">
-                    <h3 className="font-semibold text-sm text-gray-800">{email.sender}</h3>
+                    <h3 className="text-sm font-semibold text-gray-800">{email.sender[0]}</h3>
                     <time className="text-xs text-gray-600">{formatTime(email.date)}</time>
                 </div>
                 <div className="text-xs text-gray-900">{email.subject}</div>
-                <div className="text-xs text-gray-500 line-clamp-2">{email.excerpt}</div>
+                <div className="line-clamp-2 text-xs text-gray-500">{email.excerpt}</div>
             </div>
         </div>
     );

@@ -1,10 +1,10 @@
-import { useLayoutEffect } from "react";
-import DisplayEmail from "./DisplayEmail";
-import Mailbox from "./Mailbox";
+import { useLayoutEffect, useEffect } from "react";
+import CurrentEmail from "./components/CurrentEmail";
+import Mailbox from "./components/Mailbox";
 import { startSmtpServer } from "./smtp";
 
 function App() {
-    useLayoutEffect(function () {
+    useEffect(function () {
         startSmtpServer().then(() => console.log("SMTP server started"));
     }, []);
 
@@ -12,7 +12,7 @@ function App() {
         <div className="flex h-screen w-screen bg-white">
             <div className="hidden h-full w-14 bg-stone-800"></div>
             <Mailbox />
-            <DisplayEmail email={null} />
+            <CurrentEmail />
         </div>
     );
 }

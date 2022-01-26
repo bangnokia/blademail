@@ -12,8 +12,10 @@
         "@tailwindcss/line-clamp": "^0.3.1",
         "@tauri-apps/api": "^1.0.0-beta.8",
         "dayjs": "^1.10.7",
+        "nanoid": "^3.2.0",
         "react": "^17.0.2",
-        "react-dom": "^17.0.2"
+        "react-dom": "^17.0.2",
+        "zustand": "^3.6.9"
     },
     "devDependencies": {
         "@tauri-apps/cli": "^1.0.0-beta.10",

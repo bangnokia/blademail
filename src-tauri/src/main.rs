@@ -92,9 +92,7 @@ struct EmailPayload {
 fn parse(raw: String) -> EmailPayload {
     let email = Email::parse(raw.as_bytes()).unwrap();
 
-    // println!("{:#?}", raw);
     let parsed = email.mime_entity.parse().unwrap();
-    // println!("{:#?}", parsed);
 
     let mut payload = EmailPayload {
         raw: raw.clone(),
@@ -109,7 +107,13 @@ fn parse(raw: String) -> EmailPayload {
                 )
             })
             .collect(),
-        sender: (email.sender.name.unwrap().join(" "), "".into()),
+        sender: (
+            email.sender.name.unwrap().join(" "),
+            format!(
+                "{}@{}",
+                email.sender.address.local_part, email.sender.address.domain
+            ),
+        ),
         to: match email.to {
             Some(addresses) => addresses
                 .iter()
