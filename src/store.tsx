@@ -7,11 +7,12 @@ export type Email = {
     from: [string, string][]; // author of message, not the sender
     sender: [string, string]; // [name, email]
     to: string[];
-    cc: string[];
+    cc?: string[];
     date: Date;
     html: string;
     text: string;
     excerpt: string;
+    isOpen: boolean;
 };
 
 type AppState = {

@@ -7,11 +7,13 @@ export default function CurrentEmail() {
         useCallback((state) => state.emails.find((email) => email.id === state.currentEmailId), [currentEmailId])
     );
 
-    const tabs = ["html", "text", "raw"];
+    console.log("email", email);
+
+    const tabs = ["html", "html source", "text", "raw"];
     const [activeTab, setActiveTab] = useState("html");
 
     if (!email) {
-        return <div>There is no selected email</div>;
+        return <div className="h-full w-full">There is no selected email</div>;
     }
     return (
         <div className="relative h-full w-full overflow-auto border">
@@ -30,10 +32,12 @@ export default function CurrentEmail() {
                     <div className="w-24 font-semibold">To:</div>
                     <div>{email.to.join(", ")}</div>
                 </div>
-                <div className="flex gap-x-5 py-1 text-sm">
-                    <div className="w-24 font-semibold">Cc:</div>
-                    <div>{email.cc.join(", ")}</div>
-                </div>
+                {email.cc && (
+                    <div className="flex gap-x-5 py-1 text-sm">
+                        <div className="w-24 font-semibold">Cc:</div>
+                        <div>{email.cc.join(", ")}</div>
+                    </div>
+                )}
             </header>
 
             <main className="h-full w-full">
@@ -54,7 +58,7 @@ export default function CurrentEmail() {
                             srcDoc={email.html}
                             frameBorder="0"
                             className={`h-full w-full ${activeTab === "html" ? "block" : "hidden"}`}
-                        ></iframe>
+                        />
                         <pre className={activeTab === "text" ? "block" : "hidden"}>{email.text}</pre>
                         <pre className={activeTab === "raw" ? "block" : "hidden"}>{email.raw}</pre>
                     </div>

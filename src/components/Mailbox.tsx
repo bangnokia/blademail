@@ -25,6 +25,7 @@ export default function Mailbox() {
     );
 
     function openEmail(email: Email) {
+        email.isOpen = true;
         setCurrentEmailId(email.id);
     }
 
@@ -35,6 +36,7 @@ export default function Mailbox() {
                 id: nanoid(),
                 excerpt: makeExcerpt(event.payload),
                 date: new Date(),
+                isOpen: false,
             };
 
             addEmail(email);
@@ -42,7 +44,7 @@ export default function Mailbox() {
     }, []);
 
     return (
-        <div className="flex h-full w-96 flex-col overflow-y-auto p-2 text-white">
+        <div className="flex h-full w-[450px] flex-col overflow-y-auto p-2 text-white">
             {emails.map((email, index) => {
                 return (
                     <div onClick={() => openEmail(email)} key={email.id}>
