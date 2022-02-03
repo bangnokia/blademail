@@ -53,7 +53,7 @@
         },
         "windows": [
             {
-                "title": "blademail",
+                "title": "Blade Mail",
                 "width": 800,
                 "height": 600,
                 "resizable": true,
