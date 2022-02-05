@@ -1,4 +1,5 @@
 import create, { GetState, SetState } from "zustand";
+import AutoOpenEmailButton from "./components/buttons/ButtonAutoOpenNewEmail";
 
 export type Email = {
     id: string;
@@ -17,18 +18,28 @@ export type Email = {
 
 type AppState = {
     emails: Email[];
+    currentEmailId?: string;
+    autoOpenNewEmail: boolean;
     setEmails: (emails: Email[]) => void;
     addEmail: (email: Email) => void;
-    currentEmailId?: string;
     setCurrentEmailId: (id?: string) => void;
+    setAutoOpenNewEmail: (autoOpenNewEmail: boolean) => void;
+    deleteEmails: () => void;
 };
 
 const useStore = create<AppState>((set) => ({
     emails: [],
-    setEmails: (emails) => set((state) => ({ emails })),
-    addEmail: (email: Email) => set((state) => ({ emails: [email, ...state.emails] })),
     currentEmailId: undefined,
+    autoOpenNewEmail: true,
+    setEmails: (emails) => set((state) => ({ emails })),
+    addEmail: (email: Email) =>
+        set((state) => ({
+            emails: [{ ...email, isOpen: state.autoOpenNewEmail }, ...state.emails],
+            currentEmailId: state.autoOpenNewEmail ? email.id : state.currentEmailId,
+        })),
     setCurrentEmailId: (id) => set({ currentEmailId: id }),
+    setAutoOpenNewEmail: (autoOpenNewEmail: boolean) => set((state) => ({ autoOpenNewEmail })),
+    deleteEmails: () => set((state) => ({ emails: [], currentEmailId: undefined })),
 }));
 
 export default useStore;

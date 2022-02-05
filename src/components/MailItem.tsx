@@ -11,7 +11,9 @@ function formatTime(date: Date) {
 }
 
 export default function MailItem({ email }: MailItemProps) {
-    const active = useStore((state) => state.currentEmailId === email.id);
+    const currentEmailId = useStore((state) => state.currentEmailId);
+
+    const active = currentEmailId === email.id;
 
     return (
         <div className={`relative cursor-default rounded-md py-3 pl-7 pr-3` + (active ? " bg-sky-300" : "")}>
