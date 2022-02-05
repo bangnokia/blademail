@@ -6,6 +6,8 @@ import { listen, Event } from "@tauri-apps/api/event";
 import useStore, { Email } from "./store";
 import { nanoid } from "nanoid";
 import ReactTooltip from "react-tooltip";
+import { extendTheme, VechaiProvider } from "@vechaiui/react";
+import { bee } from "./themes";
 
 function makeExcerpt(email: Email) {
     let excerpt = "";
@@ -48,25 +50,22 @@ function App() {
         });
     }, []);
 
-    // useEffect(
-    //     function () {
-    //         if (autoOpenNewEmail && latestEmailId !== "") {
-    //             console.log("set current email id", latestEmailId);
-    //             setCurrentEmailId(latestEmailId);
-    //         }
-    //     },
-    //     [latestEmailId, autoOpenNewEmail]
-    // );
+    const theme = extendTheme({
+        cursor: "pointer",
+        colorSchemes: {
+            bee,
+        },
+    });
 
     return (
-        <>
+        <VechaiProvider theme={theme} colorScheme="bee">
             <div className="flex h-screen w-screen bg-white">
                 <div className="hidden h-full w-14 bg-stone-800"></div>
                 <Mailbox />
                 <CurrentEmail />
             </div>
             <ReactTooltip place="right" className="!rounded !px-3 !py-1 !text-xs" />
-        </>
+        </VechaiProvider>
     );
 }
 
