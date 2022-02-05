@@ -11,7 +11,7 @@ export default function Mailbox() {
     }
 
     return (
-        <div className="hidden h-full w-[450px] flex-col overflow-y-auto p-2 text-white md:flex">
+        <div className="hidden h-full w-[450px] flex-col overflow-y-auto  p-2 text-white md:flex">
             {emails.map((email, index) => {
                 return (
                     <div onClick={() => openEmail(email)} key={email.id}>

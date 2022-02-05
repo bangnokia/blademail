@@ -15,16 +15,16 @@ export default function CurrentEmail() {
     }
     return (
         <div className="relative h-full w-full overflow-auto border">
-            <header className="grid grid-cols-1 px-5 py-3 shadow-lg">
+            <header className="grid grid-cols-1 px-5 py-3 shadow-lg lg:grid-cols-2">
+                <div className="flex gap-x-5 py-1 text-sm">
+                    <div className="upp w-24 font-semibold">Subject:</div>
+                    <div className="font-semibold uppercase">{email.subject.trim()}</div>
+                </div>
                 <div className="flex gap-x-5 py-1 text-sm">
                     <div className="w-24 font-semibold">From:</div>
                     <div>
                         {email.sender[0]} {`<${email.sender[1]}>`}
                     </div>
-                </div>
-                <div className="flex gap-x-5 py-1 text-sm">
-                    <div className="w-24 font-semibold">Subject:</div>
-                    <div>{email.subject.trim()}</div>
                 </div>
                 <div className="flex gap-x-5 py-1 text-sm">
                     <div className="w-24 font-semibold">To:</div>
@@ -72,14 +72,14 @@ function BlankEmail() {
         <div className="flex h-full w-full items-center justify-center">
             <div className="text-gray-500">
                 <div className="flex flex-col items-center space-y-5">
-                    <div>Blade mail's SMTP server running at</div>
-                    <code className="relative rounded bg-gray-500 py-1 px-2 font-mono text-white">
-                        127.0.0.1:1025
-                        <span className="absolute top-0 right-0 -mt-1 -mr-1 flex h-3 w-3">
-                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75"></span>
-                            <span className="relative inline-flex h-3 w-3 rounded-full bg-cyan-500"></span>
-                        </span>
-                    </code>
+                    <h4 className="text-xl font-semibold">Configuration for Laravel</h4>
+                    <pre className=" relative rounded bg-gray-500 py-1 px-2 font-mono text-white">
+                        MAIL_MAILER=smtp{"\n"}
+                        MAIL_HOST=127.0.0.1{"\n"}
+                        MAIL_PORT=1025{"\n"}
+                        MAIL_USERNAME=null{"\n"}
+                        MAIL_PASSWORD=null
+                    </pre>
                 </div>
             </div>
         </div>
