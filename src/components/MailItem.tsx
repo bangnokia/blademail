@@ -1,4 +1,4 @@
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import useStore, { Email } from "../store";
 
 type MailItemProps = {
