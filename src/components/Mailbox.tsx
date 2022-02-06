@@ -18,13 +18,18 @@ export default function Mailbox() {
                 <ButtonAutoOpenNewEmail />
                 <ButtonDeleteEmails />
             </div>
-            {emails.map((email, index) => {
-                return (
-                    <div onClick={() => openEmail(email)} key={email.id}>
-                        <MailItem email={email} active={false} />
-                    </div>
-                );
-            })}
+            {emails.length > 0 &&
+                emails.map((email, index) => {
+                    return (
+                        <div onClick={() => openEmail(email)} key={email.id}>
+                            <MailItem email={email} active={false} />
+                        </div>
+                    );
+                })}
+
+            {emails.length === 0 && (
+                <div className="flex items-center justify-center text-gray-500">You have no emails :(</div>
+            )}
         </div>
     );
 }
