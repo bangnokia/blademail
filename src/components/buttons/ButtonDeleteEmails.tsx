@@ -1,5 +1,6 @@
 import { Button } from "@vechaiui/react";
 import useStore from "../../store";
+
 export default function ButtonDeleteEmails() {
     const deleteEmails = useStore((state) => state.deleteEmails);
 
