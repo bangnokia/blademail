@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import useStore from "../store";
 import EmailBodyTabs from "./EmailBodyTabs";
+import Instruction from "./Instruction";
 
 export default function CurrentEmail() {
     const currentEmailId = useStore((state) => state.currentEmailId);
@@ -9,7 +10,7 @@ export default function CurrentEmail() {
     );
 
     if (!email) {
-        return <BlankEmail />;
+        return <Instruction />;
     }
     return (
         <div className="relative h-full w-full overflow-auto border">
@@ -39,25 +40,6 @@ export default function CurrentEmail() {
             <main className="relative h-full w-full">
                 <EmailBodyTabs email={email} />
             </main>
-        </div>
-    );
-}
-
-function BlankEmail() {
-    return (
-        <div className="flex h-full w-full items-center justify-center">
-            <div className="text-gray-500">
-                <div className="flex flex-col items-center space-y-5">
-                    <h4 className="text-xl font-semibold">Configuration for Laravel</h4>
-                    <pre className=" relative rounded bg-gray-500 px-7 py-3 font-mono leading-6 text-white">
-                        MAIL_MAILER=smtp{"\n"}
-                        MAIL_HOST=127.0.0.1{"\n"}
-                        MAIL_PORT=1025{"\n"}
-                        MAIL_USERNAME=null{"\n"}
-                        MAIL_PASSWORD=null
-                    </pre>
-                </div>
-            </div>
         </div>
     );
 }

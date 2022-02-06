@@ -59,7 +59,7 @@ function App() {
 
     return (
         <VechaiProvider theme={theme} colorScheme="bee">
-            <div className="flex h-screen w-screen bg-white">
+            <div className="flex h-screen w-screen bg-white font-sans">
                 <div className="hidden h-full w-14 bg-stone-800"></div>
                 <Mailbox />
                 <CurrentEmail />
