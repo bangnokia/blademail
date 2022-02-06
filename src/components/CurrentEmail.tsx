@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import useStore from "../store";
+import EmailBodyTabs from "./EmailBodyTabs";
 
 export default function CurrentEmail() {
     const currentEmailId = useStore((state) => state.currentEmailId);
@@ -7,15 +8,12 @@ export default function CurrentEmail() {
         useCallback((state) => state.emails.find((email) => email.id === state.currentEmailId), [currentEmailId])
     );
 
-    const tabs = ["html", "html source", "text", "raw"];
-    const [activeTab, setActiveTab] = useState("html");
-
     if (!email) {
         return <BlankEmail />;
     }
     return (
         <div className="relative h-full w-full overflow-auto border">
-            <header className="grid grid-cols-1 px-5 py-3 shadow-lg lg:grid-cols-2">
+            <header className="grid grid-cols-1 px-5 py-3 lg:grid-cols-2">
                 <div className="flex gap-x-5 py-1 text-sm">
                     <div className="upp w-24 font-semibold">Subject:</div>
                     <div className="font-semibold uppercase">{email.subject.trim()}</div>
@@ -39,29 +37,7 @@ export default function CurrentEmail() {
             </header>
 
             <main className="relative h-full w-full">
-                <ul className="flex w-full space-x-3  px-5 py-1 pb-0 text-sm">
-                    {tabs.map((tab) => (
-                        <li
-                            key={tab}
-                            className={`cursor-default rounded-sm px-3 ${tab === activeTab ? "bg-sky-300" : ""}`}
-                            onClick={() => setActiveTab(tab)}
-                        >
-                            {tab}
-                        </li>
-                    ))}
-                </ul>
-                <div className="h-full w-full p-5">
-                    <div className="h-full w-full rounded-xl bg-white text-sm">
-                        <iframe
-                            srcDoc={email.html}
-                            frameBorder="0"
-                            className={`h-full w-full ${activeTab === "html" ? "block" : "hidden"}`}
-                        />
-                        <pre className={activeTab === "html source" ? "block" : "hidden"}>{email.html}</pre>
-                        <pre className={activeTab === "text" ? "block" : "hidden"}>{email.text}</pre>
-                        <pre className={activeTab === "raw" ? "block" : "hidden"}>{email.raw}</pre>
-                    </div>
-                </div>
+                <EmailBodyTabs email={email} />
             </main>
         </div>
     );
