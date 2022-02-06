@@ -49,7 +49,7 @@ function BlankEmail() {
             <div className="text-gray-500">
                 <div className="flex flex-col items-center space-y-5">
                     <h4 className="text-xl font-semibold">Configuration for Laravel</h4>
-                    <pre className=" relative rounded bg-gray-500 py-1 px-2 font-mono text-white">
+                    <pre className=" relative rounded bg-gray-500 px-7 py-3 font-mono leading-6 text-white">
                         MAIL_MAILER=smtp{"\n"}
                         MAIL_HOST=127.0.0.1{"\n"}
                         MAIL_PORT=1025{"\n"}
