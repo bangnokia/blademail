@@ -200,7 +200,10 @@ fn parse(raw: String) -> EmailPayload {
                                     );
                                 }
                             }
-                            Entity::Text { subtype, value } => {}
+                            Entity::Text {
+                                subtype: _,
+                                value: _,
+                            } => {}
                             _ => println!("not multipart or text"),
                         }
                     }

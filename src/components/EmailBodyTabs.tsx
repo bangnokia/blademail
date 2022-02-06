@@ -9,7 +9,7 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
     return (
         <>
             <div className="flex items-center justify-between bg-gray-200 px-5 py-2 text-xs font-medium text-gray-700">
-                <ul className="flex items-center space-x-3 ">
+                <ul className="flex items-center space-x-3">
                     {tabs.map((tab) => (
                         <li
                             key={tab}

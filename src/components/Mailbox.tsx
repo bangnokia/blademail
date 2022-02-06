@@ -13,7 +13,7 @@ export default function Mailbox() {
     }
 
     return (
-        <div className="hidden h-full w-[450px] flex-col border-r border-gray-300 text-white md:flex">
+        <div className="border-r-px hidden h-full w-[450px] flex-col border-gray-300 text-white md:flex">
             <div className="toolbox top-0 z-20 flex items-end justify-between bg-white p-2 shadow-md">
                 <ButtonAutoOpenNewEmail />
                 <ButtonDeleteEmails />
