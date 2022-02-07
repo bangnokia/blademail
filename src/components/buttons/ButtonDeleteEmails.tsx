@@ -1,4 +1,3 @@
-import { Button } from "@vechaiui/react";
 import useStore from "../../store";
 
 export default function ButtonDeleteEmails() {
@@ -9,8 +8,8 @@ export default function ButtonDeleteEmails() {
     }
 
     return (
-        <Button type="button" variant="solid" color="red" size="xs" onClick={() => deleteAllEmails()}>
+        <button type="button" className="rounded bg-red-500 px-2 py-1 text-xs text-white hover:bg-red-600">
             DELETE ALL
-        </Button>
+        </button>
     );
 }

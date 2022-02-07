@@ -8,27 +8,11 @@ import { nanoid } from "nanoid";
 import ReactTooltip from "react-tooltip";
 import { extendTheme, VechaiProvider } from "@vechaiui/react";
 import { bee } from "./themes";
-
-function makeExcerpt(email: Email) {
-    let excerpt = "";
-
-    if (email.html) {
-        const text = new DOMParser().parseFromString(email.html, "text/html").body.textContent?.trim();
-        excerpt = text ? text.substring(0, 120) : "";
-    } else {
-        excerpt = email.text.substring(0, 120);
-    }
-
-    return excerpt + "...";
-}
+import StatusBar from "./components/StatusBar";
+import { makeExcerpt } from "./utils/utils";
 
 function App() {
-    const [addEmail, autoOpenNewEmail, setCurrentEmailId] = useStore((state) => [
-        state.addEmail,
-        state.autoOpenNewEmail,
-        state.setCurrentEmailId,
-    ]);
-    const [latestEmailId, setLatestEmailId] = useState<string>("");
+    const [addEmail] = useStore((state) => [state.addEmail]);
 
     useEffect(function () {
         startSmtpServer().then(() => console.log("SMTP server started"));
@@ -45,8 +29,6 @@ function App() {
             };
 
             addEmail(email);
-
-            setLatestEmailId(email.id);
         });
     }, []);
 
@@ -59,10 +41,14 @@ function App() {
 
     return (
         <VechaiProvider theme={theme} colorScheme="bee">
-            <div className="flex h-screen w-screen bg-white font-sans">
-                <div className="hidden h-full w-14 bg-stone-800"></div>
-                <Mailbox />
-                <CurrentEmail />
+            <div className="flex h-screen w-screen flex-col  bg-white font-sans">
+                <div className="flex h-full w-full overflow-auto">
+                    <Mailbox />
+                    <CurrentEmail />
+                </div>
+                <div className="bottom-0 w-full shrink-0 grow-0">
+                    <StatusBar />
+                </div>
             </div>
             <ReactTooltip place="right" className="!rounded !px-3 !py-1 !text-xs" />
         </VechaiProvider>

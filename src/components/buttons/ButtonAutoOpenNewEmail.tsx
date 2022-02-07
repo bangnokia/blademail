@@ -1,4 +1,5 @@
 import useStore from "../../store";
+
 export default function AutoOpenEmailButton() {
     const [autoOpenNewEmail, setAutoOpenNewEmail] = useStore((state) => [
         state.autoOpenNewEmail,

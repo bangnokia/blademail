@@ -46,10 +46,16 @@
             }
         },
         "updater": {
-            "active": false
+            "active": true,
+            "endpoints": ["https://lab.daudau.cc/api/update/blade-mail/{{target}}/{{current_version}}"],
+            "dialog": true
         },
         "allowlist": {
-            "all": true
+            "all": false,
+            "shell": {
+                "all": false,
+                "open": true
+            }
         },
         "windows": [
             {

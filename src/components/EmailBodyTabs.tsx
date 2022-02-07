@@ -28,6 +28,7 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
             <div className="h-full w-full overflow-auto p-5">
                 <div className="h-full w-full rounded-xl bg-white text-sm">
                     <iframe
+                        sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
                         srcDoc={email.html}
                         frameBorder="0"
                         className={`h-full w-full ${activeTab === "html" ? "block" : "hidden"}`}
