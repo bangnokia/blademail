@@ -5,7 +5,7 @@ export default function Instruction() {
     const [quote] = useState(() => randomQuotes());
 
     return (
-        <div className="flex h-full w-full flex-col items-center justify-center gap-y-10 p-10">
+        <div className="flex h-full w-full mx-auto max-w-2xl flex-col items-center justify-center gap-y-10 p-10">
             <div className="flex flex-col items-center gap-y-5">
                 <p className="text-center font-mono text-sm tracking-wider text-rose-500">{quote}</p>
                 <hr className="h-px w-48 bg-gray-300" />
