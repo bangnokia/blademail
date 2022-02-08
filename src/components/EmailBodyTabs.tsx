@@ -4,7 +4,6 @@ import { Email } from "../store";
 export default function EmailBodyTabs({ email }: { email: Email }) {
     const tabs = ["html", "html source", "text", "raw"];
     const [activeTab, setActiveTab] = useState("html");
-    const size = new Blob([email.raw]).size;
 
     return (
         <>
@@ -20,10 +19,6 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
                         </li>
                     ))}
                 </ul>
-                {/* meta info   */}
-                <div>
-                    <div>Size: {Math.round(size / 1024)} KB</div>
-                </div>
             </div>
             <div className="h-full w-full overflow-auto p-5">
                 <div className="h-full w-full rounded-xl bg-white text-sm">
