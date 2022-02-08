@@ -7,13 +7,13 @@ export default function Instruction() {
     return (
         <div className="flex h-full w-full flex-col items-center justify-center gap-y-10 p-10">
             <div className="flex flex-col items-center gap-y-5">
-                <p className="text-center font-mono text-sm tracking-wider text-red-500">{quote}</p>
+                <p className="text-center font-mono text-sm tracking-wider text-rose-500">{quote}</p>
                 <hr className="h-px w-48 bg-gray-300" />
             </div>
             <div className="flex w-full flex-col gap-y-5 rounded-md p-5 text-sm text-gray-500">
                 <div>
                     Blade Mail's running it own SMTP server on{" "}
-                    <code className="rounded bg-red-300 px-2 py-1 text-sm text-white">127.0.0.1:1025</code> <br />
+                    <code className="rounded bg-rose-300 px-2 py-1 text-sm text-white">127.0.0.1:1025</code> <br />
                     So please ensure you don't have any other processes running on that port.
                 </div>
                 <div className="flex flex-col space-y-3">

@@ -11,7 +11,7 @@ use once_cell::sync::OnceCell;
 use serde::Serialize;
 use std::fmt::Debug;
 use std::net::TcpListener;
-use tauri::Window;
+use tauri::{Menu, MenuItem, Submenu, Window};
 // use mailin_embedded::err::Error;
 use mailin_embedded::response::OK;
 use mailin_embedded::{Handler, Response, Server, SslConfig};
@@ -222,6 +222,8 @@ fn parse(raw: String) -> EmailPayload {
 static MAIN_WINDOW: OnceCell<Window> = OnceCell::new();
 
 fn main() {
+    let menu = make_menu();
+
     tauri::Builder::default()
         .setup(|app| {
             // how we make app to globaly access from other function
@@ -231,7 +233,45 @@ fn main() {
 
             Ok(())
         })
+        .menu(menu)
         .invoke_handler(tauri::generate_handler![start_server, stop_server])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+fn make_menu() -> Menu {
+    let main_submenu = Submenu::new(
+        "Blade Mail",
+        Menu::new()
+            .add_native_item(MenuItem::About("Blade Mail".to_string()))
+            .add_native_item(MenuItem::EnterFullScreen)
+            .add_native_item(MenuItem::HideOthers)
+            .add_native_item(MenuItem::Hide)
+            .add_native_item(MenuItem::Quit),
+    );
+
+    let file_submenu = Submenu::new(
+        "File",
+        Menu::new()
+            .add_native_item(MenuItem::Minimize)
+            .add_native_item(MenuItem::Quit),
+    );
+
+    let edit_submenu = Submenu::new(
+        "Edit",
+        Menu::new()
+            .add_native_item(MenuItem::Undo)
+            .add_native_item(MenuItem::Redo)
+            .add_native_item(MenuItem::Separator)
+            .add_native_item(MenuItem::Cut)
+            .add_native_item(MenuItem::Copy)
+            .add_native_item(MenuItem::Paste)
+            .add_native_item(MenuItem::Separator)
+            .add_native_item(MenuItem::SelectAll),
+    );
+
+    Menu::new()
+        .add_submenu(main_submenu)
+        .add_submenu(file_submenu)
+        .add_submenu(edit_submenu)
 }

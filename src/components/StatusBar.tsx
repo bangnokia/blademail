@@ -10,10 +10,10 @@ export default function StatusBar() {
     console.log("autoOpenNewEmail", autoOpenNewEmail);
 
     return (
-        <div className="bg-yellow-500 px-3 text-sm text-gray-700">
+        <div className="bg-amber-400 px-3 text-xs text-gray-700">
             <Checkbox
                 id="status-bar-auto-open-email-checkbox" // lol
-                label="Auto Open"
+                label="Open new email"
                 defaultChecked={autoOpenNewEmail}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     setAutoOpenNewEmai(e.target.checked);
@@ -32,7 +32,7 @@ type CheckboxProps = {
 
 function Checkbox({ label, defaultChecked, onChange }: CheckboxProps) {
     return (
-        <div className="inline-block px-1 hover:bg-white/50" tabIndex={0}>
+        <div className="inline-block px-1 hover:bg-white/50">
             <label htmlFor="daudau">
                 {label}:
                 {defaultChecked ? (

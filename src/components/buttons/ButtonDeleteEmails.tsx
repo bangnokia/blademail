@@ -8,7 +8,7 @@ export default function ButtonDeleteEmails() {
     }
 
     return (
-        <button type="button" className="rounded bg-red-500 px-2 py-1 text-xs text-white hover:bg-red-600">
+        <button type="button" className="rounded bg-rose-500 px-2 py-1 text-xs text-white hover:bg-rose-600">
             DELETE ALL
         </button>
     );
