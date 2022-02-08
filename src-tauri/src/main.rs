@@ -217,8 +217,6 @@ fn parse(raw: String) -> EmailPayload {
     payload
 }
 
-// welcome to viet nam
-
 static MAIN_WINDOW: OnceCell<Window> = OnceCell::new();
 
 fn main() {
