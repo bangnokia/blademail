@@ -12,9 +12,13 @@ export default function Mailbox() {
         setCurrentEmailId(email.id);
     }
 
+    if (!emails.length) {
+        return null;
+    }
+
     return (
         <div className="hidden h-full w-[450px] flex-col border-r border-gray-300 text-white md:flex">
-            <div className="toolbox top-0 z-20 flex items-end justify-between bg-white p-2 shadow-md">
+            <div className="toolbox sticky w-full top-0 z-20 flex items-end justify-between bg-white p-2 shadow-sm">
                 <ButtonDeleteEmails />
             </div>
             <div className="items-stretch overflow-y-auto p-2">

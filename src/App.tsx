@@ -19,6 +19,8 @@ function App() {
     }, []);
 
     useEffect(function () {
+        let unlisten: (() => void) | undefined;
+
         listen("new-email", (event: Event<Email>) => {
             const email: Email = {
                 ...event.payload,
@@ -29,8 +31,10 @@ function App() {
             };
 
             addEmail(email);
-        });
-    }, []);
+        }).then((unsubscribe) => { unlisten = unsubscribe; });
+
+        return () => unlisten && unlisten();
+    }, [addEmail]);
 
     const theme = extendTheme({
         cursor: "pointer",

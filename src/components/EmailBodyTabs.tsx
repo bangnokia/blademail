@@ -13,7 +13,7 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
                     {tabs.map((tab) => (
                         <li
                             key={tab}
-                            className={`cursor-default rounded px-3 py-1 ${tab === activeTab ? "bg-sky-300" : ""}`}
+                            className={`cursor-default rounded px-3 py-1 ${tab === activeTab ? "bg-amber-300" : ""}`}
                             onClick={() => setActiveTab(tab)}
                         >
                             {tab.toUpperCase()}

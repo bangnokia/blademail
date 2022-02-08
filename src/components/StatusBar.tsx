@@ -7,13 +7,11 @@ export default function StatusBar() {
         state.setAutoOpenNewEmail,
     ]);
 
-    console.log("autoOpenNewEmail", autoOpenNewEmail);
-
     return (
-        <div className="bg-amber-400 px-3 text-xs text-gray-700">
+        <div className="bg-gray-400 px-3 text-xs text-gray-700">
             <Checkbox
                 id="status-bar-auto-open-email-checkbox" // lol
-                label="Open new email"
+                label="Auto open email"
                 defaultChecked={autoOpenNewEmail}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     setAutoOpenNewEmai(e.target.checked);
