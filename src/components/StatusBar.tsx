@@ -8,7 +8,7 @@ export default function StatusBar() {
     ]);
 
     return (
-        <div className="bg-gray-400 px-3 text-xs text-gray-700">
+        <div className="bg-gray-300 px-3 text-xs text-gray-700">
             <Checkbox
                 id="status-bar-auto-open-email-checkbox" // lol
                 label="Auto open email"

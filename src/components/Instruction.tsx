@@ -18,10 +18,10 @@ export default function Instruction() {
                 </div>
                 <div className="flex flex-col space-y-3">
                     <h4 className="font-semibold tracking-wide">Example configuration</h4>
-                    <select defaultValue="laravel" className="w-48 shrink-0 rounded">
+                    <select defaultValue="laravel" className="w-48 shrink-0 rounded text-sm py-2">
                         <option value="laravel">Laravel</option>
                     </select>
-                    <pre className="relative rounded bg-gray-400 px-7 py-3 font-mono text-sm leading-6 text-white">
+                    <pre className="relative rounded bg-gray-500 px-7 py-3 font-mono text-sm leading-6 text-white">
                         MAIL_MAILER=smtp{"\n"}
                         MAIL_HOST=127.0.0.1{"\n"}
                         MAIL_PORT=1025{"\n"}
