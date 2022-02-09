@@ -37,23 +37,23 @@ export default function CurrentEmail() {
                 </div>
             </div>
 
-            <header className="grid grid-cols-1 px-5 py-3 lg:grid-cols-2">
-                <div className="flex gap-x-5 py-1 text-sm">
+            <header className="grid grid-cols-1 px-5 py-3 lg:grid-cols-2 text-sm">
+                <div className="flex gap-x-5 py-1">
                     <div className="upp w-24 font-semibold">Subject:</div>
                     <div className="font-semibold uppercase">{email.subject.trim()}</div>
                 </div>
-                <div className="flex gap-x-5 py-1 text-sm">
+                <div className="flex gap-x-5 py-1">
                     <div className="w-24 font-semibold">From:</div>
                     <div>
                         {email.sender[0]} {`<${email.sender[1]}>`}
                     </div>
                 </div>
-                <div className="flex gap-x-5 py-1 text-sm">
+                <div className="flex gap-x-5 py-1">
                     <div className="w-24 font-semibold">To:</div>
                     <div>{email.to.join(", ")}</div>
                 </div>
                 {email.cc && (
-                    <div className="flex gap-x-5 py-1 text-sm">
+                    <div className="flex gap-x-5 py-1">
                         <div className="w-24 font-semibold">Cc:</div>
                         <div>{email.cc.join(", ")}</div>
                     </div>
