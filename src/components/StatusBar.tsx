@@ -1,5 +1,7 @@
 import { useState, ChangeEvent, DOMAttributes, MouseEventHandler } from "react";
 import useStore from "../store";
+import CheckIcon from "./icons/CheckIcon";
+import XIcon from "./icons/XIcon";
 
 export default function StatusBar() {
     const [autoOpenNewEmail, setAutoOpenNewEmai] = useStore((state) => [
@@ -11,7 +13,7 @@ export default function StatusBar() {
         <div className="bg-gray-300 px-3 text-xs text-gray-700">
             <Checkbox
                 id="status-bar-auto-open-email-checkbox" // lol
-                label="Auto open email"
+                label="Auto open new email"
                 defaultChecked={autoOpenNewEmail}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     setAutoOpenNewEmai(e.target.checked);
@@ -28,34 +30,18 @@ type CheckboxProps = {
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-function Checkbox({ label, defaultChecked, onChange }: CheckboxProps) {
+function Checkbox({ label, defaultChecked, id, onChange }: CheckboxProps) {
     return (
-        <div className="inline-block px-1 hover:bg-white/50">
-            <label htmlFor="daudau">
+        <div className="inline-block px-1 hover:bg-white/50 rounded-xs">
+            <label htmlFor={id}>
                 {label}:
                 {defaultChecked ? (
-                    <svg
-                        className="inline h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
+                    <CheckIcon className="inline w-5 h-5 text-green-500" />
                 ) : (
-                    <svg
-                        className="inline h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                    <XIcon className="inline w-5 h-5 text-gray-500" />
                 )}
             </label>
-            <input className="hidden" type="checkbox" id="daudau" defaultChecked={defaultChecked} onChange={onChange} />
-        </div>
+            <input className="hidden" type="checkbox" id={id} defaultChecked={defaultChecked} onChange={onChange} />
+        </div >
     );
 }
