@@ -11,6 +11,7 @@ use once_cell::sync::OnceCell;
 use serde::Serialize;
 use std::fmt::Debug;
 use std::net::TcpListener;
+use tauri::AboutMetadata;
 use tauri::{Menu, MenuItem, Submenu, Window};
 // use mailin_embedded::err::Error;
 use mailin_embedded::response::OK;
@@ -256,7 +257,10 @@ fn make_menu() -> Menu {
     let main_submenu = Submenu::new(
         "Blade Mail",
         Menu::new()
-            .add_native_item(MenuItem::About("Blade Mail".to_string()))
+            .add_native_item(MenuItem::About(
+                "Blade Mail".to_string(),
+                AboutMetadata::new(),
+            ))
             .add_native_item(MenuItem::EnterFullScreen)
             .add_native_item(MenuItem::HideOthers)
             .add_native_item(MenuItem::Hide)

@@ -28,13 +28,11 @@
             "shortDescription": "",
             "longDescription": "",
             "deb": {
-                "depends": [],
-                "useBootstrapper": false
+                "depends": []
             },
             "macOS": {
                 "frameworks": [],
                 "minimumSystemVersion": "",
-                "useBootstrapper": false,
                 "exceptionDomain": "",
                 "signingIdentity": null,
                 "entitlements": null
@@ -48,7 +46,8 @@
         "updater": {
             "active": true,
             "endpoints": ["https://lab.daudau.cc/api/update/blade-mail/{{target}}/{{current_version}}"],
-            "dialog": true
+            "dialog": true,
+            "pubkey": ""
         },
         "allowlist": {
             "all": false,
