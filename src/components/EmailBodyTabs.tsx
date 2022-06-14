@@ -1,11 +1,10 @@
 import { useState } from "react";
+import { ValueOf } from "type-fest";
 import { Email } from "../store";
 
 export default function EmailBodyTabs({ email }: { email: Email }) {
-    const tabs = ["html", "html source", "text", "raw"];
+    const tabs = ["html", "html source", "text", "raw", 'links checker'];
     const [activeTab, setActiveTab] = useState("html");
-
-    console.log('email', email)
 
     return (
         <>
@@ -14,7 +13,7 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
                     {tabs.map((tab) => (
                         <li
                             key={tab}
-                            className={`cursor-default rounded px-3 py-1 ${tab === activeTab ? "bg-amber-300" : ""}`}
+                            className={`cursor-default rounded px-3 py-1 ${tab === activeTab ? "bg-white" : ""}`}
                             onClick={() => setActiveTab(tab)}
                         >
                             {tab.toUpperCase()}
@@ -33,6 +32,9 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
                     <pre className={activeTab === "html source" ? "block" : "hidden"}>{email.html}</pre>
                     <pre className={activeTab === "text" ? "block" : "hidden"}>{email.text}</pre>
                     <pre className={activeTab === "raw" ? "block" : "hidden"}>{email.raw}</pre>
+                    <div className={activeTab === "links checker" ? "block" : "hidden"}>
+                        <strong>Broken links checker</strong>
+                    </div>
                 </div>
             </div>
         </>
