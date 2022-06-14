@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, DOMAttributes, MouseEventHandler } from "react";
+import { ChangeEvent } from "react";
 import useStore from "../store";
 import CheckIcon from "./icons/CheckIcon";
 import XIcon from "./icons/XIcon";
