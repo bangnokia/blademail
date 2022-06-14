@@ -5,9 +5,6 @@ import { startSmtpServer } from "./smtp";
 import { listen, Event } from "@tauri-apps/api/event";
 import useStore, { Email } from "./store";
 import { nanoid } from "nanoid";
-import ReactTooltip from "react-tooltip";
-import { extendTheme, VechaiProvider } from "@vechaiui/react";
-import { bee } from "./themes";
 import StatusBar from "./components/StatusBar";
 import { makeExcerpt } from "./utils/utils";
 
@@ -36,26 +33,16 @@ function App() {
         return () => unlisten && unlisten();
     }, [addEmail]);
 
-    const theme = extendTheme({
-        cursor: "pointer",
-        colorSchemes: {
-            bee,
-        },
-    });
-
     return (
-        <VechaiProvider theme={theme} colorScheme="bee">
-            <div className="flex h-screen w-screen flex-col  bg-white font-sans">
-                <div className="flex h-full w-full overflow-auto">
-                    <Mailbox />
-                    <CurrentEmail />
-                </div>
-                <div className="bottom-0 w-full shrink-0 grow-0">
-                    <StatusBar />
-                </div>
+        <div className="flex h-screen w-screen flex-col  bg-white font-sans">
+            <div className="flex h-full w-full overflow-auto">
+                <Mailbox />
+                <CurrentEmail />
             </div>
-            <ReactTooltip place="right" className="!rounded !px-3 !py-1 !text-xs" />
-        </VechaiProvider>
+            <div className="bottom-0 w-full shrink-0 grow-0">
+                <StatusBar />
+            </div>
+        </div>
     );
 }
 
