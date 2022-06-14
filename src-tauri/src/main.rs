@@ -91,7 +91,6 @@ struct EmailPayload {
 
 fn parse(raw: String) -> EmailPayload {
     let email = Email::parse(raw.as_bytes()).unwrap();
-
     let parsed = email.mime_entity.parse().unwrap();
 
     let mut payload = EmailPayload {
@@ -167,10 +166,10 @@ fn parse(raw: String) -> EmailPayload {
         Entity::Multipart { subtype, content } => {
             println!("multipart, subtype: {}", subtype);
             for entity in content {
-                // println!(
-                //     "mime_type: {:#?}, subtype {:#?}, parameters {:#?} disposition {:#?}",
-                //     entity.mime_type, entity.subtype, entity.parameters, entity.disposition
-                // );
+                println!(
+                    "mime_type: {:#?}, subtype {:#?}, parameters {:#?} disposition {:#?}",
+                    entity.mime_type, entity.subtype, entity.parameters, entity.disposition
+                );
 
                 match entity.mime_type {
                     ContentType::Multipart => {
@@ -205,6 +204,22 @@ fn parse(raw: String) -> EmailPayload {
                                 value: _,
                             } => {}
                             _ => println!("not multipart or text"),
+                        }
+                    }
+                    ContentType::Text => {
+                        let parsed = entity.parse().unwrap();
+                        println!("parsing text {:#?}", parsed);
+
+                        match parsed {
+                            Entity::Text { subtype, value, .. } => {
+                                println!("text, subtype: {}", subtype);
+                                match subtype.to_string().as_str() {
+                                    "html" => payload.html = value.to_string(),
+                                    "plain" => payload.text = value.to_string(),
+                                    _ => (),
+                                }
+                            }
+                            _ => println!("not text"),
                         }
                     }
                     _ => println!("not multipart"),

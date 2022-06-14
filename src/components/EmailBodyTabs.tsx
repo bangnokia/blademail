@@ -5,6 +5,8 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
     const tabs = ["html", "html source", "text", "raw"];
     const [activeTab, setActiveTab] = useState("html");
 
+    console.log('email', email)
+
     return (
         <>
             <div className="flex items-center justify-between bg-gray-200 px-5 py-2 text-xs font-medium text-gray-700">
