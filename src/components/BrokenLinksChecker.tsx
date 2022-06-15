@@ -16,6 +16,7 @@ export default function BrokenLinksChecker({ email }: { email: Email }) {
 
   useEffect(function () {
     setCheckedCount(links.filter((l) => l.status !== 'pending').length);
+    setErrorCount(links.filter((l) => l.status === 'error').length);
   }, [])
 
   useEffect(() => {
