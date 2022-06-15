@@ -4,7 +4,7 @@ import BrokenLinksChecker from "./BrokenLinksChecker";
 
 export default function EmailBodyTabs({ email }: { email: Email }) {
     const tabs = ["html", "html source", "text", "raw", 'links checker'];
-    const [activeTab, setActiveTab] = useState("links checker");
+    const [activeTab, setActiveTab] = useState("html");
 
     return (
         <>

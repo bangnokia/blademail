@@ -32,13 +32,7 @@ const useStore = create<AppState>((set) => ({
         currentEmailId: state.currentEmailId === email.id ? undefined : state.currentEmailId,
     })),
     setEmailLinks: (email: Email, links: EmailLink[]) => set((state) => {
-        const index = state.emails.findIndex((e) => e.id === email.id);
-        if (index === -1) {
-            return state;
-        }
-        // replace the email in the state
-        const newEmails = [...state.emails];
-        newEmails[index] = { ...email, links };
+        const newEmails = state.emails.map(e => e.id === email.id ? { ...email, links } : e);
         return { emails: newEmails };
     })
 }));
