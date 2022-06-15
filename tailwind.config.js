@@ -2,7 +2,6 @@ module.exports = {
   content: [
     "./index.html",
     "./src/**/*.{jsx,js,tsx,ts}",
-    "./node_modules/@vechaiui/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {},
@@ -10,8 +9,5 @@ module.exports = {
   plugins: [
     require('@tailwindcss/line-clamp'),
     require("@tailwindcss/forms"),
-    require("@vechaiui/core")({
-      colors: ["red"],
-    }),
   ],
 }
