@@ -9,12 +9,19 @@ export default function BrokenLinksChecker({ links }: { links: EmailLink[] }) {
     { url: 'https://daudau.cc', status: null },
   ];
 
+  function checkUrls() {
+
+  }
+
   return (
     <div>
-      <table className="w-full">
+      <div className="flex items-center">
+        <button onClick={checkUrls} type="button" className="px-3 py-1.5 border border-gray-300 text-sm rounded">Recheck</button>
+      </div>
+      <table className="w-full mt-2">
         <tbody>
           {testLinks.map((link, index) => (
-            <LinkCheckerRow key={index} link={link} index={index} />
+            <LinkCheckerRow key={link.url} link={link} index={index} />
           ))}
         </tbody>
       </table>

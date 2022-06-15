@@ -10,6 +10,7 @@ type AppState = {
     setCurrentEmailId: (id?: string) => void;
     setAutoOpenNewEmail: (autoOpenNewEmail: boolean) => void;
     deleteEmails: () => void;
+    deleteEmail: (email: Email) => void,
 };
 
 const useStore = create<AppState>((set) => ({
@@ -25,6 +26,10 @@ const useStore = create<AppState>((set) => ({
     setCurrentEmailId: (id) => set({ currentEmailId: id }),
     setAutoOpenNewEmail: (autoOpenNewEmail: boolean) => set({ autoOpenNewEmail }),
     deleteEmails: () => set({ emails: [], currentEmailId: undefined }),
+    deleteEmail: (email: Email) => set((state) => ({
+        emails: state.emails.filter((e) => e.id !== email.id),
+        currentEmailId: state.currentEmailId === email.id ? undefined : state.currentEmailId,
+    }))
 }));
 
 export default useStore;
