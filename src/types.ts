@@ -11,10 +11,11 @@ export interface Email {
   text: string;
   excerpt: string;
   isOpen: boolean;
-  links?: EmailLink[]
+  links: EmailLink[]
 };
 
+export type EmailLinkStatus = 'ok' | 'error' | 'pending'
 export interface EmailLink {
   url: string,
-  status: 'ok' | 'error' | null
+  status: EmailLinkStatus
 }

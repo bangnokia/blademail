@@ -1,41 +1,44 @@
 import { useEffect, useState } from "react";
-import { EmailLink } from "../types"
+import { EmailLink, EmailLinkStatus } from "../types"
 import CheckIcon from "./icons/CheckIcon";
 import Loading from "./icons/Loading";
 import XIcon from "./icons/XIcon";
-import { sleep } from "../utils/utils";
 import { getClient, ResponseType } from "@tauri-apps/api/http"
+
 interface LinkCheckerProps {
   link: EmailLink;
   index: number,
   forceCheck?: boolean;
-  onFinished: () => void;
+  onFinished: (link: EmailLink, status: EmailLinkStatus) => void;
 }
+
 export default function LinkCheckerRow({ link, index, forceCheck = false, onFinished }: LinkCheckerProps) {
   const [checking, setChecking] = useState(false);
-  const [status, setStatus] = useState(() => link.status);
+  const [status, setStatus] = useState<EmailLinkStatus>(() => link.status);
 
   useEffect(() => {
     async function checkLink() {
       setChecking(true)
+      let newStatus = status;
 
       const client = await getClient()
       try {
         const response = await client.get(link.url, { timeout: 12, responseType: ResponseType.Text })
 
         if (response.status === 200) {
-          setStatus('ok')
+          newStatus = 'ok'
         } else {
-          setStatus('error')
+          newStatus = 'error'
         }
       } catch (ex) {
-        setStatus('error')
+        newStatus = 'error'
       }
-      onFinished()
+      setStatus(newStatus)
+      onFinished(link, newStatus)
       setChecking(false)
     }
 
-    if (status === null || forceCheck) {
+    if (status === 'pending') {
       checkLink();
     }
   }, [])
@@ -52,7 +55,7 @@ export default function LinkCheckerRow({ link, index, forceCheck = false, onFini
   )
 }
 
-function LinkStatus({ status }: { status: string | null }) {
+function LinkStatus({ status }: { status: EmailLinkStatus }) {
   if (status === 'ok') {
     return <CheckIcon className="w-5 h-5 text-sky-500" />
   }

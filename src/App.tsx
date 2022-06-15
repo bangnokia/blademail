@@ -6,7 +6,7 @@ import { listen, Event } from "@tauri-apps/api/event";
 import useStore from "./store";
 import { nanoid } from "nanoid";
 import StatusBar from "./components/StatusBar";
-import { makeExcerpt } from "./utils/utils";
+import { makeExcerpt, parseUrls } from "./utils/utils";
 import { Email } from "./types";
 
 function App() {
@@ -26,6 +26,7 @@ function App() {
                 excerpt: makeExcerpt(event.payload),
                 date: new Date(),
                 isOpen: false,
+                links: parseUrls(event.payload.html).map((url) => ({ url, status: 'pending' })),
             };
 
             addEmail(email);

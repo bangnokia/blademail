@@ -33,7 +33,7 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
                     <pre className={activeTab === "text" ? "block" : "hidden"}>{email.text}</pre>
                     <pre className={activeTab === "raw" ? "block" : "hidden"}>{email.raw}</pre>
                     <div className={activeTab === "links checker" ? "block" : "hidden"}>
-                        <BrokenLinksChecker email={email} />
+                        {activeTab === 'links checker' && <BrokenLinksChecker email={email} />}
                     </div>
                 </div>
             </div>
