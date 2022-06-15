@@ -27,7 +27,7 @@ export default function CurrentEmail() {
         return <Instruction />;
     }
     return (
-        <div className="relative h-full w-full overflow-auto">
+        <div className="relative h-full w-full overflow-auto" key={currentEmailId}>
             <div className="toolbox sticky top-0 w-full z-20 flex items-center justify-between bg-white p-2 shadow-sm text-gray-700">
                 <div>
                     <button onClick={() => deleteCurrentEmail(email)} type="button" className="rounded flex items-center bg-white text-gray-500 px-2 py-1 text-xs hover:text-white hover:bg-rose-500  transition">

@@ -6,7 +6,7 @@ import XIcon from "./icons/XIcon";
 import { sleep } from "../utils/utils";
 import { getClient, ResponseType } from "@tauri-apps/api/http"
 
-export default function LinkCheckerRow({ link, index }: { link: EmailLink, index: number }) {
+export default function LinkCheckerRow({ link, index, forceCheck = false }: { link: EmailLink, index: number, forceCheck?: boolean }) {
   const [checking, setChecking] = useState(false);
   const [status, setStatus] = useState(() => link.status);
 
@@ -23,15 +23,13 @@ export default function LinkCheckerRow({ link, index }: { link: EmailLink, index
         } else {
           setStatus('error')
         }
-
       } catch (ex) {
-        console.log('exception', ex)
         setStatus('error')
       }
       setChecking(false)
     }
 
-    if (status === null) {
+    if (status === null || forceCheck) {
       checkLink();
     }
   }, [])
@@ -39,9 +37,9 @@ export default function LinkCheckerRow({ link, index }: { link: EmailLink, index
 
   return (
     <tr>
-      <td>{index + 1}</td>
-      <td className="px-3 py-2 break-all max-w-64">{link.url}</td>
-      <td className="px-3 py-1">
+      <td className="border text-center">{index + 1}</td>
+      <td className="border px-3 py-1.5 break-all max-w-64">{link.url}</td>
+      <td className="border px-3 py-1 text-center w-8">
         {checking ? <Loading className="w-5 h-5" /> : <LinkStatus status={status} />}
       </td>
     </tr>

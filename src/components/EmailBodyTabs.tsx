@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Email } from "../store";
+import { Email } from "../types";
 import BrokenLinksChecker from "./BrokenLinksChecker";
 
 export default function EmailBodyTabs({ email }: { email: Email }) {
@@ -33,7 +33,7 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
                     <pre className={activeTab === "text" ? "block" : "hidden"}>{email.text}</pre>
                     <pre className={activeTab === "raw" ? "block" : "hidden"}>{email.raw}</pre>
                     <div className={activeTab === "links checker" ? "block" : "hidden"}>
-                        <BrokenLinksChecker links={[]} />
+                        <BrokenLinksChecker email={email} />
                     </div>
                 </div>
             </div>
