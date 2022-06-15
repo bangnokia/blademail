@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { ValueOf } from "type-fest";
 import { Email } from "../store";
+import BrokenLinksChecker from "./BrokenLinksChecker";
 
 export default function EmailBodyTabs({ email }: { email: Email }) {
     const tabs = ["html", "html source", "text", "raw", 'links checker'];
-    const [activeTab, setActiveTab] = useState("html");
+    const [activeTab, setActiveTab] = useState("links checker");
 
     return (
         <>
@@ -33,7 +33,7 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
                     <pre className={activeTab === "text" ? "block" : "hidden"}>{email.text}</pre>
                     <pre className={activeTab === "raw" ? "block" : "hidden"}>{email.raw}</pre>
                     <div className={activeTab === "links checker" ? "block" : "hidden"}>
-                        <strong>Broken links checker</strong>
+                        <BrokenLinksChecker links={[]} />
                     </div>
                 </div>
             </div>

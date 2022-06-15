@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import CurrentEmail from "./components/CurrentEmail";
 import Mailbox from "./components/Mailbox";
 import { startSmtpServer } from "./smtp";
