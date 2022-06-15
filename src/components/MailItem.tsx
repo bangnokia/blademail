@@ -25,7 +25,6 @@ export default function MailItem({ email }: MailItemProps) {
                 </div>
                 <div className="text-xs text-gray-900">{email.subject}</div>
                 <div className="line-clamp-2 text-xs text-gray-500">{email.excerpt}</div>
-                <div className="text-rose-500">{email.id}</div>
             </div>
         </div>
     );
