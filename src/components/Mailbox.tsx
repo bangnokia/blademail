@@ -17,7 +17,7 @@ export default function Mailbox() {
     }
 
     return (
-        <div className="hidden h-full w-[450px] flex-col border-r border-gray-300 text-white md:flex">
+        <div className="hidden h-full w-[322px] shrink-0 grow-0 flex-col border-r border-gray-300 text-white md:flex">
             <div className="toolbox sticky w-full top-0 z-20 flex items-end justify-between bg-white p-2 shadow-sm">
                 <ButtonDeleteEmails />
             </div>
