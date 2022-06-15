@@ -5,8 +5,13 @@ import Loading from "./icons/Loading";
 import XIcon from "./icons/XIcon";
 import { sleep } from "../utils/utils";
 import { getClient, ResponseType } from "@tauri-apps/api/http"
-
-export default function LinkCheckerRow({ link, index, forceCheck = false }: { link: EmailLink, index: number, forceCheck?: boolean }) {
+interface LinkCheckerProps {
+  link: EmailLink;
+  index: number,
+  forceCheck?: boolean;
+  onFinished: () => void;
+}
+export default function LinkCheckerRow({ link, index, forceCheck = false, onFinished }: LinkCheckerProps) {
   const [checking, setChecking] = useState(false);
   const [status, setStatus] = useState(() => link.status);
 
@@ -26,6 +31,7 @@ export default function LinkCheckerRow({ link, index, forceCheck = false }: { li
       } catch (ex) {
         setStatus('error')
       }
+      onFinished()
       setChecking(false)
     }
 

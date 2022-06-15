@@ -3,10 +3,11 @@ import CurrentEmail from "./components/CurrentEmail";
 import Mailbox from "./components/Mailbox";
 import { startSmtpServer } from "./smtp";
 import { listen, Event } from "@tauri-apps/api/event";
-import useStore, { Email } from "./store";
+import useStore from "./store";
 import { nanoid } from "nanoid";
 import StatusBar from "./components/StatusBar";
 import { makeExcerpt } from "./utils/utils";
+import { Email } from "./types";
 
 function App() {
     const [addEmail] = useStore((state) => [state.addEmail]);

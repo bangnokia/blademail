@@ -1,5 +1,5 @@
 import create, { GetState, SetState } from "zustand";
-import { Email } from "./types";
+import { Email, EmailLink } from "./types";
 
 type AppState = {
     emails: Email[];
@@ -11,6 +11,7 @@ type AppState = {
     setAutoOpenNewEmail: (autoOpenNewEmail: boolean) => void;
     deleteEmails: () => void;
     deleteEmail: (email: Email) => void,
+    setEmailLinks: (email: Email, links: EmailLink[]) => void;
 };
 
 const useStore = create<AppState>((set) => ({
@@ -29,7 +30,17 @@ const useStore = create<AppState>((set) => ({
     deleteEmail: (email: Email) => set((state) => ({
         emails: state.emails.filter((e) => e.id !== email.id),
         currentEmailId: state.currentEmailId === email.id ? undefined : state.currentEmailId,
-    }))
+    })),
+    setEmailLinks: (email: Email, links: EmailLink[]) => set((state) => {
+        const index = state.emails.findIndex((e) => e.id === email.id);
+        if (index === -1) {
+            return state;
+        }
+        // replace the email in the state
+        const newEmails = [...state.emails];
+        newEmails[index] = { ...email, links };
+        return { emails: newEmails };
+    })
 }));
 
 export default useStore;

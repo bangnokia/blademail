@@ -21,6 +21,14 @@ function parseUrls(html: string): string[] {
 export default function BrokenLinksChecker({ email }: { email: Email }) {
   const [checkTableKey, setCheckTableKey] = useState('arandomstring')
   const [links, setLinks] = useState<EmailLink[]>([]);
+  const [checkedCount, setCheckedCount] = useState(() => {
+    if (!email.links) {
+      return 0;
+    }
+    return email.links.filter((l) => l.status === null).length;
+  });
+
+  const total = links.length;
 
   useEffect(() => {
     const result = parseUrls(email.html);
@@ -31,18 +39,27 @@ export default function BrokenLinksChecker({ email }: { email: Email }) {
   }, [email.id])
 
   function checkUrls() {
+    setCheckedCount(0)
     setCheckTableKey(Math.random().toString())
+  }
+
+  function increaseCheckedCount() {
+    setCheckedCount(checkedCount => checkedCount + 1);
   }
 
   return (
     <div>
-      <div className="flex items-center">
+      <div className="flex items-center gap-4">
         <button onClick={checkUrls} type="button" className="px-3 py-1.5 border border-gray-300 text-sm rounded">Recheck</button>
+        <div>
+          Checked: <span>{checkedCount}/{total}</span>
+        </div>
       </div>
+
       <table className="w-full mt-2 border border-collapse" key={checkTableKey}>
         <tbody>
           {links.map((link, index) => (
-            <LinkCheckerRow key={link.url} link={link} index={index} />
+            <LinkCheckerRow key={link.url} link={link} index={index} onFinished={increaseCheckedCount} />
           ))}
         </tbody>
       </table>
