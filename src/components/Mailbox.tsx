@@ -1,5 +1,6 @@
 import MailItem from "./MailItem";
-import useStore, { Email } from "../store";
+import useStore from "../store";
+import { Email } from "../types";
 import shallow from "zustand/shallow";
 import ButtonAutoOpenNewEmail from "./buttons/ButtonAutoOpenNewEmail";
 import ButtonDeleteEmails from "./buttons/ButtonDeleteEmails";

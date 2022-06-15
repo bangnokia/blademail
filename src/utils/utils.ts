@@ -1,4 +1,4 @@
-import { Email } from "../store";
+import { Email } from "../types";
 
 export function makeExcerpt(email: Email) {
     let excerpt = "";
