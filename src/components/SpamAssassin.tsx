@@ -40,7 +40,7 @@ export default function SpamAssassin({ email }: { email: Email }) {
           <table className="w-full mt-4 border border-collapse">
             <tbody>
               {result.rules.map(rule => (
-                <tr>
+                <tr key={rule.description}>
                   <td className="w-10 border text-right pr-1 tabular-nums">{rule.score}</td>
                   <td className="border px-3 py-1.5 break-all max-w-64">{rule.description}</td>
                 </tr>

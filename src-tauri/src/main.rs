@@ -55,12 +55,7 @@ async fn start_server(address: Option<String>) -> Result<String, String> {
         .with_name("blade mail")
         .with_tcp_listener(listener)
         .with_ssl(SslConfig::None)
-        .unwrap()
-        // .with_addr(address)
-        // .unwrap()
-        ;
-
-    // println!("{:?}", );
+        .unwrap();
 
     println!("SMTP server is starting...");
 
@@ -154,27 +149,17 @@ fn parse(raw: String) -> EmailPayload {
     };
 
     match parsed {
-        Entity::Text { subtype, value, .. } => {
-            println!("text, subtype: {}", subtype);
-            match subtype.to_string().as_str() {
-                "html" => payload.html = value.to_string(),
-                "plain" => payload.text = value.to_string(),
-                _ => (),
-            }
-        }
+        Entity::Text { subtype, value, .. } => match subtype.to_string().as_str() {
+            "html" => payload.html = value.to_string(),
+            "plain" => payload.text = value.to_string(),
+            _ => (),
+        },
         // parsing content of multipart body, when user using markdown,
         // there will be a plain text and a html version of the email (maybe it sent from Laravel app)
         Entity::Multipart { subtype, content } => {
-            println!("multipart, subtype: {}", subtype);
             for entity in content {
-                println!(
-                    "mime_type: {:#?}, subtype {:#?}, parameters {:#?} disposition {:#?}",
-                    entity.mime_type, entity.subtype, entity.parameters, entity.disposition
-                );
-
                 match entity.mime_type {
                     ContentType::Multipart => {
-                        println!("parsing mutlipart");
                         let parsed = entity.parse().unwrap();
 
                         match parsed {

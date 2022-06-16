@@ -45,7 +45,9 @@
         },
         "updater": {
             "active": true,
-            "endpoints": ["https://lab.daudau.cc/api/update/blade-mail/{{target}}/{{current_version}}"],
+            "endpoints": [
+                "https://lab.daudau.cc/api/update/blade-mail/{{target}}/{{current_version}}"
+            ],
             "dialog": true,
             "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEEzMjVBM0M3QzRBMTBEM0YKUldRL0RhSEV4Nk1sbzc4N3QvVkZrQVlBVVNBOGo5SFd5NkFkK2l6K3BidFliTDlnSkdxcFpLSmUK"
         },
@@ -53,12 +55,28 @@
             "all": false,
             "shell": {
                 "all": false,
-                "open": true
+                "open": "^(https?://)|(/)"
             },
             "http": {
                 "all": true,
                 "request": true,
-                "scope": ["https://**", "http://**"]
+                "scope": [
+                    "https://**",
+                    "http://**"
+                ]
+            },
+            "path": {
+                "all": true
+            },
+            "fs": {
+                "all": false,
+                "readFile": true,
+                "writeFile": true,
+                "readDir": true,
+                "createDir": true,
+                "scope": [
+                    "$CACHE/**/*"
+                ]
             }
         },
         "windows": [
