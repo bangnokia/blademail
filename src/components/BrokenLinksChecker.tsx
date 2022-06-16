@@ -23,7 +23,7 @@ export default function BrokenLinksChecker({ email }: { email: Email }) {
     if (checkedCount === total) {
       setEmailLinks(email, links)
     }
-  })
+  }, [])
 
   function checkUrls() {
     setCheckedCount(0)
@@ -41,7 +41,7 @@ export default function BrokenLinksChecker({ email }: { email: Email }) {
   }
 
   return (
-    <div>
+    <div className="w-full">
       <div className="flex items-center gap-4">
         <button onClick={checkUrls} type="button" className="px-3 py-1.5 border border-gray-300 text-sm rounded">Recheck</button>
         <div className="flex items-center gap-3">

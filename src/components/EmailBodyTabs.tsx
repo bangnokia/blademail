@@ -30,13 +30,23 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
                         frameBorder="0"
                         className={`h-full w-full ${activeTab === "html" ? "flex" : "hidden"}`}
                     />
-                    <pre className={activeTab === "html source" ? "flex" : "hidden"}>{email.html}</pre>
-                    <pre className={activeTab === "text" ? "flex" : "hidden"}>{email.text}</pre>
+                    <div className={activeTab === "html source" ? "w-full h-full flex" : "hidden"}>
+                        <textarea
+                            readOnly
+                            className="w-full border-transparent border font-mono overflow-auto text-sm
+                            focus:border-0 focus:ring-0" defaultValue={email.html}></textarea>
+                    </div>
+                    <div className={activeTab === "text" ? "w-full h-full flex" : "hidden"}>
+                        <textarea
+                            readOnly
+                            className="w-full border-transparent border font-mono overflow-auto text-sm
+                            focus:border-0 focus:ring-0" defaultValue={email.text}></textarea>
+                    </div>
                     <div className={activeTab === "raw" ? "w-full h-full flex" : "hidden"}>
                         <textarea
                             readOnly
                             className="w-full border-transparent border font-mono overflow-auto text-sm
-                            focus:border-0 focus:ring-0">{email.raw}</textarea>
+                            focus:border-0 focus:ring-0" defaultValue={email.raw}></textarea>
                     </div>
                     <div className={activeTab === "links checker" ? "flex" : "hidden"}>
                         {activeTab === 'links checker' && <BrokenLinksChecker email={email} />}

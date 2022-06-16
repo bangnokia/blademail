@@ -37,7 +37,6 @@ export default function SpamAssassin({ email }: { email: Email }) {
       {result && (
         <div>
           <div className="text-lg font-medium">Score: {result.score}</div>
-          {/* <div>Report: {result.report}</div> */}
           <table className="w-full mt-4 border border-collapse">
             <tbody>
               {result.rules.map(rule => (
