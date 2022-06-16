@@ -18,7 +18,7 @@ export default function Instruction() {
                 </div>
                 <div className="flex flex-col space-y-3">
                     <h4 className="font-semibold tracking-wide">Example configuration</h4>
-                    <select defaultValue="laravel" className="w-48 shrink-0 rounded text-sm py-2">
+                    <select defaultValue="laravel" className="w-48 shrink-0 rounded text-sm py-2 focus:ring-sky-500">
                         <option value="laravel">Laravel</option>
                     </select>
                     <pre className="relative rounded bg-gray-500 px-7 py-3 font-mono text-sm leading-6 text-white">

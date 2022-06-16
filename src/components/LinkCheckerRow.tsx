@@ -46,7 +46,7 @@ export default function LinkCheckerRow({ link, index, forceCheck = false, onFini
 
   return (
     <tr>
-      <td className="border text-center">{index + 1}</td>
+      <td className="w-10 border text-center">{index + 1}</td>
       <td className="border px-3 py-1.5 break-all max-w-64">{link.url}</td>
       <td className="border px-3 py-1 text-center w-8">
         {checking ? <Loading className="w-5 h-5" /> : <LinkStatus status={status} />}

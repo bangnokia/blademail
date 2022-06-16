@@ -36,7 +36,7 @@ function App() {
     }, [addEmail]);
 
     return (
-        <div className="flex h-screen w-screen flex-col  bg-white font-sans">
+        <div className="flex h-screen w-screen flex-col bg-white font-sans">
             <div className="flex h-full w-full overflow-auto">
                 <Mailbox />
                 <CurrentEmail />
