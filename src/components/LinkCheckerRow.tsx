@@ -57,7 +57,7 @@ export default function LinkCheckerRow({ link, index, forceCheck = false, onFini
 
 function LinkStatus({ status }: { status: EmailLinkStatus }) {
   if (status === 'ok') {
-    return <CheckIcon className="w-5 h-5 text-sky-500" />
+    return <CheckIcon className="w-5 h-5 text-green-500" />
   }
 
   if (status === 'error') {

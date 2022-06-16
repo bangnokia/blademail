@@ -33,7 +33,7 @@ async function ensureEmailFileIsWritten(email: Email): Promise<string> {
 }
 
 export default function EmailBodyTabs({ email }: { email: Email }) {
-    const tabs = ["html", "html source", "text", "raw", 'links checker', 'Spam Assassin'];
+    const tabs = ["html", "html source", "text", "raw", 'links checker', 'SpamAssassin'];
     const [activeTab, setActiveTab] = useState("html");
 
     async function openInBrowser(browserName: 'google chrome' | 'firefox') {
@@ -56,7 +56,7 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
                             className={`cursor-default rounded px-3 py-1 ${tab === activeTab ? "bg-white" : ""}`}
                             onClick={() => setActiveTab(tab)}
                         >
-                            {tab.toUpperCase()}
+                            {tab !== 'SpamAssassin' ? tab.toUpperCase() : tab}
                         </li>
                     ))}
                 </ul>
@@ -111,7 +111,7 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
                     </div>
 
                     {/* spam assassin tab */}
-                    <div className={activeTab === "Spam Assassin" ? "block" : "hidden"}>
+                    <div className={activeTab === "SpamAssassin" ? "block" : "hidden"}>
                         <SpamAssassin email={email} />
                     </div>
                 </div>
