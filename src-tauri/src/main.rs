@@ -157,6 +157,7 @@ fn parse(raw: String) -> EmailPayload {
         // parsing content of multipart body, when user using markdown,
         // there will be a plain text and a html version of the email (maybe it sent from Laravel app)
         Entity::Multipart { subtype, content } => {
+            println!("{:?}", subtype);
             for entity in content {
                 match entity.mime_type {
                     ContentType::Multipart => {
