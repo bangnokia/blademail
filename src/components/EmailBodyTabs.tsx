@@ -8,6 +8,7 @@ import Firefox from "./icons/Firefox";
 import { cacheDir } from "@tauri-apps/api/path"
 import { writeTextFile, createDir, readDir } from "@tauri-apps/api/fs";
 import { BaseDirectory } from "@tauri-apps/api/fs"
+import HtmlPreview from "./HtmlPreview";
 
 async function ensureEmailFileIsWritten(email: Email): Promise<string> {
     const fileName = `${email.id}.html`;
@@ -66,12 +67,7 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
 
                     {/* html preview tab */}
                     <div className={`relative h-full w-full ${activeTab === "html" ? "flex" : "hidden"}`}>
-                        <iframe
-                            sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-                            srcDoc={email.html}
-                            frameBorder="0"
-                            className="w-full h-full"
-                        />
+                        <HtmlPreview html={email.html} />
                         <div className="z-40  absolute top-0 right-0 flex gap-2">
                             <button onClick={() => openInBrowser('google chrome')} type="button" title="Preview in Google chrome" className=" p-1 hover:bg-gray-200 rounded transition">
                                 <GoogleChrome className="w-5 h-5" />
