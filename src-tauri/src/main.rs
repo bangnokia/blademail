@@ -7,16 +7,16 @@ use email_parser::address::Address;
 use email_parser::email::Email;
 use email_parser::mime::ContentType;
 use email_parser::mime::Entity;
+use mailin_embedded::response::OK;
+use mailin_embedded::{Handler, Response, Server, SslConfig};
 use once_cell::sync::OnceCell;
 use serde::Serialize;
 use std::fmt::Debug;
 use std::net::TcpListener;
 use tauri::AboutMetadata;
-use tauri::{Menu, MenuItem, Submenu, Window};
-// use mailin_embedded::err::Error;
-use mailin_embedded::response::OK;
-use mailin_embedded::{Handler, Response, Server, SslConfig};
 use tauri::Manager;
+use tauri::{Menu, MenuItem, Submenu, Window};
+use tauri_plugin_store::PluginBuilder;
 
 #[derive(Clone, Debug)]
 struct MyHandler {
@@ -234,6 +234,7 @@ fn main() {
             Ok(())
         })
         .menu(menu)
+        .plugin(PluginBuilder::default().build())
         .invoke_handler(tauri::generate_handler![start_server, stop_server])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

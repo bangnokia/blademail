@@ -2,13 +2,14 @@ import { ChangeEvent, useState } from "react";
 import useStore from "../store";
 import CheckIcon from "./icons/CheckIcon";
 import XIcon from "./icons/XIcon";
+import LicenseStatus from "./LicenseStatus";
 
 export default function StatusBar() {
     const [autoOpenNewEmail, setAutoOpenNewEmai] = useStore((state) => [
         state.autoOpenNewEmail,
         state.setAutoOpenNewEmail,
     ]);
-    const [validLicense, setValidLicense] = useState(true)
+    const [validLicense, setValidLicense] = useState(false)
 
     return (
         <div className="bg-gray-300 px-3 text-xs text-gray-700 flex items-center justify-between">
@@ -21,7 +22,7 @@ export default function StatusBar() {
                 }}
             />
 
-            <div>{validLicense ? 'Registerd for daudau' : 'Unregisterd'}</div>
+            <LicenseStatus />
         </div>
     );
 }
