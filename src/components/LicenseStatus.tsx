@@ -2,8 +2,6 @@ import { useEffect, useState } from "react"
 import { getLicense, saveLicense, verify } from "../stores/license"
 import { appDir } from "@tauri-apps/api/path"
 
-console.log(await appDir())
-
 export default function LicenseStatus() {
   const [valid, setValid] = useState(true)
   const [open, setOpen] = useState(true)
