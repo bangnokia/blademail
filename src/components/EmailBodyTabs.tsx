@@ -57,7 +57,7 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
                             className={`cursor-default rounded px-3 py-1 ${tab === activeTab ? "bg-white" : ""}`}
                             onClick={() => setActiveTab(tab)}
                         >
-                            {tab !== 'Spam Assassin' ? tab.toUpperCase() : tab}
+                            {tab.toUpperCase()}
                         </li>
                     ))}
                 </ul>

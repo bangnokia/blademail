@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import useStore from "../store";
 import CheckIcon from "./icons/CheckIcon";
 import XIcon from "./icons/XIcon";
@@ -8,9 +8,10 @@ export default function StatusBar() {
         state.autoOpenNewEmail,
         state.setAutoOpenNewEmail,
     ]);
+    const [validLicense, setValidLicense] = useState(true)
 
     return (
-        <div className="bg-gray-300 px-3 text-xs text-gray-700">
+        <div className="bg-gray-300 px-3 text-xs text-gray-700 flex items-center justify-between">
             <Checkbox
                 id="status-bar-auto-open-email-checkbox" // lol
                 label="Auto open new email"
@@ -19,6 +20,8 @@ export default function StatusBar() {
                     setAutoOpenNewEmai(e.target.checked);
                 }}
             />
+
+            <div>{validLicense ? 'Registerd for daudau' : 'Unregisterd'}</div>
         </div>
     );
 }
