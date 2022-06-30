@@ -6,7 +6,8 @@
         "dev": "vite",
         "build": "tsc && vite build",
         "preview": "vite preview",
-        "tauri": "tauri"
+        "tauri": "tauri",
+        "clean": "( cd src-tauri && cargo clean )"
     },
     "dependencies": {
         "@headlessui/react": "^1.4.3",
