@@ -9,3 +9,5 @@ This is the repository of the Blade Mail app. If you like this app, you can buy 
 
 ## Development
 
+Start with `yarn` and `yarn tauri dev`.
+
