@@ -18,8 +18,8 @@
         "nanoid": "^3.2.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
-        "zustand": "^3.6.9",
-        "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#5e7542f737919c46fe02b25c7a04cba5fceccef4"
+        "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#5e7542f737919c46fe02b25c7a04cba5fceccef4",
+        "zustand": "^3.6.9"
     },
     "devDependencies": {
         "@tauri-apps/cli": "^1.0",
