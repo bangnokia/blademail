@@ -8,7 +8,6 @@ import Firefox from "./icons/Firefox";
 import HtmlPreview from "./HtmlPreview";
 import { ensureEmailFileIsWritten } from "../utils/utils";
 
-
 export default function EmailBodyTabs({ email }: { email: Email }) {
     const tabs = ["html", "html source", "text", "raw", 'links checker', 'Spam Assassin'];
     const [activeTab, setActiveTab] = useState("html");
