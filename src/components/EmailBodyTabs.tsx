@@ -16,10 +16,12 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
 
     let spamScoreClasses = 'text-green-500';
 
-    if (spamScore > 0 && spamScore < 5) {
-        spamScoreClasses = 'text-yellow-500';
-    } else if (spamScore >= 5) {
-        spamScoreClasses = 'text-red-500';
+    if (spamScore !== undefined) {
+        if (spamScore > 0 && spamScore < 5) {
+            spamScoreClasses = 'text-yellow-500';
+        } else if (spamScore >= 5) {
+            spamScoreClasses = 'text-red-500';
+        }
     }
 
     async function openInBrowser(browserName: 'google chrome' | 'firefox') {
