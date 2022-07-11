@@ -12,7 +12,15 @@ import { ensureEmailFileIsWritten } from "../utils/utils";
 export default function EmailBodyTabs({ email }: { email: Email }) {
     const tabs = ["html", "html source", "text", "raw", 'links checker', 'Spam Assassin'];
     const [activeTab, setActiveTab] = useState("html");
-    const [spamScore, setSpamScore] = useState<number>(0);
+    const [spamScore, setSpamScore] = useState<number | undefined>();
+
+    let spamScoreClasses = 'text-green-500';
+
+    if (spamScore > 0 && spamScore < 5) {
+        spamScoreClasses = 'text-yellow-500';
+    } else if (spamScore >= 5) {
+        spamScoreClasses = 'text-red-500';
+    }
 
     async function openInBrowser(browserName: 'google chrome' | 'firefox') {
         // ensure html file is write to temp folder
@@ -34,7 +42,7 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
                             onClick={() => setActiveTab(tab)}
                         >
                             {tab.toUpperCase()}
-                            {tab === "Spam Assassin" && <span className="bg-white text-gray-500 px-1 ml-0.5 rounded">{spamScore}</span>}
+                            {spamScore !== undefined && tab === "Spam Assassin" && <span className={`px-1 ml-0.5 text-xs rounded ${spamScoreClasses}`}>{spamScore}</span>}
                         </li>
                     ))}
                 </ul>
