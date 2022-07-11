@@ -1,4 +1,7 @@
 import { Email } from "../types";
+import { cacheDir } from "@tauri-apps/api/path"
+import { writeTextFile, createDir, readDir } from "@tauri-apps/api/fs";
+import { BaseDirectory } from "@tauri-apps/api/fs"
 
 export function makeExcerpt(email: Email) {
     let excerpt = "";
@@ -30,4 +33,26 @@ export function parseUrls(html: string): string[] {
         images.push(match[2]);
     }
     return [...new Set(links.concat(images))]
+}
+
+
+export async function ensureEmailFileIsWritten(email: Email): Promise<string> {
+    const fileName = `${email.id}.html`;
+    const cacheDirPath = await cacheDir();
+    const appCacheDir = `${cacheDirPath}/BladeMail`;
+
+    try {
+        await createDir("BladeMail", {
+            dir: BaseDirectory.Cache
+        });
+    } catch (e) { }
+
+    try {
+        await writeTextFile(`BladeMail/${fileName}`, email.html, {
+            dir: BaseDirectory.Cache
+        });
+    } catch (e) {
+    }
+
+    return appCacheDir + "/" + fileName;
 }

@@ -1,47 +1,23 @@
-import { useState } from "react";
+import { useState, } from "react";
 import { Email } from "../types";
 import BrokenLinksChecker from "./BrokenLinksChecker";
 import SpamAssassin from "./SpamAssassin";
 import { open } from "@tauri-apps/api/shell";
 import GoogleChrome from "./icons/GoogleChrome";
 import Firefox from "./icons/Firefox";
-import { cacheDir } from "@tauri-apps/api/path"
-import { writeTextFile, createDir, readDir } from "@tauri-apps/api/fs";
-import { BaseDirectory } from "@tauri-apps/api/fs"
 import HtmlPreview from "./HtmlPreview";
+import { ensureEmailFileIsWritten } from "../utils/utils";
 
-async function ensureEmailFileIsWritten(email: Email): Promise<string> {
-    const fileName = `${email.id}.html`;
-    const cacheDirPath = await cacheDir();
-    const appCacheDir = `${cacheDirPath}/BladeMail`;
-
-    try {
-        await createDir("BladeMail", {
-            dir: BaseDirectory.Cache
-        });
-    } catch (e) { }
-
-    try {
-        const result = await writeTextFile(`BladeMail/${fileName}`, email.html, {
-            dir: BaseDirectory.Cache
-        });
-
-        console.log(result)
-    } catch (e) {
-    }
-
-    return appCacheDir + "/" + fileName;
-}
 
 export default function EmailBodyTabs({ email }: { email: Email }) {
     const tabs = ["html", "html source", "text", "raw", 'links checker', 'Spam Assassin'];
     const [activeTab, setActiveTab] = useState("html");
+    const [spamScore, setSpamScore] = useState<number>(0);
 
     async function openInBrowser(browserName: 'google chrome' | 'firefox') {
         // ensure html file is write to temp folder
         const filePath = await ensureEmailFileIsWritten(email);
 
-        console.log(filePath)
         if (filePath) {
             open(filePath, browserName)
         }
@@ -58,13 +34,13 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
                             onClick={() => setActiveTab(tab)}
                         >
                             {tab.toUpperCase()}
+                            {tab === "Spam Assassin" && <span className="bg-white text-gray-500 px-1 ml-0.5 rounded">{spamScore}</span>}
                         </li>
                     ))}
                 </ul>
             </div>
             <div className="h-full w-full overflow-auto p-5">
                 <div className="h-full w-full rounded-xl bg-white text-sm">
-
                     {/* html preview tab */}
                     <div className={`relative h-full w-full ${activeTab === "html" ? "flex" : "hidden"}`}>
                         <HtmlPreview html={email.html} />
@@ -108,7 +84,7 @@ export default function EmailBodyTabs({ email }: { email: Email }) {
 
                     {/* spam assassin tab */}
                     <div className={activeTab === "Spam Assassin" ? "block" : "hidden"}>
-                        <SpamAssassin email={email} />
+                        <SpamAssassin email={email} setSpamScore={setSpamScore} />
                     </div>
                 </div>
             </div>

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Email } from "../types";
 import { getClient, ResponseType, Body } from "@tauri-apps/api/http";
-import { randomQuotes } from "../utils/quote-machines";
 
 export interface SpamReport {
   report: string,
@@ -25,11 +24,18 @@ async function checkSpam(raw: string) {
   return response.data
 }
 
-export default function SpamAssassin({ email }: { email: Email }) {
+export default function SpamAssassin({ email, setSpamScore }: { email: Email, setSpamScore: (score: number) => void }) {
   const [result, setResult] = useState<SpamReport>()
 
   useEffect(() => {
-    checkSpam(email.raw).then(response => setResult(response))
+    const timer = setTimeout(() => {
+      checkSpam(email.raw).then(response => {
+        setResult(response)
+        setSpamScore(response.score)
+      })
+    }, 500); // this prevent we check spam when email is open too fast
+
+    return () => clearTimeout(timer);
   }, [])
 
   return (
