@@ -21,7 +21,7 @@ export default function Instruction() {
                     <select defaultValue="laravel" className="w-48 shrink-0 rounded text-sm py-2 focus:ring-sky-500">
                         <option value="laravel">Laravel</option>
                     </select>
-                    <pre className="relative rounded bg-gray-500 px-7 py-3 font-mono text-sm leading-6 text-white">
+                    <pre className="relative select-all rounded bg-gray-500 px-7 py-3 font-mono text-sm leading-6 text-white">
                         MAIL_MAILER=smtp{"\n"}
                         MAIL_HOST=127.0.0.1{"\n"}
                         MAIL_PORT=1025{"\n"}
