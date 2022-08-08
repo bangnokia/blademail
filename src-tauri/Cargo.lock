@@ -49,9 +49,9 @@ dependencies = [
 
 [[package]]
 name = "anyhow"
-version = "1.0.59"
+version = "1.0.60"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c91f1f46651137be86f3a2b9a8359f9ab421d04d941c62b5982e1ca21113adf9"
+checksum = "c794e162a5eff65c72ef524dfe393eb923c354e350bb78b9c7383df13f3bc142"
 
 [[package]]
 name = "app"
@@ -2907,7 +2907,7 @@ dependencies = [
 [[package]]
 name = "tauri-plugin-store"
 version = "0.0.0"
-source = "git+https://github.com/tauri-apps/tauri-plugin-store?branch=dev#9e3732e0cf53b72ced6903583660cd7c5f756781"
+source = "git+https://github.com/tauri-apps/tauri-plugin-store?branch=dev#ce109ff53b43f036ea39cdc3f7c44d582f910270"
 dependencies = [
  "log",
  "serde",
