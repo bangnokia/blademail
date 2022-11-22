@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { getLicense, saveLicense, verify } from "../stores/license"
-import { appDir } from "@tauri-apps/api/path"
-import Cog from "./icons/Cog"
+import Key from "./icons/Key"
 
 export default function LicenseStatus() {
   const [valid, setValid] = useState(true)
@@ -25,7 +24,7 @@ export default function LicenseStatus() {
     })
   }, [])
 
-  async function submit(e: any) { // this shit
+  async function submit(e: any) {
     e.preventDefault();
     setLoading(true)
     let isValid = await verify(license)
@@ -44,11 +43,15 @@ export default function LicenseStatus() {
     setOpen(false)
   }
 
+  console.log('valid', valid, 'license', license)
+
+  const registered = valid && license;
+
   return (
     <div className="flex items-center justify-center gap-1">
-      {!valid && 'Unregistered'}
+      {!registered && <span className="text-gray-500">Unregistered</span>}
       <button onClick={() => setOpen(true)}>
-        <Cog className="w-4 h-4" />
+        <Key className="w-4 h-4" />
       </button>
       {open && (
         <div className="fixed inset-0 w-screen h-screen z-40 bg-gray-500/40 grid place-items-center">
