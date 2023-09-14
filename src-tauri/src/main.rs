@@ -227,9 +227,7 @@ fn main() {
         .setup(|app| {
             // how we make app to globaly access from other function
             let main_window = app.get_window("main").unwrap();
-
             let _ = MAIN_WINDOW.set(main_window);
-
             Ok(())
         })
         .menu(menu)
