@@ -1,37 +1,32 @@
 {
-    "name": "blademail",
-    "version": "0.0.0",
-    "license": "MIT",
-    "scripts": {
-        "dev": "vite",
-        "build": "tsc && vite build",
-        "preview": "vite preview",
-        "tauri": "tauri",
-        "clean": "( cd src-tauri && cargo clean )"
-    },
-    "dependencies": {
-        "@headlessui/react": "^1.4.3",
-        "@tailwindcss/forms": "^0.5.0",
-        "@tailwindcss/line-clamp": "^0.3.1",
-        "@tauri-apps/api": "^1.0",
-        "dayjs": "^1.10.7",
-        "nanoid": "^3.2.0",
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2",
-        "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#5e7542f737919c46fe02b25c7a04cba5fceccef4",
-        "zustand": "^3.6.9"
-    },
-    "devDependencies": {
-        "@tauri-apps/cli": "^1.0",
-        "@types/color-string": "^1.5.2",
-        "@types/react-dom": "^17.0.10",
-        "@vitejs/plugin-react": "^1.0.7",
-        "autoprefixer": "^10.4.1",
-        "postcss": "^8.4.5",
-        "prettier": "^2.5.1",
-        "prettier-plugin-tailwindcss": "^0.1.4",
-        "tailwindcss": "^3.0.11",
-        "typescript": "^4.4.4",
-        "vite": "^2.7.2"
-    }
+	"name": "blademail",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "prettier --plugin-search-dir . --check .",
+		"format": "prettier --plugin-search-dir . --write ."
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/kit": "^1.20.4",
+		"autoprefixer": "^10.4.15",
+		"postcss": "^8.4.29",
+		"prettier": "^2.8.0",
+		"prettier-plugin-svelte": "^2.10.1",
+		"svelte": "^4.0.5",
+		"svelte-check": "^3.4.3",
+		"tailwindcss": "^3.3.3",
+		"tslib": "^2.4.1",
+		"typescript": "^5.0.0",
+		"vite": "^4.4.2"
+	},
+	"type": "module",
+	"dependencies": {
+		"tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#v1"
+	}
 }

@@ -16,7 +16,6 @@ use std::net::TcpListener;
 use tauri::AboutMetadata;
 use tauri::Manager;
 use tauri::{Menu, MenuItem, Submenu, Window};
-use tauri_plugin_store::PluginBuilder;
 
 #[derive(Clone, Debug)]
 struct MyHandler {
@@ -234,7 +233,7 @@ fn main() {
             Ok(())
         })
         .menu(menu)
-        .plugin(PluginBuilder::default().build())
+        .plugin(tauri_plugin_store::Builder::default().build())
         .invoke_handler(tauri::generate_handler![start_server, stop_server])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
