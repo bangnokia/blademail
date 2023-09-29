@@ -11,7 +11,8 @@
   "dependencies": {
     "nanoid": "^5.0.1",
     "pinia": "^2.1.6",
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "vue-router": "4"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.6",
@@ -19,6 +20,7 @@
     "@tauri-apps/cli": "^1.5.0",
     "@vitejs/plugin-vue": "^4.3.4",
     "autoprefixer": "^10.4.16",
+    "dayjs": "^1.11.10",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.2.2",

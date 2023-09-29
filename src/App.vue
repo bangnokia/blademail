@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted } from 'vue';
 import SmtpServer from "./components/SmtpServer.vue"
-import { useAppStore } from './stores/appStore';
-
-const appStore = useAppStore()
+import Mailbox from './components/Mailbox.vue'
+import { RouterView } from "vue-router";
 
 </script>
 
 <template>
-  <div>
-    <h1 class="text-blue-500">This is home page</h1>
-    <ul>
-      <li v-for="email in appStore.emails" :key="email.id">{{ email.subject }}</li>
-    </ul>
+  <div class="flex h-screen w-screen flex-col bg-white font-sans">
+    <div class="flex h-full w-full overflow-auto">
+      <Mailbox />
+      <RouterView />
+      <!-- <CurrentEmail /> -->
+    </div>
+    <div class="bottom-0 w-full shrink-0 grow-0">
+      <!-- <StatusBar /> -->
+    </div>
     <SmtpServer />
   </div>
 </template>
