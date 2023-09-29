@@ -5,12 +5,17 @@ import { Email } from '../lib/types'
 export const useAppStore = defineStore('appStore', () => {
   const emails = reactive<Email[]>([])
 
-  function addEmail(email: Email) {
+  function create(email: Email) {
     emails.push(email)
+  }
+
+  function find(id: string): Email {
+    return emails.find(i => i.id === id)
   }
 
   return {
     emails,
-    addEmail
+    create,
+    find
   }
 })

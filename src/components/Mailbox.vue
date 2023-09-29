@@ -14,7 +14,7 @@ const { emails } = useAppStore()
 
     <div class="items-stretch overflow-y-auto p-2">
       <template v-for="email in emails" :key="email.id">
-        <RouterLink :to="`/emails/${email.id}`">
+        <RouterLink :to="{ name: 'emails.show', params: { id: email.id } }">
           <MailItem :email="email" />
         </RouterLink>
       </template>

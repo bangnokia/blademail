@@ -1,9 +1,72 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
+import { onBeforeRouteUpdate, useRoute } from 'vue-router';
+import { computed, watchEffect, reactive, watch, ref } from 'vue'
+import { useAppStore } from '../stores/appStore';
+
 
 const route = useRoute();
+const id = route.params.id
+const { find } = useAppStore()
+const email = ref();
+
+onBeforeRouteUpdate((to, from) => {
+  if (to.params.id !== from.params.id) {
+    email.value = find(to.params.id)
+  }
+})
+
+watch(() => route.params.id, (id) => {
+  // console.log('email id', id)
+  // email.value = find(id)
+})
+// const size = computed(() => email.value ? new Blob([email.value.raw]).size : 0)
+
+function destroy() {
+}
 </script>
 
 <template>
-  Thie email: {{ route.params.id }}
+  <div class="relative h-full w-full overflow-auto">
+    <div
+      class="toolbox sticky top-0 w-full z-20 flex items-center justify-between bg-white px-2 py-1 shadow-sm text-gray-700">
+      <div>
+        <button @click="destroy" type="button" class="rounded flex items-center bg-white
+          text-gray-500 px-2 py-1 text-xs hover:text-white hover:bg-rose-500 transition">
+          <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+        </button>
+      </div>
+      <div>
+        <!-- <span class="text-xs font-medium">Size: {{ Math.round(size / 1024) }} KB</span> -->
+      </div>
+    </div>
+
+    <header class="grid grid-cols-1 px-5 py-3 lg:grid-cols-2 text-sm">
+      <div class="flex gap-x-5 py-1">
+        <div class="upp w-24 font-semibold">Subject:</div>
+        <div class="font-semibold uppercase">{{ email.subject.trim() }}</div>
+      </div>
+      <div class="flex gap-x-5 py-1">
+        <div class="w-24 font-semibold">From:</div>
+        <div>
+          {{ email.sender[0] }} {{ `<${email.sender[1]}>` }}
+        </div>
+      </div>
+      <div class="flex gap-x-5 py-1">
+        <div class="w-24 font-semibold">To:</div>
+        <div>{{ email.to.join(", ") }}</div>
+      </div>
+      <div v-if="email.cc" class="flex gap-x-5 py-1">
+        <div class="w-24 font-semibold">Cc:</div>
+        <div>{{ email.cc.join(", ") }}</div>
+      </div>
+    </header>
+
+    <main class="relative h-full w-full">
+      {{ email.text }}
+    </main>
+  </div>
 </template>

@@ -8,7 +8,7 @@ import { makeExcerpt, parseUrls } from "../lib/utils"
 import { ref } from "vue"
 import { useAppStore } from "../stores/appStore"
 
-const { addEmail } = useAppStore()
+const { create } = useAppStore()
 
 async function start() {
   await startSmtpServer()
@@ -35,7 +35,7 @@ onMounted(() => {
       links: parseUrls(event.payload.html).map((url) => ({ url, status: 'pending' })),
     };
 
-    addEmail(email)
+    create(email)
   })
 })
 
