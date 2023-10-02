@@ -4,8 +4,9 @@ import { ref } from "vue"
 import { ensureEmailFileIsWritten } from "../../lib/utils";
 import GoogleChrome from "../icons/GoogleChrome.vue"
 import Firefox from "../icons/Firefox.vue"
+import HtmlPreview from "./HtmlPreview.vue"
 
-defineProps<{
+const { email } = defineProps<{
   email: Email
 }>()
 
@@ -28,8 +29,7 @@ async function openInBrowser(browserName: 'google chrome' | 'firefox') {
 </script>
 
 <template>
-  <div>
-
+  <div class="w-full h-full overflow-y-hidden">
     <div class="flex items-center justify-between bg-gray-200 px-5 py-2 text-xs font-medium text-gray-700">
       <ul class="flex items-center space-x-3">
         <template v-for="tab in tabs" :key="tab">
@@ -62,32 +62,33 @@ async function openInBrowser(browserName: 'google chrome' | 'firefox') {
             </button>
           </div>
         </div>
+
         <!-- html source tab -->
-        <div :class="[activeTab === 'html source' ? 'w-full h-full flex' : 'hidden']">
+        <div class="w-full h-full" :class="[activeTab === 'html source' ? 'flex' : 'hidden']">
           <textarea readOnly class="w-full border-transparent border font-mono overflow-auto text-sm
                             focus:border-0 focus:ring-0" :value="email.html"></textarea>
         </div>
 
         <!-- text tab -->
-        <div :class="[activeTab === 'text' ? 'w-full h-full flex' : 'hidden']">
+        <div class="w-full h-full" :class="[activeTab === 'text' ? 'flex' : 'hidden']">
           <textarea readOnly class="w-full border-transparent border font-mono overflow-auto text-sm
                             focus:border-0 focus:ring-0" :value="email.text"></textarea>
         </div>
 
         <!-- raw tab -->
-        <div class="[activeTab === 'raw' ? 'w-full h-full flex' : 'hidden']">
+        <div class="w-full h-full" :class="[activeTab === 'raw' ? 'flex' : 'hidden']">
           <textarea readOnly class="w-full border-transparent border font-mono overflow-auto text-sm
                             focus:border-0 focus:ring-0" :value="email.raw"></textarea>
         </div>
 
         <!-- broken link cheker -->
         <div :class="[activeTab === 'links checker' ? 'flex' : 'hidden']">
-          <BrokenLinksChecker v-if="activeTab === 'links checker'" email={email} />
+          <!-- <BrokenLinksChecker v-if="activeTab === 'links checker'" email={email} /> -->
         </div>
 
         <!-- spam assasin tab -->
-        <div class="[activeTab === 'Spam Assassin' ? 'block' : 'hidden']">
-          <SpamAssassin :email="email" :setSpamScore="setSpamScore" />
+        <div :class="[activeTab === 'Spam Assassin' ? 'block' : 'hidden']">
+          <!-- <SpamAssassin :email="email" :setSpamScore="setSpamScore" /> -->
         </div>
       </div>
     </div>

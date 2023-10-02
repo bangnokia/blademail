@@ -6,7 +6,9 @@ const { html } = defineProps<{
   html: string
 }>()
 
-const screen = ref(null)
+console.log('html', html)
+
+const screen = ref<HTMLDivElement | null>(null)
 
 onMounted(() => {
   if (!screen.value) {
