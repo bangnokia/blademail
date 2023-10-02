@@ -9,6 +9,7 @@ const props = defineProps<{
 }>()
 
 const id = ref(props.id)
+console.log('props id', props.id)
 
 const route = useRoute()
 const { find, markOpenEmail } = useAppStore()
@@ -20,7 +21,9 @@ watch(
   (emailId) => {
     id.value = emailId.toString()
     email.value = find(id.value)
-    // email.value?.isOpen = true
+    if (email.value) {
+      size.value = new Blob([email.value.raw]).size || 0
+    }
 
     markOpenEmail(id.value)
   }
@@ -31,7 +34,7 @@ function destroy() {
 </script>
 
 <template>
-  <div class="relative h-full w-full overflow-auto" v-if="email">
+  <div class="relative h-full w-full overflow-auto" v-if="email" data-email-id="id">
     <div
       class="toolbox sticky top-0 w-full z-20 flex items-center justify-between bg-white px-2 py-1 shadow-sm text-gray-700">
       <!-- delete button -->
@@ -47,7 +50,7 @@ function destroy() {
       </div>
       <!-- email size -->
       <div>
-        <!-- <span class="text-xs font-medium">Size: {{ size }} bytes</span> -->
+        <span class="text-xs font-medium">Size: {{ Math.round(size / 1024) }} KB</span>
       </div>
     </div>
 
