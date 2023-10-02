@@ -4,7 +4,7 @@ import Home from './views/Home.vue'
 
 
 const routes = [
-  { path: '/emails/:id', component: Email, name: 'emails.show' },
+  { path: '/emails/:id', component: Email, name: 'emails.show', props: true },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: Home },
 ]
 const router = createRouter({

@@ -2,6 +2,14 @@
 import SmtpServer from "./components/SmtpServer.vue"
 import Mailbox from './components/Mailbox.vue'
 import { RouterView } from "vue-router";
+import { onMounted } from "vue";
+import { createFakeEmails } from './lib/mock'
+
+
+onMounted(() => {
+  console.log('create 10 fake emails')
+  createFakeEmails(10)
+})
 
 </script>
 

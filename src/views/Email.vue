@@ -1,34 +1,40 @@
 <script setup lang="ts">
 import { onBeforeRouteUpdate, useRoute } from 'vue-router';
-import { computed, watchEffect, reactive, watch, ref } from 'vue'
+import { watch, ref, unref, computed } from 'vue'
 import { useAppStore } from '../stores/appStore';
+import type { Email } from '../lib/types';
 
+const props = defineProps<{
+  id: string
+}>()
 
-const route = useRoute();
-const id = route.params.id
-const { find } = useAppStore()
-const email = ref();
+const id = ref(props.id)
 
-onBeforeRouteUpdate((to, from) => {
-  if (to.params.id !== from.params.id) {
-    email.value = find(to.params.id)
+const route = useRoute()
+const { find, markOpenEmail } = useAppStore()
+const email = ref<Email>();
+const size = ref(0)
+
+watch(
+  () => route.params.id,
+  (emailId) => {
+    id.value = emailId.toString()
+    email.value = find(id.value)
+    // email.value?.isOpen = true
+
+    markOpenEmail(id.value)
   }
-})
-
-watch(() => route.params.id, (id) => {
-  // console.log('email id', id)
-  // email.value = find(id)
-})
-// const size = computed(() => email.value ? new Blob([email.value.raw]).size : 0)
+)
 
 function destroy() {
 }
 </script>
 
 <template>
-  <div class="relative h-full w-full overflow-auto">
+  <div class="relative h-full w-full overflow-auto" v-if="email">
     <div
       class="toolbox sticky top-0 w-full z-20 flex items-center justify-between bg-white px-2 py-1 shadow-sm text-gray-700">
+      <!-- delete button -->
       <div>
         <button @click="destroy" type="button" class="rounded flex items-center bg-white
           text-gray-500 px-2 py-1 text-xs hover:text-white hover:bg-rose-500 transition">
@@ -39,8 +45,9 @@ function destroy() {
           </svg>
         </button>
       </div>
+      <!-- email size -->
       <div>
-        <!-- <span class="text-xs font-medium">Size: {{ Math.round(size / 1024) }} KB</span> -->
+        <!-- <span class="text-xs font-medium">Size: {{ size }} bytes</span> -->
       </div>
     </div>
 
