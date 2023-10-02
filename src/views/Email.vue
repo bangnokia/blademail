@@ -3,6 +3,7 @@ import { onBeforeRouteUpdate, useRoute } from 'vue-router';
 import { watch, ref, unref, computed } from 'vue'
 import { useAppStore } from '../stores/appStore';
 import type { Email } from '../lib/types';
+import BodyTabs from '../components/email/BodyTabs.vue'
 
 const props = defineProps<{
   id: string
@@ -76,7 +77,7 @@ function destroy() {
     </header>
 
     <main class="relative h-full w-full">
-      {{ email.text }}
+      <BodyTabs :email="email" />
     </main>
   </div>
 </template>

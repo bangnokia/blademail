@@ -13,7 +13,7 @@ const { emails } = useAppStore()
     </div>
 
     <div class="items-stretch overflow-y-auto p-2">
-      <template v-for="email in emails" :key="email.id">
+      <template v-for="email in emails.reverse()" :key="email.id">
         <RouterLink :to="{ name: 'emails.show', params: { id: email.id } }">
           <MailItem :email="email" />
         </RouterLink>
