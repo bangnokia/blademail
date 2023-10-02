@@ -13,7 +13,7 @@ const { email } = defineProps<{
 const tabs = ["html", "html source", "text", "raw", 'links checker', 'Spam Assassin']
 const activeTab = ref(tabs[0])
 
-const spamScoreClasses = 'text-green-500'
+// const spamScoreClasses = 'text-green-500'
 
 function setActiveTab(tab: string) {
   activeTab.value = tab
