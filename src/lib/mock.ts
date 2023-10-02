@@ -19,10 +19,10 @@ export function createFakeEmails(count: number) {
       date: new Date(),
       raw: `
         the raw content
-      `,
+      `.trim(),
       html: `
       <h1>The html content</h1>
-      `,
+      `.trim(),
       text: 'The text content',
       excerpt: `The short description of email`,
       isOpen: false,
