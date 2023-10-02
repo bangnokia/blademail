@@ -7,7 +7,6 @@ import { createFakeEmails } from './lib/mock'
 
 
 onMounted(() => {
-  console.log('create 10 fake emails')
   createFakeEmails(10)
 })
 

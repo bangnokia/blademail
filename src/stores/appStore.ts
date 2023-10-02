@@ -6,7 +6,7 @@ export const useAppStore = defineStore('appStore', () => {
   const emails = reactive<Email[]>([])
 
   function create(email: Email) {
-    emails.push(email)
+    emails.unshift(email)
   }
 
   function find(id: string): Email | undefined {

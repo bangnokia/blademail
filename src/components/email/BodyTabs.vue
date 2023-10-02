@@ -12,12 +12,14 @@ const { email } = defineProps<{
 
 const tabs = ["html", "html source", "text", "raw", 'links checker', 'Spam Assassin']
 const activeTab = ref(tabs[0])
+const spamScore = ref<number | undefined>()
 
 // const spamScoreClasses = 'text-green-500'
 
 function setActiveTab(tab: string) {
   activeTab.value = tab
 }
+
 
 async function openInBrowser(browserName: 'google chrome' | 'firefox') {
   const filePath = await ensureEmailFileIsWritten(email);

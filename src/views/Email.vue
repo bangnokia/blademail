@@ -10,7 +10,6 @@ const props = defineProps<{
 }>()
 
 const id = ref(props.id)
-console.log('props id', props.id)
 
 const route = useRoute()
 const { find, markOpenEmail } = useAppStore()
