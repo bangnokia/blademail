@@ -34,7 +34,7 @@ function destroy() {
 </script>
 
 <template>
-  <div class="relative h-full w-full overflow-auto" v-if="email" data-email-id="id">
+  <div class="relative h-full w-full overflow-auto" v-if="email" data-email-id="id" :key="id">
     <div
       class="toolbox sticky top-0 w-full z-20 flex items-center justify-between bg-white px-2 py-1 shadow-sm text-gray-700">
       <!-- delete button -->

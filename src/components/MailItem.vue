@@ -2,17 +2,21 @@
 import dayjs from "dayjs";
 import { Email } from "../lib/types";
 import { defineProps } from "vue";
+import { useRoute } from "vue-router";
 
 defineProps<{
   email: Email;
 }>()
+
+const route = useRoute()
 
 function formatTime(date: Date) {
   return dayjs(date).format("HH:mm:ss");
 }
 </script>
 <template>
-  <div class="relative cursor-default rounded-md py-3 pl-7 pr-3">
+  <div class="relative cursor-default rounded-md py-3 pl-7 pr-3"
+    :class="route.params.id === email.id ? 'bg-amber-300' : ''">
     <template v-if="!email.isOpen">
       <span class="absolute left-2 top-4 block h-2 w-2 rounded-full bg-sky-500"></span>
     </template>
