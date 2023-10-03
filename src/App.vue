@@ -17,7 +17,6 @@ onMounted(() => {
     <div class="flex h-full w-full overflow-auto">
       <Mailbox />
       <RouterView />
-      <!-- <CurrentEmail /> -->
     </div>
     <div class="bottom-0 w-full shrink-0 grow-0">
       <!-- <StatusBar /> -->

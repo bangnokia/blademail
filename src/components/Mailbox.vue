@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { useAppStore } from "../stores/appStore";
 import MailItem from "./MailItem.vue"
 import { RouterLink } from "vue-router";
 
 const { emails } = useAppStore()
+const isBlank = computed(() => emails.length === 0)
 </script>
 
 <template>
@@ -21,7 +23,7 @@ const { emails } = useAppStore()
     </div>
 
 
-    <template v-if="emails.length === 0">
+    <template v-if="isBlank">
       <div class="h-full flex items-center justify-center text-gray-500 text-sm">
         Your mailbox is clean
       </div>
