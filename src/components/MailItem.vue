@@ -15,8 +15,7 @@ function formatTime(date: Date) {
 }
 </script>
 <template>
-  <div class="relative cursor-default rounded-md py-3 pl-7 pr-3"
-    :class="route.params.id === email.id ? 'bg-amber-300' : ''">
+  <div class="relative cursor-default rounded-md py-3 pl-7 pr-3">
     <template v-if="!email.isOpen">
       <span class="absolute left-2 top-4 block h-2 w-2 rounded-full bg-sky-500"></span>
     </template>

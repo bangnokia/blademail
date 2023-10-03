@@ -28,3 +28,11 @@ const { emails } = useAppStore()
     </template>
   </div>
 </template>
+
+<style lang="postcss" scoped>
+.router-link-active {
+  display: block;
+  background-color: rgb(253 224 71);
+  border-radius: 0.5rem;
+}
+</style>
