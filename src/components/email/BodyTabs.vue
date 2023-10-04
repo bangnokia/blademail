@@ -5,6 +5,7 @@ import { ensureEmailFileIsWritten } from "../../lib/utils";
 import GoogleChrome from "../icons/GoogleChrome.vue"
 import Firefox from "../icons/Firefox.vue"
 import HtmlPreview from "./HtmlPreview.vue"
+import { open } from "@tauri-apps/api/shell";
 
 const { email } = defineProps<{
   email: Email
@@ -23,6 +24,7 @@ function setActiveTab(tab: string) {
 
 async function openInBrowser(browserName: 'google chrome' | 'firefox') {
   const filePath = await ensureEmailFileIsWritten(email);
+  console.log('file path', filePath)
 
   if (filePath) {
     open(filePath, browserName)

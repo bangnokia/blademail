@@ -5,7 +5,6 @@ import { useAppStore } from '../stores/appStore';
 import type { Email } from '../lib/types';
 import BodyTabs from '../components/email/BodyTabs.vue'
 import router from '../route';
-import { createFakeEmails } from '../lib/mock';
 
 const props = defineProps<{
   id: string
