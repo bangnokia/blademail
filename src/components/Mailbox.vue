@@ -7,6 +7,7 @@ import ButtonDeleteAllEmails from "./mailbox/ButtonDeleteAllEmails.vue";
 
 const { emails } = useAppStore()
 const isBlank = computed(() => emails.length === 0)
+
 </script>
 
 <template>
@@ -14,7 +15,7 @@ const isBlank = computed(() => emails.length === 0)
     <!-- toolbar -->
     <div v-if="emails.length"
       class="toolbox sticky w-full top-0 z-20 flex items-end justify-between bg-white px-2 py-1 border-b">
-      <ButtonDeleteAllEmails />
+      <ButtonDeleteAllEmails @deleted="() => $router.push({ name: 'home' })" />
     </div>
 
     <!-- list email -->

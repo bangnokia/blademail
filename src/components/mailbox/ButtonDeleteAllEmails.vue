@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { useAppStore } from '../../stores/appStore'
 
+const emit = defineEmits(['deleted'])
 const { destroyAll } = useAppStore()
+
 
 function deleteAllEmails() {
   destroyAll()
+  emit('deleted')
 }
 </script>
 
