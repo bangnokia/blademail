@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { onBeforeRouteUpdate, useRoute } from 'vue-router';
-import { watch, ref, unref, computed } from 'vue'
+import { onBeforeRouteUpdate, routerKey, useRoute } from 'vue-router';
+import { watch, ref, unref, computed, onMounted } from 'vue'
 import { useAppStore } from '../stores/appStore';
 import type { Email } from '../lib/types';
 import BodyTabs from '../components/email/BodyTabs.vue'
+import router from '../route';
+import { createFakeEmails } from '../lib/mock';
 
 const props = defineProps<{
   id: string
@@ -12,24 +14,46 @@ const props = defineProps<{
 const id = ref(props.id)
 
 const route = useRoute()
-const { find, markOpenEmail } = useAppStore()
+const { find, markOpenEmail, destroy, emails } = useAppStore()
 const email = ref<Email>();
 const size = ref(0)
 
+onMounted(() => {
+  loadEmail(id.value)
+})
+
 watch(
   () => route.params.id,
-  (emailId) => {
-    id.value = emailId.toString()
-    email.value = find(id.value)
-    if (email.value) {
-      size.value = new Blob([email.value.raw]).size || 0
-    }
-
-    markOpenEmail(id.value)
-  }
+  (emailId) => loadEmail(emailId.toString())
 )
 
-function destroy() {
+function loadEmail(emailId: string) {
+  id.value = emailId.toString()
+  email.value = find(id.value)
+  if (email.value) {
+    size.value = new Blob([email.value.raw]).size || 0
+  }
+
+  markOpenEmail(id.value)
+}
+
+function deleteEmail() {
+  // find the previous email, if any
+  let nextId: string = '';
+
+  if (emails.length > 1) {
+    const index = emails.findIndex((email) => email.id === id.value)
+    const nextIndex = index === 0 ? 1 : index - 1
+    nextId = emails[nextIndex].id
+  }
+
+  destroy(id.value)
+
+  if (nextId) {
+    router.push({ name: 'emails.show', params: { id: nextId } })
+  } else {
+    router.push({ name: 'home' })
+  }
 }
 </script>
 
@@ -39,7 +63,7 @@ function destroy() {
       class="toolbox sticky top-0 w-full z-20 flex items-center justify-between bg-white px-2 py-1 shadow-sm text-gray-700">
       <!-- delete button -->
       <div>
-        <button @click="destroy" type="button" class="rounded flex items-center bg-white
+        <button @click="deleteEmail" type="button" class="rounded flex items-center bg-white
           text-gray-500 px-2 py-1 text-xs hover:text-white hover:bg-rose-500 transition">
           <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg">
