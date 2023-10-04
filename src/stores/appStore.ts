@@ -27,11 +27,16 @@ export const useAppStore = defineStore('appStore', () => {
     emails.splice(index, 1)
   }
 
+  function destroyAll() {
+    emails.splice(0, emails.length)
+  }
+
   return {
     emails,
     create,
     find,
     destroy,
+    destroyAll,
     markOpenEmail,
   }
 })

@@ -3,17 +3,21 @@ import { computed } from "vue";
 import { useAppStore } from "../stores/appStore";
 import MailItem from "./MailItem.vue"
 import { RouterLink } from "vue-router";
+import ButtonDeleteAllEmails from "./mailbox/ButtonDeleteAllEmails.vue";
 
 const { emails } = useAppStore()
 const isBlank = computed(() => emails.length === 0)
 </script>
 
 <template>
-  <div class="hidden h-full w-[322px] shrink-0 grow-0 flex-col border-r border-gray-300 text-white md:flex">
-    <div class="toolbox sticky w-full top-0 z-20 flex items-end justify-between bg-white px-2 py-1 shadow-sm">
-      <!-- <ButtonDeleteEmails /> -->
+  <div class="hidden h-full w-[322px] shrink-0 grow-0 flex-col border-r text-white md:flex">
+    <!-- toolbar -->
+    <div v-if="emails.length"
+      class="toolbox sticky w-full top-0 z-20 flex items-end justify-between bg-white px-2 py-1 border-b">
+      <ButtonDeleteAllEmails />
     </div>
 
+    <!-- list email -->
     <div class="items-stretch overflow-y-auto p-2">
       <template v-for="email in emails" :key="email.id">
         <RouterLink :to="{ name: 'emails.show', params: { id: email.id } }">
