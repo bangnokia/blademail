@@ -5,6 +5,7 @@ import { RouterView } from "vue-router";
 import { onMounted } from "vue";
 import { createFakeEmails } from './lib/mock'
 import { useAppStore } from './stores/appStore'
+import StatusBar from "./components/StatusBar.vue";
 
 const { emails } = useAppStore()
 
@@ -21,7 +22,7 @@ onMounted(() => {
       <RouterView />
     </div>
     <div class="bottom-0 w-full shrink-0 grow-0">
-      <!-- <StatusBar /> -->
+      <StatusBar />
     </div>
     <SmtpServer />
   </div>
