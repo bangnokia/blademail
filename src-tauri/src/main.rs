@@ -16,7 +16,6 @@ use std::net::TcpListener;
 use tauri::AboutMetadata;
 use tauri::Manager;
 use tauri::{Menu, MenuItem, Submenu, Window};
-use tauri_plugin_store::PluginBuilder;
 
 #[derive(Clone, Debug)]
 struct MyHandler {
@@ -228,13 +227,11 @@ fn main() {
         .setup(|app| {
             // how we make app to globaly access from other function
             let main_window = app.get_window("main").unwrap();
-
             let _ = MAIN_WINDOW.set(main_window);
-
             Ok(())
         })
         .menu(menu)
-        .plugin(PluginBuilder::default().build())
+        .plugin(tauri_plugin_store::Builder::default().build())
         .invoke_handler(tauri::generate_handler![start_server, stop_server])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

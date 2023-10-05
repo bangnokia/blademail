@@ -19,6 +19,7 @@ export async function getLicense(): Promise<string> {
 
 export async function verify(license: string) {
   const client = await getClient()
+
   try {
     const response = await client.post<{ is_valid: boolean }>(
       'https://lab.daudau.cc/api/apps/blade-mail/licenses/verify',

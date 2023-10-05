@@ -1,13 +1,13 @@
 {
     "package": {
         "productName": "Blade Mail",
-        "version": "1.0.5"
+        "version": "1.0.6"
     },
     "build": {
         "distDir": "../dist",
-        "devPath": "http://localhost:3000",
-        "beforeDevCommand": "yarn dev",
-        "beforeBuildCommand": "yarn build"
+        "devPath": "http://localhost:4001",
+        "beforeDevCommand": "pnpm dev",
+        "beforeBuildCommand": "pnpm build"
     },
     "tauri": {
         "bundle": {
