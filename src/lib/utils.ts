@@ -2,6 +2,7 @@ import { Email } from "./types";
 import { cacheDir } from "@tauri-apps/api/path"
 import { writeTextFile, createDir, readDir } from "@tauri-apps/api/fs";
 import { BaseDirectory } from "@tauri-apps/api/fs"
+import { getClient, ResponseType } from "@tauri-apps/api/http";
 
 export function makeExcerpt(email: Email) {
   let excerpt = "";
@@ -55,4 +56,17 @@ export async function ensureEmailFileIsWritten(email: Email): Promise<string> {
   }
 
   return appCacheDir + "/" + fileName;
+}
+
+export async function checkAliveUrl(url: string): boolean {
+  const client = await getClient();
+
+  try {
+    const response = await client.get(url, { timeout: 12, responseType: ResponseType.Text })
+
+    return response.status === 200
+  } catch (ex) {
+  }
+
+  return false;
 }

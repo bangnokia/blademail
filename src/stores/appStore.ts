@@ -1,11 +1,9 @@
 import { defineStore } from 'pinia'
 import { reactive } from 'vue'
 import { Email } from '../lib/types'
-import { useRouter } from 'vue-router'
 
 export const useAppStore = defineStore('appStore', () => {
   const emails = reactive<Email[]>([])
-  const router = useRouter()
 
   function create(email: Email) {
     emails.unshift(email)

@@ -5,6 +5,7 @@ import { ensureEmailFileIsWritten } from "../../lib/utils";
 import GoogleChrome from "../icons/GoogleChrome.vue"
 import Firefox from "../icons/Firefox.vue"
 import HtmlPreview from "./HtmlPreview.vue"
+import LinksChecker from "./LinksChecker.vue";
 import { open } from "@tauri-apps/api/shell";
 
 const { email } = defineProps<{
@@ -24,7 +25,6 @@ function setActiveTab(tab: string) {
 
 async function openInBrowser(browserName: 'google chrome' | 'firefox') {
   const filePath = await ensureEmailFileIsWritten(email);
-  console.log('file path', filePath)
 
   if (filePath) {
     open(filePath, browserName)
@@ -87,7 +87,7 @@ async function openInBrowser(browserName: 'google chrome' | 'firefox') {
 
         <!-- broken link cheker -->
         <div :class="[activeTab === 'links checker' ? 'flex' : 'hidden']">
-          <!-- <BrokenLinksChecker v-if="activeTab === 'links checker'" email={email} /> -->
+          <LinksChecker v-if="activeTab === 'links checker'" :email="email" />
         </div>
 
         <!-- spam assasin tab -->

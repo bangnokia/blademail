@@ -15,6 +15,7 @@ export interface Email {
 };
 
 export type EmailLinkStatus = 'ok' | 'error' | 'pending'
+
 export interface EmailLink {
   url: string,
   status: EmailLinkStatus
