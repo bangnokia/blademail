@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, defineEmits } from 'vue';
-import { SpamReport, Email } from '../../lib/types';
+import type { SpamReport, Email } from '../../lib/types';
 import { checkSpam } from '../../lib/utils';
 
 const emit = defineEmits(['updateSpamScore'])
@@ -11,6 +11,10 @@ const props = defineProps<{
 const result = ref<SpamReport | undefined>()
 
 onMounted(async () => {
+  if (props.email.spamScore !== undefined) {
+    return
+  }
+
   const response = await checkSpam(props.email.html)
   result.value = response
 

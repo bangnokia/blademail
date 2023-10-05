@@ -11,7 +11,8 @@ export interface Email {
   text: string;
   excerpt: string;
   isOpen: boolean;
-  links: EmailLink[]
+  links: EmailLink[];
+  spamScore?: number;
 };
 
 export type EmailLinkStatus = 'ok' | 'error' | 'pending'

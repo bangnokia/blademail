@@ -15,7 +15,7 @@ const { email } = defineProps<{
 
 const tabs = ["html", "html source", "text", "raw", 'links checker', 'Spam Assassin']
 const activeTab = ref(tabs[0])
-const spamScore = ref<number | undefined>()
+const spamScore = ref<number | undefined>(email.spamScore)
 
 const spamScoreClasses = 'text-green-500'
 
@@ -25,6 +25,7 @@ function setActiveTab(tab: string) {
 
 function setSpamScore(score: number) {
   spamScore.value = score
+  email.spamScore = score
 }
 
 async function openInBrowser(browserName: 'google chrome' | 'firefox') {
