@@ -18,7 +18,6 @@ onMounted(async () => {
 
   if (license.value) {
     const isValid = await verify(license.value)
-    console.log('response', isValid)
 
     valid.value = isValid
   }
@@ -44,6 +43,7 @@ async function submit() {
 </script>
 
 <template>
+  <!-- license status -->
   <div class="flex items-center justify-center gap-1">
     <template v-if="!registered">
       <span class="text-gray-500">Unregistered</span>
@@ -53,6 +53,7 @@ async function submit() {
     </button>
   </div>
 
+  <!-- modal form to input license key -->
   <div v-show="open" class="fixed inset-0 w-screen h-screen z-40 bg-gray-500/40 grid place-items-center">
     <form class="inset-0 bg-white flex flex-col gap-6 px-8 py-6 rounded-md shadow" @submit.prevent="submit">
       <div class="flex flex-col gap-2">
