@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { Email } from '../lib/types'
 
 export const useAppStore = defineStore('appStore', () => {
   const emails = reactive<Email[]>([])
+  const openNewEmail = ref(true)
 
   function create(email: Email) {
     emails.unshift(email)
@@ -36,5 +37,6 @@ export const useAppStore = defineStore('appStore', () => {
     destroy,
     destroyAll,
     markOpenEmail,
+    openNewEmail,
   }
 })
