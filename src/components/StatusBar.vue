@@ -14,9 +14,9 @@ const { openNewEmail } = useAppStore()
         <span class="">Open new email</span>
         <label class="relative inline-flex items-center cursor-pointer">
           <input type="checkbox" v-model="openNewEmail" class="sr-only peer">
-          <div class="w-8 h-4 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:bg-yellow-400
-             peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:bg-white after:border-gray-300
-            after:border after:rounded-full after:h-4 after:w-4 after:transition-all">
+          <div class="w-8 h-4 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 rounded-full peer
+            after:content-[''] after:absolute after:bg-white after:border-gray-300 after:border-white after:rounded-full after:h-4 after:w-4 after:transition-all
+            peer-checked:bg-yellow-400 peer-checked:after:translate-x-full">
           </div>
         </label>
       </div>
