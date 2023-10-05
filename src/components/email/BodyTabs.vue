@@ -6,6 +6,7 @@ import GoogleChrome from "../icons/GoogleChrome.vue"
 import Firefox from "../icons/Firefox.vue"
 import HtmlPreview from "./HtmlPreview.vue"
 import LinksChecker from "./LinksChecker.vue";
+import SpamAssassin from "./SpamAssassin.vue";
 import { open } from "@tauri-apps/api/shell";
 
 const { email } = defineProps<{
@@ -16,12 +17,15 @@ const tabs = ["html", "html source", "text", "raw", 'links checker', 'Spam Assas
 const activeTab = ref(tabs[0])
 const spamScore = ref<number | undefined>()
 
-// const spamScoreClasses = 'text-green-500'
+const spamScoreClasses = 'text-green-500'
 
 function setActiveTab(tab: string) {
   activeTab.value = tab
 }
 
+function setSpamScore(score: number) {
+  spamScore.value = score
+}
 
 async function openInBrowser(browserName: 'google chrome' | 'firefox') {
   const filePath = await ensureEmailFileIsWritten(email);
@@ -87,12 +91,12 @@ async function openInBrowser(browserName: 'google chrome' | 'firefox') {
 
         <!-- broken link cheker -->
         <div :class="[activeTab === 'links checker' ? 'flex' : 'hidden']">
-          <LinksChecker v-if="activeTab === 'links checker'" :email="email" />
+          <LinksChecker :email="email" />
         </div>
 
         <!-- spam assasin tab -->
         <div :class="[activeTab === 'Spam Assassin' ? 'block' : 'hidden']">
-          <!-- <SpamAssassin :email="email" :setSpamScore="setSpamScore" /> -->
+          <SpamAssassin :email="email" @updateSpamScore="setSpamScore" />
         </div>
       </div>
     </div>

@@ -1,8 +1,8 @@
-import { Email } from "./types";
+import { Email, SpamReport } from "./types";
 import { cacheDir } from "@tauri-apps/api/path"
 import { writeTextFile, createDir, readDir } from "@tauri-apps/api/fs";
 import { BaseDirectory } from "@tauri-apps/api/fs"
-import { getClient, ResponseType } from "@tauri-apps/api/http";
+import { Body, getClient, ResponseType } from "@tauri-apps/api/http";
 
 export function makeExcerpt(email: Email) {
   let excerpt = "";
@@ -69,4 +69,17 @@ export async function checkAliveUrl(url: string): boolean {
   }
 
   return false;
+}
+
+export async function checkSpam(raw: string) {
+  const client = await getClient();
+  const response = await client.post<SpamReport>('https://spamcheck.postmarkapp.com/filter', Body.json({ email: raw }), {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    responseType: ResponseType.JSON
+  })
+
+  return response.data
 }

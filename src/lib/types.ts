@@ -20,3 +20,12 @@ export interface EmailLink {
   url: string,
   status: EmailLinkStatus
 }
+
+export interface SpamReport {
+  report: string,
+  score: number,
+  rules: {
+    score: number,
+    description: string,
+  }[]
+}
