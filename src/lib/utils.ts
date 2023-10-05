@@ -1,6 +1,6 @@
 import { Email, SpamReport } from "./types";
 import { cacheDir } from "@tauri-apps/api/path"
-import { writeTextFile, createDir, readDir } from "@tauri-apps/api/fs";
+import { writeTextFile, createDir } from "@tauri-apps/api/fs";
 import { BaseDirectory } from "@tauri-apps/api/fs"
 import { Body, getClient, ResponseType } from "@tauri-apps/api/http";
 
@@ -58,7 +58,7 @@ export async function ensureEmailFileIsWritten(email: Email): Promise<string> {
   return appCacheDir + "/" + fileName;
 }
 
-export async function checkAliveUrl(url: string): boolean {
+export async function checkAliveUrl(url: string): Promise<boolean> {
   const client = await getClient();
 
   try {

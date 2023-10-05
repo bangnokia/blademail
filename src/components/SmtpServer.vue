@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onBeforeMount, onBeforeUnmount, onMounted } from 'vue'
-import { startSmtpServer, stopSmtpServer } from '../lib/smtp'
+import { startSmtpServer } from '../lib/smtp'
 import { listen, Event } from "@tauri-apps/api/event"
 import type { Email } from "../lib/types"
 import { nanoid } from "nanoid"
@@ -19,10 +19,10 @@ async function start() {
 }
 
 // actually I don't know how to stop the server
-async function stop() {
-  await stopSmtpServer()
-  console.log("SMTP server stopped")
-}
+// async function stop() {
+//   await stopSmtpServer()
+//   console.log("SMTP server stopped")
+// }
 
 const unlisten = ref()
 

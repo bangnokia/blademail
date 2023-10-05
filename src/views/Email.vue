@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onBeforeRouteUpdate, routerKey, useRoute } from 'vue-router';
-import { watch, ref, unref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router';
+import { watch, ref, onMounted } from 'vue'
 import { useAppStore } from '../stores/appStore';
 import type { Email } from '../lib/types';
 import BodyTabs from '../components/email/BodyTabs.vue'

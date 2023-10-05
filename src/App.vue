@@ -3,14 +3,14 @@ import SmtpServer from "./components/SmtpServer.vue"
 import Mailbox from './components/Mailbox.vue'
 import { RouterView } from "vue-router";
 import { onMounted } from "vue";
-import { createFakeEmails } from './lib/mock'
 import { useAppStore } from './stores/appStore'
 import StatusBar from "./components/StatusBar.vue";
+// import { createFakeEmails } from './lib/mock'
 
 const { emails } = useAppStore()
 
 onMounted(() => {
-  createFakeEmails(10)
+  // createFakeEmails(10)
 })
 </script>
 

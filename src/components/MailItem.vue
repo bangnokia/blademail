@@ -2,13 +2,10 @@
 import dayjs from "dayjs";
 import { Email } from "../lib/types";
 import { defineProps } from "vue";
-import { useRoute } from "vue-router";
 
 defineProps<{
   email: Email;
 }>()
-
-const route = useRoute()
 
 function formatTime(date: Date) {
   return dayjs(date).format("HH:mm:ss");
