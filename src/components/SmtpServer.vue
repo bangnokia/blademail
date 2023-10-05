@@ -9,7 +9,8 @@ import { ref } from "vue"
 import { useAppStore } from "../stores/appStore"
 import { useRouter } from 'vue-router'
 
-const { create, openNewEmail } = useAppStore()
+const appStore = useAppStore()
+const { create } = appStore
 const router = useRouter()
 
 async function start() {
@@ -40,7 +41,7 @@ onMounted(() => {
 
     create(email)
 
-    if (openNewEmail) {
+    if (appStore.openNewEmail) {
       router.push({ name: 'emails.show', params: { id: email.id } })
     }
   })

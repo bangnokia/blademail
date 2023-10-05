@@ -32,11 +32,13 @@ export const useAppStore = defineStore('appStore', () => {
 
   return {
     emails,
+    openNewEmail,
+
+    // actions
     create,
     find,
     destroy,
     destroyAll,
     markOpenEmail,
-    openNewEmail,
   }
 })
