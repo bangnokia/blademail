@@ -12,7 +12,6 @@ const { emails } = useAppStore()
 onMounted(() => {
   createFakeEmails(10)
 })
-
 </script>
 
 <template>
