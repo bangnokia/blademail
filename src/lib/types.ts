@@ -13,7 +13,14 @@ export interface Email {
   isOpen: boolean;
   links: EmailLink[];
   spamScore?: number;
+  attachments?: Attachment[];
 };
+
+export interface Attachment {
+ filename: string,
+ content_type: string,
+ data: string,
+}
 
 export type EmailLinkStatus = 'ok' | 'error' | 'pending'
 

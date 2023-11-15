@@ -4,6 +4,7 @@ import { watch, ref, onMounted } from 'vue'
 import { useAppStore } from '../stores/appStore';
 import type { Email } from '../lib/types';
 import BodyTabs from '../components/email/BodyTabs.vue'
+import Header from '../components/email/Header.vue';
 import router from '../route';
 
 const props = defineProps<{
@@ -78,26 +79,7 @@ function deleteEmail() {
       </div>
     </div>
 
-    <header class="grid grid-cols-1 px-5 py-3 lg:grid-cols-2 text-sm">
-      <div class="flex gap-x-5 py-1">
-        <div class="upp w-24 font-semibold">Subject:</div>
-        <div class="font-semibold uppercase">{{ email.subject.trim() }}</div>
-      </div>
-      <div class="flex gap-x-5 py-1">
-        <div class="w-24 font-semibold">From:</div>
-        <div>
-          {{ email.sender[0] }} {{ `<${email.sender[1]}>` }}
-        </div>
-      </div>
-      <div class="flex gap-x-5 py-1">
-        <div class="w-24 font-semibold">To:</div>
-        <div>{{ email.to.join(", ") }}</div>
-      </div>
-      <div v-if="email.cc" class="flex gap-x-5 py-1">
-        <div class="w-24 font-semibold">Cc:</div>
-        <div>{{ email.cc.join(", ") }}</div>
-      </div>
-    </header>
+    <Header :email="email" />
 
     <main class="relative h-full w-full">
       <BodyTabs :email="email" />

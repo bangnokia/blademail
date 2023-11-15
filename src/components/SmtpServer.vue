@@ -30,13 +30,15 @@ onBeforeMount(() => start())
 
 onMounted(() => {
   unlisten.value = listen("new-email", (event: Event<Email>) => {
+    const payload = event.payload;
     const email: Email = {
-      ...event.payload,
+      ...payload,
       id: nanoid(),
-      excerpt: makeExcerpt(event.payload),
+      excerpt: makeExcerpt(payload),
       date: new Date(),
       isOpen: false,
-      links: parseUrls(event.payload.html).map((url) => ({ url, status: 'pending' })),
+      links: parseUrls(payload.html).map((url) => ({ url, status: 'pending' })),
+      attachments: payload.attachments,
     };
 
     create(email)
