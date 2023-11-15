@@ -82,6 +82,14 @@ struct EmailPayload {
     // message_id: String,
     html: String,
     text: String,
+    attachments: Vec<Attachment>,
+}
+
+#[derive(Serialize, Clone, Debug)]
+struct Attachment {
+    filename: String,
+    content_type: String,
+    data: Vec<u8>,
 }
 
 fn parse(raw: String) -> EmailPayload {
@@ -135,28 +143,22 @@ fn parse(raw: String) -> EmailPayload {
             _ => None,
         },
         subject: email.subject.unwrap().to_string(),
-        // date: format!(
-        //     "{} {} {} {} {}",
-        //     format!("{:?}", email.date.day_name.unwrap()),
-        //     email.date.date.day,
-        //     format!("{:?}", email.date.date.month),
-        //     email.date.date.year,
-        //     email.date.time.time.hour
-        // ),
         html: "".into(),
         text: "".into(),
+        attachments: vec![],
     };
+
 
     match parsed {
         Entity::Text { subtype, value, .. } => match subtype.to_string().as_str() {
             "html" => payload.html = value.to_string(),
             "plain" => payload.text = value.to_string(),
-            _ => (),
+            _ => println!("unknown text subtype: {}", subtype),
         },
         // parsing content of multipart body, when user using markdown,
         // there will be a plain text and a html version of the email (maybe it sent from Laravel app)
         Entity::Multipart { subtype, content } => {
-            println!("{:?}", subtype);
+            println!("multipart {:?}", subtype);
             for entity in content {
                 match entity.mime_type {
                     ContentType::Multipart => {
@@ -165,18 +167,14 @@ fn parse(raw: String) -> EmailPayload {
                         match parsed {
                             Entity::Multipart { subtype, content } => {
                                 for entity in content {
-                                    println!("before match {}", subtype);
+                                    println!("multipart 2 {}", subtype);
                                     match entity.subtype.to_string().as_str() {
                                         "html" => {
-                                            payload.html =
-                                                String::from_utf8(entity.value.to_vec()).unwrap()
+                                            payload.html = String::from_utf8(entity.value.to_vec()).unwrap()
                                         }
-
                                         "plain" => {
-                                            payload.text =
-                                                String::from_utf8(entity.value.to_vec()).unwrap()
+                                            payload.text = String::from_utf8(entity.value.to_vec()).unwrap()
                                         }
-
                                         _ => println!("unknown subtype: {}", subtype),
                                     }
                                     println!(
@@ -208,11 +206,20 @@ fn parse(raw: String) -> EmailPayload {
                             _ => println!("not text"),
                         }
                     }
+                    ContentType::Application => {
+                        let attachment = Attachment {
+                            filename: entity.parameters.get("name").map_or_else(|| "".to_string(), |name| name.to_string()),
+                            content_type: entity.subtype.to_string(),
+                            data: entity.value.to_vec(),
+                        };
+                        payload.attachments.push(attachment);
+                    }
                     _ => println!("not multipart"),
                 }
             }
         }
-        _ => println!("other"),
+
+        _ => println!("other {:#?}", parsed),
     }
 
     payload
