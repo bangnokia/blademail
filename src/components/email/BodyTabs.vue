@@ -1,27 +1,14 @@
 <script setup lang="ts">
-    import type {
-        Email, SpamReport
-    } from "../../lib/types";
-    import {
-        ref, unref
-    } from "vue"
-    import {
-        ensureEmailFileIsWritten
-    } from "../../lib/utils";
+    import type { Email, SpamReport } from "../../lib/types";
+    import { ref, unref } from "vue"
+    import { ensureEmailFileIsWritten } from "../../lib/utils";
     import GoogleChrome from "../icons/GoogleChrome.vue"
     import Firefox from "../icons/Firefox.vue"
     import HtmlPreview from "./HtmlPreview.vue"
     import LinksChecker from "./LinksChecker.vue";
     import SpamAssassin from "./SpamAssassin.vue";
-    import {
-        open
-    } from "@tauri-apps/api/shell";
-
-    const {
-        email
-    } = defineProps < {
-        email: Email
-    } > ()
+    import { open } from "@tauri-apps/api/shell";
+    const { email } = defineProps<{ email: Email }>()
 
     const tabs = ["html", "html source", "text", "raw", 'links checker', 'Spam Assassin']
     const activeTab = ref(tabs[0])
