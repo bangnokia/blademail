@@ -64,7 +64,7 @@ export async function checkAliveUrl(url: string): Promise<boolean> {
   try {
     const response = await client.get(url, { timeout: 12, responseType: ResponseType.Text })
 
-    return response.status === 200
+    return response.ok;
   } catch (ex) {
   }
 

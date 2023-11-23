@@ -14,6 +14,7 @@ const total = ref(links.length)
 const checkedCount = computed(() => links.filter(link => link.status !== 'pending').length)
 
 async function checkUrls() {
+  errorCount.value = 0
   for (const link of links) {
     link.status = 'pending'
   }
