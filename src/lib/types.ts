@@ -12,7 +12,7 @@ export interface Email {
   excerpt: string;
   isOpen: boolean;
   links: EmailLink[];
-  spamScore?: number;
+  spamReport?: SpamReport;
   attachments?: Attachment[];
 };
 

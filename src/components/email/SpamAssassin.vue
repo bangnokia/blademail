@@ -3,22 +3,22 @@ import { onMounted, ref, defineEmits } from 'vue';
 import type { SpamReport, Email } from '../../lib/types';
 import { checkSpam } from '../../lib/utils';
 
-const emit = defineEmits(['updateSpamScore'])
+const emit = defineEmits(['updateSpamReport'])
 const props = defineProps<{
   email: Email
 }>()
 
-const result = ref<SpamReport | undefined>()
+const result = ref<SpamReport | undefined>(props.email.spamReport)
 
 onMounted(async () => {
-  if (props.email.spamScore !== undefined) {
+  if (props.email.spamReport !== undefined) {
     return
   }
 
   const response = await checkSpam(props.email.html)
   result.value = response
 
-  emit('updateSpamScore', response.score)
+  emit('updateSpamReport', response)
 })
 </script>
 
