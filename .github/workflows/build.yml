@@ -52,4 +52,4 @@ jobs:
                   prerelease: false
 
             - name: Notification
-              run:  curl "https://ping2.me/@daudau/deploy" --data "message=Blademail is built!"
+              run:  curl "https://ping2.me/@daudau/deploy" --data "message=Blademail is built on ${{ matrix.platform }}"
