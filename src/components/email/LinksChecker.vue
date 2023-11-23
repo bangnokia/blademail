@@ -21,6 +21,10 @@ async function checkUrls() {
   for (const link of links) {
     let isAlive = await checkAliveUrl(link.url)
     link.status = isAlive ? 'ok' : 'error'
+
+    if (!isAlive) {
+      errorCount.value++
+    }
   }
 }
 </script>

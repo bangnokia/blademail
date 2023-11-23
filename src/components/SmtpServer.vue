@@ -28,8 +28,8 @@ const unlisten = ref()
 
 onBeforeMount(() => start())
 
-onMounted(() => {
-  unlisten.value = listen("new-email", (event: Event<Email>) => {
+onMounted(async () => {
+  unlisten.value = await listen("new-email", (event: Event<Email>) => {
     const payload = event.payload;
     const email: Email = {
       ...payload,
