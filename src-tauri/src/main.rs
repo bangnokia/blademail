@@ -253,8 +253,8 @@ fn main() {
                 .paste()
                 .build()?;
 
-            app.set_menu(menu);
-
+            app.set_menu(menu) // set the menu
+                .expect("error while setting menu");
 
             Ok(())
         })
