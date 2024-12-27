@@ -6,7 +6,7 @@ authors = [ "bangnokia" ]
 license = "MIT"
 repository = "https://github.com/bangnokia/blademail"
 default-run = "app"
-edition = "2018"
+edition = "2021"
 build = "src/build.rs"
 
 [build-dependencies]
