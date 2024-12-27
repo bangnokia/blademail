@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { open } from "@tauri-apps/api/shell"
+import { open } from "@tauri-apps/plugin-shell"
 import { onMounted, ref } from "vue"
 
 const { html } = defineProps<{

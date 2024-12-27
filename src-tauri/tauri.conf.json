@@ -1,95 +1,70 @@
 {
-    "package": {
-        "productName": "Blade Mail",
-        "version": "1.0.9"
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
     },
-    "build": {
-        "distDir": "../dist",
-        "devPath": "http://localhost:4001",
-        "beforeDevCommand": "pnpm dev",
-        "beforeBuildCommand": "pnpm build"
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "resources": [],
+    "externalBin": [],
+    "copyright": "bangnokia &copy; 2022",
+    "category": "DeveloperTool",
+    "shortDescription": "",
+    "longDescription": "",
+    "macOS": {
+      "frameworks": [],
+      "minimumSystemVersion": "",
+      "exceptionDomain": "",
+      "signingIdentity": null,
+      "entitlements": null
     },
-    "tauri": {
-        "bundle": {
-            "active": true,
-            "targets": "all",
-            "identifier": "com.blademail.app",
-            "icon": [
-                "icons/32x32.png",
-                "icons/128x128.png",
-                "icons/128x128@2x.png",
-                "icons/icon.icns",
-                "icons/icon.ico"
-            ],
-            "resources": [],
-            "externalBin": [],
-            "copyright": "bangnokia &copy; 2022",
-            "category": "DeveloperTool",
-            "shortDescription": "",
-            "longDescription": "",
-            "deb": {
-                "depends": []
-            },
-            "macOS": {
-                "frameworks": [],
-                "minimumSystemVersion": "",
-                "exceptionDomain": "",
-                "signingIdentity": null,
-                "entitlements": null
-            },
-            "windows": {
-                "certificateThumbprint": null,
-                "digestAlgorithm": "sha256",
-                "timestampUrl": ""
-            }
-        },
-        "updater": {
-            "active": true,
-            "endpoints": [
-                "https://lab.daudau.cc/api/update/blade-mail/{{target}}/{{arch}}/{{current_version}}"
-            ],
-            "dialog": true,
-            "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEEzMjVBM0M3QzRBMTBEM0YKUldRL0RhSEV4Nk1sbzc4N3QvVkZrQVlBVVNBOGo5SFd5NkFkK2l6K3BidFliTDlnSkdxcFpLSmUK"
-        },
-        "allowlist": {
-            "all": false,
-            "shell": {
-                "all": false,
-                "open": "^(https?://)|(/)"
-            },
-            "http": {
-                "all": true,
-                "request": true,
-                "scope": [
-                    "https://**",
-                    "http://**"
-                ]
-            },
-            "path": {
-                "all": true
-            },
-            "fs": {
-                "all": false,
-                "readFile": true,
-                "writeFile": true,
-                "readDir": true,
-                "createDir": true,
-                "scope": [
-                    "$CACHE/**/*"
-                ]
-            }
-        },
-        "windows": [
-            {
-                "title": "Blade Mail",
-                "width": 1000,
-                "height": 600,
-                "resizable": true,
-                "fullscreen": false
-            }
-        ],
-        "security": {
-            "csp": "default-src blob: data: filesystem: ws: wss: http: https: tauri: 'unsafe-eval' 'unsafe-inline' 'self' img-src: 'self'"
-        }
+    "linux": {
+      "deb": {
+        "depends": []
+      }
+    },
+    "createUpdaterArtifacts": "v1Compatible"
+  },
+  "build": {
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../dist",
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://localhost:4001"
+  },
+  "productName": "Blade Mail",
+  "mainBinaryName": "Blade Mail",
+  "version": "1.0.9",
+  "identifier": "com.blademail.app",
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEEzMjVBM0M3QzRBMTBEM0YKUldRL0RhSEV4Nk1sbzc4N3QvVkZrQVlBVVNBOGo5SFd5NkFkK2l6K3BidFliTDlnSkdxcFpLSmUK",
+      "endpoints": [
+        "https://lab.daudau.cc/api/update/blade-mail/{{target}}/{{arch}}/{{current_version}}"
+      ]
     }
+  },
+  "app": {
+    "security": {
+      "csp": "default-src blob: data: filesystem: ws: wss: http: https: tauri: 'unsafe-eval' 'unsafe-inline' 'self' img-src: 'self'; connect-src ipc: http://ipc.localhost"
+    },
+    "windows": [
+      {
+        "title": "Blade Mail",
+        "width": 1000,
+        "height": 600,
+        "resizable": true,
+        "fullscreen": false,
+        "useHttpsScheme": true
+      }
+    ]
+  }
 }

@@ -1,5 +1,5 @@
-import { Store } from 'tauri-plugin-store-api'
-import { Body, getClient } from '@tauri-apps/api/http'
+import { Store } from '@tauri-apps/plugin-store'
+import { Body, getClient } from '@tauri-apps/plugin-http'
 
 export interface License {
   value: string

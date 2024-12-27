@@ -7,7 +7,7 @@
     import HtmlPreview from "./HtmlPreview.vue"
     import LinksChecker from "./LinksChecker.vue";
     import SpamAssassin from "./SpamAssassin.vue";
-    import { open } from "@tauri-apps/api/shell";
+    import { open } from "@tauri-apps/plugin-shell";
     const { email } = defineProps<{ email: Email }>()
 
     const tabs = ["html", "html source", "text", "raw", 'links checker', 'Spam Assassin']

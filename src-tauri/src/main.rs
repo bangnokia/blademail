@@ -11,11 +11,12 @@ use mailin_embedded::response::OK;
 use mailin_embedded::{Handler, Response, Server, SslConfig};
 use once_cell::sync::OnceCell;
 use serde::Serialize;
+use tauri::menu::MenuBuilder;
+use tauri::Emitter;
+use tauri::Manager;
+use tauri::WebviewWindow;
 use std::fmt::Debug;
 use std::net::TcpListener;
-use tauri::AboutMetadata;
-use tauri::Manager;
-use tauri::{Menu, MenuItem, Submenu, Window};
 
 #[derive(Clone, Debug)]
 struct MyHandler {
@@ -39,7 +40,7 @@ impl Handler for MyHandler {
         let payload = parse(raw);
 
         // emit email to the UI
-        let _ = MAIN_WINDOW.get().unwrap().emit_all("new-email", payload);
+        let _ = MAIN_WINDOW.get().unwrap().emit("new-email", payload);
         OK
     }
 }
@@ -148,7 +149,6 @@ fn parse(raw: String) -> EmailPayload {
         attachments: vec![],
     };
 
-
     match parsed {
         Entity::Text { subtype, value, .. } => match subtype.to_string().as_str() {
             "html" => payload.html = value.to_string(),
@@ -170,10 +170,12 @@ fn parse(raw: String) -> EmailPayload {
                                     println!("multipart 2 {}", subtype);
                                     match entity.subtype.to_string().as_str() {
                                         "html" => {
-                                            payload.html = String::from_utf8(entity.value.to_vec()).unwrap()
+                                            payload.html =
+                                                String::from_utf8(entity.value.to_vec()).unwrap()
                                         }
                                         "plain" => {
-                                            payload.text = String::from_utf8(entity.value.to_vec()).unwrap()
+                                            payload.text =
+                                                String::from_utf8(entity.value.to_vec()).unwrap()
                                         }
                                         _ => println!("unknown subtype: {}", subtype),
                                     }
@@ -208,7 +210,10 @@ fn parse(raw: String) -> EmailPayload {
                     }
                     ContentType::Application => {
                         let attachment = Attachment {
-                            filename: entity.parameters.get("name").map_or_else(|| "".to_string(), |name| name.to_string()),
+                            filename: entity
+                                .parameters
+                                .get("name")
+                                .map_or_else(|| "".to_string(), |name| name.to_string()),
                             content_type: entity.subtype.to_string(),
                             data: entity.value.to_vec(),
                         };
@@ -225,61 +230,36 @@ fn parse(raw: String) -> EmailPayload {
     payload
 }
 
-static MAIN_WINDOW: OnceCell<Window> = OnceCell::new();
+static MAIN_WINDOW: OnceCell<WebviewWindow> = OnceCell::new();
 
 fn main() {
-    let menu = make_menu();
-
     tauri::Builder::default()
+        .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_http::init())
+        .plugin(tauri_plugin_store::Builder::new().build())
         .setup(|app| {
             // how we make app to globaly access from other function
-            let main_window = app.get_window("main").unwrap();
+            let main_window = app.get_webview_window("main").unwrap();
             let _ = MAIN_WINDOW.set(main_window);
+
+            // build the menu
+            let handle = app.handle();
+            let menu = MenuBuilder::new(handle)
+                .copy()
+                .cut()
+                .separator()
+                .paste()
+                .build()?;
+
+            app.set_menu(menu);
+
+
             Ok(())
         })
-        .menu(menu)
         .plugin(tauri_plugin_store::Builder::default().build())
         .invoke_handler(tauri::generate_handler![start_server, stop_server])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
-}
-
-fn make_menu() -> Menu {
-    let main_submenu = Submenu::new(
-        "Blade Mail",
-        Menu::new()
-            .add_native_item(MenuItem::About(
-                "Blade Mail".to_string(),
-                AboutMetadata::new(),
-            ))
-            .add_native_item(MenuItem::EnterFullScreen)
-            .add_native_item(MenuItem::HideOthers)
-            .add_native_item(MenuItem::Hide)
-            .add_native_item(MenuItem::Quit),
-    );
-
-    let file_submenu = Submenu::new(
-        "File",
-        Menu::new()
-            .add_native_item(MenuItem::Minimize)
-            .add_native_item(MenuItem::Quit),
-    );
-
-    let edit_submenu = Submenu::new(
-        "Edit",
-        Menu::new()
-            .add_native_item(MenuItem::Undo)
-            .add_native_item(MenuItem::Redo)
-            .add_native_item(MenuItem::Separator)
-            .add_native_item(MenuItem::Cut)
-            .add_native_item(MenuItem::Copy)
-            .add_native_item(MenuItem::Paste)
-            .add_native_item(MenuItem::Separator)
-            .add_native_item(MenuItem::SelectAll),
-    );
-
-    Menu::new()
-        .add_submenu(main_submenu)
-        .add_submenu(file_submenu)
-        .add_submenu(edit_submenu)
 }

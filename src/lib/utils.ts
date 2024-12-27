@@ -1,8 +1,8 @@
 import { Email, SpamReport } from "./types";
 import { cacheDir } from "@tauri-apps/api/path"
-import { writeTextFile, createDir } from "@tauri-apps/api/fs";
-import { BaseDirectory } from "@tauri-apps/api/fs"
-import { Body, getClient, ResponseType } from "@tauri-apps/api/http";
+import { writeTextFile, createDir } from "@tauri-apps/plugin-fs";
+import { BaseDirectory } from "@tauri-apps/plugin-fs"
+import { Body, getClient, ResponseType } from "@tauri-apps/plugin-http";
 
 export function makeExcerpt(email: Email) {
   let excerpt = "";
