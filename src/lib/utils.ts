@@ -1,8 +1,8 @@
 import { Email, SpamReport } from "./types";
 import { cacheDir } from "@tauri-apps/api/path"
-import { writeTextFile, createDir } from "@tauri-apps/plugin-fs";
+import { writeTextFile, mkdir } from "@tauri-apps/plugin-fs";
 import { BaseDirectory } from "@tauri-apps/plugin-fs"
-import { Body, getClient, ResponseType } from "@tauri-apps/plugin-http";
+import { fetch } from "@tauri-apps/plugin-http";
 
 export function makeExcerpt(email: Email) {
   let excerpt = "";
@@ -43,7 +43,7 @@ export async function ensureEmailFileIsWritten(email: Email): Promise<string> {
   const appCacheDir = `${cacheDirPath}/BladeMail`;
 
   try {
-    await createDir("BladeMail", {
+    await mkdir("BladeMail", {
       dir: BaseDirectory.Cache
     });
   } catch (e) { }
@@ -59,10 +59,8 @@ export async function ensureEmailFileIsWritten(email: Email): Promise<string> {
 }
 
 export async function checkAliveUrl(url: string): Promise<boolean> {
-  const client = await getClient();
-
   try {
-    const response = await client.get(url, { timeout: 12, responseType: ResponseType.Text })
+    const response = await fetch(url, { connectTimeout: 5000 });
 
     return response.ok;
   } catch (ex) {
@@ -72,14 +70,16 @@ export async function checkAliveUrl(url: string): Promise<boolean> {
 }
 
 export async function checkSpam(raw: string) {
-  const client = await getClient();
-  const response = await client.post<SpamReport>('https://spamcheck.postmarkapp.com/filter', Body.json({ email: raw }), {
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    },
-    responseType: ResponseType.JSON
-  })
+  const response = await fetch(
+    'https://spamcheck.postmarkapp.com/filter',
+    {
+      body: JSON.stringify({ email: raw }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
 
-  return response.data
+    })
+
+    return response.json() as Promise<SpamReport>;
 }

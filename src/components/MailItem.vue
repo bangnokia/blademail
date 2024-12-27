@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import dayjs from "dayjs";
 import { Email } from "../lib/types";
-import { defineProps } from "vue";
 
 defineProps<{
   email: Email;

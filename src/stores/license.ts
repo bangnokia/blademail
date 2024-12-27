@@ -1,11 +1,11 @@
-import { Store } from '@tauri-apps/plugin-store'
-import { Body, getClient } from '@tauri-apps/plugin-http'
+import { load } from '@tauri-apps/plugin-store'
+import { fetch } from '@tauri-apps/plugin-http'
 
 export interface License {
   value: string
 }
 
-const store = new Store('license.txt')
+const store = await load('license.txt')
 
 export async function saveLicense(licenseKey: string): Promise<void> {
   await store.set('license', { value: licenseKey })
@@ -18,13 +18,12 @@ export async function getLicense(): Promise<string> {
 }
 
 export async function verify(license: string) {
-  const client = await getClient()
-
   try {
-    const response = await client.post<{ is_valid: boolean }>(
+    const response = await fetch(
       'https://lab.daudau.cc/api/apps/blade-mail/licenses/verify',
-      Body.json({ license_key: license }),
       {
+        method: 'POST',
+        body: JSON.stringify({ license_key: license }),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -32,7 +31,7 @@ export async function verify(license: string) {
       }
     )
 
-    return response.data.is_valid
+    return response.json() as Promise<{ valid: boolean }>
   } catch (ex) {
     console.error(ex)
   }
