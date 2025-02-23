@@ -3,6 +3,24 @@ import { randomQuote } from "../lib/quotes"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 
 const quote = randomQuote()
+
+const configs = {
+  laravel: `MAIL_MAILER=smtp
+MAIL_HOST=127.0.0.1
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null`,
+  symfony: `# config/packages/mailer.yaml
+framework:
+    mailer:
+        dsn: 'smtp://127.0.0.1:1025'`,
+  wordpress: `// wp-config.php
+define( 'SMTP_HOST', '127.0.0.1' );
+define( 'SMTP_PORT', '1025' );
+define( 'SMTP_AUTH', false );
+define( 'SMTP_USERNAME', '' );
+define( 'SMTP_PASSWORD', '' );`
+}
 </script>
 
 <template>
@@ -24,15 +42,17 @@ const quote = randomQuote()
         <Tabs default-value="laravel" class="w-full">
           <TabsList>
             <TabsTrigger value="laravel">Laravel</TabsTrigger>
+            <TabsTrigger value="symfony">Symfony</TabsTrigger>
+            <TabsTrigger value="wordpress">WordPress</TabsTrigger>
           </TabsList>
           <TabsContent value="laravel">
-            <pre class="relative select-all rounded bg-gray-500 px-7 py-3 font-mono text-sm leading-6 text-white">
-MAIL_MAILER=smtp
-MAIL_HOST=127.0.0.1
-MAIL_PORT=1025
-MAIL_USERNAME=null
-MAIL_PASSWORD=null
-            </pre>
+            <pre class="relative select-all rounded bg-gray-500 px-7 py-3 font-mono text-sm leading-6 text-white min-h-[169px]">{{ configs.laravel }}</pre>
+          </TabsContent>
+          <TabsContent value="symfony">
+            <pre class="relative select-all rounded bg-gray-500 px-7 py-3 font-mono text-sm leading-6 text-white min-h-[169px]">{{ configs.symfony }}</pre>
+          </TabsContent>
+          <TabsContent value="wordpress">
+            <pre class="relative select-all rounded bg-gray-500 px-7 py-3 font-mono text-sm leading-6 text-white min-h-[169px]">{{ configs.wordpress }}</pre>
           </TabsContent>
         </Tabs>
       </div>
