@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, defineEmits } from 'vue';
+import { onMounted, ref } from 'vue';
 import type { SpamReport, Email } from '../../lib/types';
 import { checkSpam } from '../../lib/utils';
 

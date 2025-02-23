@@ -33,6 +33,7 @@ export const quotes = [
   "Nothing in life is to be feared, it is only to be understood. Now is the time to understand more, so that we may fear less. - Marie Curie",
 ];
 
-export function randomQuote(): string {
+export function randomQuote(): string
+{
   return quotes[Math.floor(Math.random() * quotes.length)];
 }
