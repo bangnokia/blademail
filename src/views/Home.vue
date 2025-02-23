@@ -3,6 +3,8 @@ import { randomQuote } from "../lib/quotes"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 
 const quote = randomQuote()
+// split the quote and the author from the quote by '-'
+const [quoteText, quoteAuthor] = quote.split("-")
 
 const configs = {
   laravel: `MAIL_MAILER=smtp
@@ -25,10 +27,11 @@ define( 'SMTP_PASSWORD', '' );`
 
 <template>
   <div class="flex h-full w-full mx-auto max-w-2xl flex-col items-center justify-center gap-y-10 p-10">
-    <div class="flex flex-col items-center gap-y-5">
-      <p class="text-center leading-6 font-mono tracking-wide text-rose-500">
-        {{ quote }}
-      </p>
+    <div class="flex flex-col gap-y-5">
+      <div class="leading-6 font-mono tracking-wide text-rose-500">
+        <div>{{ quoteText }}</div>
+        <div class="italic">- {{ quoteAuthor }}</div>
+      </div>
       <hr class="h-px w-48 bg-gray-300" />
     </div>
     <div class="flex w-full flex-col tracking-wide gap-y-5 rounded-md p-5 text-sm text-gray-500">
