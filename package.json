@@ -9,28 +9,32 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/vue-table": "^8.21.2",
     "@tauri-apps/plugin-fs": "~2.2.0",
     "@tauri-apps/plugin-http": "~2.2.0",
     "@tauri-apps/plugin-shell": "~2.2.0",
     "@tauri-apps/plugin-store": "~2.2.0",
-    "@tauri-apps/plugin-updater": "~2.3.0",
-    "nanoid": "^5.0.9",
-    "pinia": "^2.3.0",
+    "@tauri-apps/plugin-updater": "~2.3.1",
+    "clsx": "^2.1.1",
+    "nanoid": "^5.1.2",
+    "pinia": "^2.3.1",
+    "tailwind-merge": "^3.0.2",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "@tailwindcss/forms": "^0.5.9",
-    "@tauri-apps/api": "^2.1.1",
-    "@tauri-apps/cli": "^2.1.0",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tauri-apps/api": "^2.2.0",
+    "@tauri-apps/cli": "^2.2.7",
     "@types/node": "^22.13.5",
     "@vitejs/plugin-vue": "^5.2.1",
     "autoprefixer": "^10.4.20",
     "dayjs": "^1.11.13",
-    "postcss": "^8.4.49",
+    "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5.7.2",
-    "vite": "^6.0.6",
-    "vue-tsc": "^2.2.0"
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.1",
+    "vue-tsc": "^2.2.2"
   }
 }
