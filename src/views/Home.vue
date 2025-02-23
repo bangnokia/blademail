@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { randomQuote } from "../lib/quotes"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 
 const quote = randomQuote()
 </script>
@@ -20,16 +21,20 @@ const quote = randomQuote()
       </div>
       <div class="flex flex-col space-y-3">
         <h4 class="font-semibold tracking-wide">Example configuration</h4>
-        <select defaultValue="laravel" class="w-48 shrink-0 rounded text-sm py-2 focus:ring-sky-500">
-          <option value="laravel">Laravel</option>
-        </select>
-        <pre class="relative select-all rounded bg-gray-500 px-7 py-3 font-mono text-sm leading-6 text-white">
+        <Tabs default-value="laravel" class="w-full">
+          <TabsList>
+            <TabsTrigger value="laravel">Laravel</TabsTrigger>
+          </TabsList>
+          <TabsContent value="laravel">
+            <pre class="relative select-all rounded bg-gray-500 px-7 py-3 font-mono text-sm leading-6 text-white">
 MAIL_MAILER=smtp
 MAIL_HOST=127.0.0.1
 MAIL_PORT=1025
 MAIL_USERNAME=null
 MAIL_PASSWORD=null
-</pre>
+            </pre>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   </div>

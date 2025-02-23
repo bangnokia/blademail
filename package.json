@@ -18,6 +18,7 @@
     "clsx": "^2.1.1",
     "nanoid": "^5.1.2",
     "pinia": "^2.3.1",
+    "reka-ui": "^2.0.0",
     "tailwind-merge": "^3.0.2",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
@@ -36,5 +37,14 @@
     "typescript": "^5.7.3",
     "vite": "^6.1.1",
     "vue-tsc": "^2.2.2"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "esbuild",
+      "vue-demi"
+    ],
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
