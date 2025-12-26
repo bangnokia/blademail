@@ -19,7 +19,7 @@ onMounted(async () => {
   if (license.value) {
     const isValid = await verify(license.value)
 
-    valid.value = isValid
+    valid.value = typeof isValid === 'boolean' ? isValid : isValid.valid
   }
 })
 
@@ -30,7 +30,9 @@ async function submit() {
 
   loading.value = false
 
-  if (!isValid) {
+  const isValidBoolean = typeof isValid === 'boolean' ? isValid : isValid.valid
+
+  if (!isValidBoolean) {
     error.value = 'Your license key is invalid'
     valid.value = false
     return

@@ -5,14 +5,23 @@ export interface License {
   value: string
 }
 
-const store = await load('license.txt')
+let store: Awaited<ReturnType<typeof load>> | null = null
+
+async function getStore() {
+  if (!store) {
+    store = await load('license.txt')
+  }
+  return store
+}
 
 export async function saveLicense(licenseKey: string): Promise<void> {
-  await store.set('license', { value: licenseKey })
+  const s = await getStore()
+  await s.set('license', { value: licenseKey })
 }
 
 export async function getLicense(): Promise<string> {
-  const result = await store.get<License>('license')
+  const s = await getStore()
+  const result = await s.get<License>('license')
 
   return result ? result.value : ''
 }

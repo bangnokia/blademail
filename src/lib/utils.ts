@@ -59,13 +59,13 @@ export async function ensureEmailFileIsWritten(email: Email): Promise<string> {
 
   try {
     await mkdir("BladeMail", {
-      dir: BaseDirectory.Cache
+      baseDir: BaseDirectory.Cache
     });
   } catch (e) { }
 
   try {
     await writeTextFile(`BladeMail/${fileName}`, email.html, {
-      dir: BaseDirectory.Cache
+      baseDir: BaseDirectory.Cache
     });
   } catch (e) {
   }
