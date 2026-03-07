@@ -1,36 +1,61 @@
 <script setup lang="ts">
-import { onBeforeMount, onBeforeUnmount, onMounted } from 'vue'
-import { startSmtpServer } from '../lib/smtp'
-import { listen, Event } from "@tauri-apps/api/event"
+import { onBeforeUnmount, onMounted } from 'vue'
+import { listen, type Event } from '@tauri-apps/api/event'
 import type { Email } from "../lib/types"
 import { nanoid } from "nanoid"
 import { makeExcerpt, parseUrls } from "../lib/utils"
-import { ref } from "vue"
+import { startSmtpServer, stopSmtpServer } from '../lib/smtp'
 import { useAppStore } from "../stores/appStore"
 import { useRouter } from 'vue-router'
 
 const appStore = useAppStore()
 const { create } = appStore
 const router = useRouter()
+let unlisten: null | (() => void) = null
 
-async function start() {
-  await startSmtpServer()
-  console.log("SMTP server started")
+function errorMessage(error: unknown): string {
+  if (typeof error === 'string') {
+    return error
+  }
+
+  if (error instanceof Error) {
+    return error.message
+  }
+
+  return 'Unknown SMTP server error.'
 }
 
-// actually I don't know how to stop the server
-// async function stop() {
-//   await stopSmtpServer()
-//   console.log("SMTP server stopped")
-// }
+async function start() {
+  appStore.setSmtpStarting()
 
-const unlisten = ref()
+  try {
+    const message = await startSmtpServer()
+    appStore.setSmtpRunning(message)
+    console.log(message)
+  } catch (error) {
+    const message = errorMessage(error)
+    appStore.setSmtpError(message)
+    console.error('Failed to start SMTP server', error)
+  }
+}
 
-onBeforeMount(() => start())
+async function stop() {
+  appStore.setSmtpStopping()
+
+  try {
+    const message = await stopSmtpServer()
+    appStore.setSmtpStopped(message)
+    console.log(message)
+  } catch (error) {
+    const message = errorMessage(error)
+    appStore.setSmtpError(message)
+    console.error('Failed to stop SMTP server', error)
+  }
+}
 
 onMounted(async () => {
-  unlisten.value = await listen("new-email", (event: Event<Email>) => {
-    const payload = event.payload;
+  unlisten = await listen('new-email', (event: Event<Email>) => {
+    const payload = event.payload
     const email: Email = {
       ...payload,
       id: nanoid(),
@@ -39,7 +64,7 @@ onMounted(async () => {
       isOpen: false,
       links: parseUrls(payload.html).map((url) => ({ url, status: 'pending' })),
       attachments: payload.attachments,
-    };
+    }
 
     create(email)
 
@@ -47,9 +72,15 @@ onMounted(async () => {
       router.push({ name: 'emails.show', params: { id: email.id } })
     }
   })
+
+  await start()
 })
 
-onBeforeUnmount(() => unlisten.value())
+onBeforeUnmount(() => {
+  unlisten?.()
+  unlisten = null
+  void stop()
+})
 </script>
 
 <template></template>

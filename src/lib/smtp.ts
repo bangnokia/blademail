@@ -5,10 +5,10 @@ export enum Action {
   Stop = "stop_server",
 }
 
-export function startSmtpServer(): Promise<void> {
-  return invoke(Action.Start);
+export function startSmtpServer(): Promise<string> {
+  return invoke<string>(Action.Start)
 }
 
-export function stopSmtpServer(): Promise<void> {
-  return invoke(Action.Stop);
+export function stopSmtpServer(): Promise<string> {
+  return invoke<string>(Action.Stop)
 }

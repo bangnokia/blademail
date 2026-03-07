@@ -5,13 +5,24 @@ export interface License {
   value: string
 }
 
-const store = await load('license.txt')
+let storePromise: ReturnType<typeof load> | null = null
+
+async function getStore() {
+  if (!storePromise) {
+    storePromise = load('license.txt')
+  }
+
+  return storePromise
+}
 
 export async function saveLicense(licenseKey: string): Promise<void> {
+  const store = await getStore()
+
   await store.set('license', { value: licenseKey })
 }
 
 export async function getLicense(): Promise<string> {
+  const store = await getStore()
   const result = await store.get<License>('license')
 
   return result ? result.value : ''
@@ -31,7 +42,9 @@ export async function verify(license: string) {
       }
     )
 
-    return response.json() as Promise<{ valid: boolean }>
+    const result = await response.json() as { is_valid: boolean }
+
+    return result.is_valid
   } catch (ex) {
     console.error(ex)
   }

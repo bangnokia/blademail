@@ -5,7 +5,7 @@ import { getLicense, verify } from '../../stores/license'
 
 const valid = ref<boolean>(true)
 const license = ref<string>('')
-const registered = computed(() => license.value && valid.value)
+const registered = computed(() => Boolean(license.value) && valid.value)
 
 const loading = ref(false)
 const error = ref('')
@@ -14,7 +14,7 @@ const open = ref(false)
 
 onMounted(async () => {
   const licenseString = await getLicense()
-  license.value = licenseString + '';
+  license.value = licenseString + ''
 
   if (license.value) {
     const isValid = await verify(license.value)
@@ -44,33 +44,43 @@ async function submit() {
 
 <template>
   <!-- license status -->
-  <div class="flex items-center justify-center gap-1">
-    <template v-if="!registered">
-      <span class="text-gray-500">Unregistered</span>
-    </template>
-    <button type="button" @click="open = true">
-      <Key class="w-4 h-4" />
+  <div class="relative">
+    <button type="button" @click="open = !open" class="flex items-center gap-1.5 hover:text-gray-900 transition-colors">
+      <template v-if="!registered">
+        <span class="text-gray-500 hover:text-gray-900">Unregistered</span>
+      </template>
+      <template v-else>
+         <span class="text-emerald-600 font-semibold">Registered</span>
+      </template>
+      <Key class="w-3.5 h-3.5 text-gray-400" />
     </button>
-  </div>
 
-  <!-- modal form to input license key -->
-  <div v-show="open" class="fixed inset-0 w-screen h-screen z-40 bg-gray-500/40 grid place-items-center">
-    <form class="inset-0 bg-white flex flex-col gap-6 px-8 py-6 rounded-md shadow" @submit.prevent="submit">
-      <div class="flex flex-col gap-2">
-        <label htmlFor="license-key" class="text-base font-medium">License key</label>
-        <input type="text" id="license-key" placeholder="Your license key" v-model="license"
-          class="w-[400px] select-all text-sm rounded border-gray-300 focus:border-sky-500 focus:ring-sky-500" />
-        <p v-show="error" class="text-rose-500 text-sm">{{ error }}</p>
-      </div>
+    <!-- Popover Menu -->
+    <div v-if="open" class="absolute bottom-full right-0 mb-2 w-80 bg-white rounded-lg shadow-lg border border-gray-100 p-4 z-50">
+      <form class="flex flex-col gap-3" @submit.prevent="submit">
+        <div class="flex flex-col gap-1.5">
+          <label for="license-key" class="text-xs font-semibold text-gray-700">License Key</label>
+          <input
+            type="text"
+            id="license-key"
+            placeholder="Enter license key"
+            v-model="license"
+            class="w-full text-xs px-2 py-1.5 rounded border border-gray-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all"
+          />
+          <p v-show="error" class="text-rose-500 text-[10px]">{{ error }}</p>
+        </div>
 
-      <div class="flex items-center justify-end gap-2">
-        <button @click="open = false" type="button" class="text-gray-500 px-4 py-2 rounded">Cancel</button>
-        <button type="submit" class="bg-rose-500 text-white px-4 py-2 rounded disabled:bg-opacity-50"
-          :disabled="loading || !license">
-          Save
-        </button>
-      </div>
-    </form>
+        <div class="flex items-center justify-end gap-2 pt-1">
+          <button @click="open = false" type="button" class="text-xs text-gray-500 hover:text-gray-700 px-2 py-1 rounded transition-colors">Cancel</button>
+          <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-3 py-1.5 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            :disabled="loading || !license">
+            Verify License
+          </button>
+        </div>
+      </form>
+    </div>
 
+    <!-- Backdrop for closing -->
+    <div v-if="open" @click="open = false" class="fixed inset-0 z-40"></div>
   </div>
 </template>
