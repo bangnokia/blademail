@@ -5,7 +5,7 @@ import { getLicense, verify } from '../../stores/license'
 
 const valid = ref<boolean>(true)
 const license = ref<string>('')
-const registered = computed(() => license.value && valid.value)
+const registered = computed(() => Boolean(license.value) && valid.value)
 
 const loading = ref(false)
 const error = ref('')
@@ -14,7 +14,7 @@ const open = ref(false)
 
 onMounted(async () => {
   const licenseString = await getLicense()
-  license.value = licenseString + '';
+  license.value = licenseString + ''
 
   if (license.value) {
     const isValid = await verify(license.value)
@@ -57,7 +57,7 @@ async function submit() {
   <div v-show="open" class="fixed inset-0 w-screen h-screen z-40 bg-gray-500/40 grid place-items-center">
     <form class="inset-0 bg-white flex flex-col gap-6 px-8 py-6 rounded-md shadow" @submit.prevent="submit">
       <div class="flex flex-col gap-2">
-        <label htmlFor="license-key" class="text-base font-medium">License key</label>
+        <label for="license-key" class="text-base font-medium">License key</label>
         <input type="text" id="license-key" placeholder="Your license key" v-model="license"
           class="w-[400px] select-all text-sm rounded border-gray-300 focus:border-sky-500 focus:ring-sky-500" />
         <p v-show="error" class="text-rose-500 text-sm">{{ error }}</p>

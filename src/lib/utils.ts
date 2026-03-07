@@ -1,8 +1,8 @@
-import { Email, SpamReport } from "./types";
+import type { Email, SpamReport } from "./types"
 import { cacheDir } from "@tauri-apps/api/path"
-import { writeTextFile, mkdir } from "@tauri-apps/plugin-fs";
+import { writeTextFile, mkdir } from "@tauri-apps/plugin-fs"
 import { BaseDirectory } from "@tauri-apps/plugin-fs"
-import { fetch } from "@tauri-apps/plugin-http";
+import { fetch } from "@tauri-apps/plugin-http"
 
 export function makeExcerpt(email: Email) {
   let excerpt = "";
@@ -44,14 +44,14 @@ export async function ensureEmailFileIsWritten(email: Email): Promise<string> {
 
   try {
     await mkdir("BladeMail", {
-      dir: BaseDirectory.Cache
-    });
+      baseDir: BaseDirectory.Cache
+    })
   } catch (e) { }
 
   try {
     await writeTextFile(`BladeMail/${fileName}`, email.html, {
-      dir: BaseDirectory.Cache
-    });
+      baseDir: BaseDirectory.Cache
+    })
   } catch (e) {
   }
 

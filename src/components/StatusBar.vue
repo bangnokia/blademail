@@ -1,14 +1,22 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import LicenseStatus from './status-bar/LicenseStatus.vue'
-import { useAppStore } from '../stores/appStore';
+import { useAppStore } from '../stores/appStore'
 
 const appStore = useAppStore()
+
+const smtpIndicatorClass = computed(() => {
+  if (appStore.smtpStatus === 'running') return 'bg-emerald-500'
+  if (appStore.smtpStatus === 'starting' || appStore.smtpStatus === 'stopping') return 'bg-amber-500'
+  if (appStore.smtpStatus === 'error') return 'bg-rose-500'
+
+  return 'bg-slate-400'
+})
 </script>
 
 <template>
-  <div className="bg-neutral-200 px-3 py-1 text-xs text-gray-700 flex items-center justify-between font-mono">
-    <!-- quick setting -->
-    <div>
+  <div class="flex items-center justify-between bg-neutral-200 px-3 py-1 text-xs text-gray-700">
+    <div class="flex items-center gap-4 font-mono">
       <!-- open new email setting -->
       <div class="flex items-center gap-1">
         <span class="">Open new email</span>
@@ -19,6 +27,15 @@ const appStore = useAppStore()
             peer-checked:bg-yellow-400 peer-checked:after:translate-x-full">
           </div>
         </label>
+      </div>
+
+      <div class="flex items-center gap-2 text-[11px]">
+        <span :class="smtpIndicatorClass" class="h-2 w-2 rounded-full"></span>
+        <span class="uppercase tracking-wide text-gray-500">SMTP {{ appStore.smtpStatus }}</span>
+        <span :class="appStore.smtpError ? 'text-rose-500' : 'text-gray-700'">{{ appStore.smtpMessage }}</span>
+        <span v-if="appStore.smtpAddress && !appStore.smtpMessage.includes(appStore.smtpAddress)" class="text-gray-500">
+          {{ appStore.smtpAddress }}
+        </span>
       </div>
     </div>
 

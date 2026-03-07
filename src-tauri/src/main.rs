@@ -9,11 +9,13 @@ use email_parser::mime::ContentType;
 use email_parser::mime::Entity;
 use mailin_embedded::response::OK;
 use mailin_embedded::{Handler, Response, Server, SslConfig};
-use once_cell::sync::OnceCell;
+use once_cell::sync::{Lazy, OnceCell};
 use serde::Serialize;
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::net::{TcpListener, TcpStream};
+use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
+use std::sync::Mutex;
 use std::thread;
-use std::net::TcpListener;
+use std::time::Duration;
 use tauri::menu::MenuBuilder;
 use tauri::Emitter;
 use tauri::Manager;
@@ -53,52 +55,12 @@ impl Handler for MyHandler {
 
 #[tauri::command]
 async fn start_server(address: Option<String>) -> Result<String, String> {
-    if SERVER_RUNNING.swap(true, Ordering::SeqCst) {
-        return Ok("SMTP server is already running.".into());
-    }
-
-    let address = address.unwrap_or("127.0.0.1:1025".into());
-    let listener = match TcpListener::bind(&address) {
-        Ok(listener) => listener,
-        Err(err) => {
-            SERVER_RUNNING.store(false, Ordering::SeqCst);
-            return Err(format!("Failed to bind SMTP server on {address}: {err}"));
-        }
-    };
-
-    let address_for_thread = address.clone();
-    thread::spawn(move || {
-        let mut server = Server::new(MyHandler::new());
-
-        if let Err(err) = server
-            .with_name("blade mail")
-            .with_tcp_listener(listener)
-            .with_ssl(SslConfig::None)
-        {
-            eprintln!("Failed to configure SMTP server on {address_for_thread}: {err}");
-            SERVER_RUNNING.store(false, Ordering::SeqCst);
-            return;
-        }
-
-        println!("SMTP server is starting on {address_for_thread}...");
-
-        if let Err(err) = server.serve() {
-            eprintln!("SMTP server stopped with error on {address_for_thread}: {err}");
-        }
-
-        SERVER_RUNNING.store(false, Ordering::SeqCst);
-    });
-
-    Ok(format!("SMTP server started on {address}."))
+    start_server_inner(address.unwrap_or("127.0.0.1:1025".into()))
 }
 
 #[tauri::command]
 fn stop_server() -> String {
-    if SERVER_RUNNING.load(Ordering::SeqCst) {
-        "SMTP server stop is not implemented yet. The SMTP server is still running.".into()
-    } else {
-        "SMTP server is not running.".into()
-    }
+    stop_server_inner().unwrap_or_else(|err| err)
 }
 
 // MailBox = (Name: String, EmailAddress: String)
@@ -170,6 +132,132 @@ fn collect_addresses(addresses: Option<&Vec<Address>>) -> Option<Vec<String>> {
         .collect();
 
     (!addresses.is_empty()).then_some(addresses)
+}
+
+#[derive(Default)]
+struct ServerControl {
+    generation: u64,
+    address: String,
+    listener: Option<TcpListener>,
+    stop_requested: bool,
+}
+
+static MAIN_WINDOW: OnceCell<WebviewWindow> = OnceCell::new();
+static SERVER_RUNNING: AtomicBool = AtomicBool::new(false);
+static SERVER_GENERATION: AtomicU64 = AtomicU64::new(0);
+static SERVER_CONTROL: Lazy<Mutex<ServerControl>> = Lazy::new(|| Mutex::new(ServerControl::default()));
+
+fn start_server_inner(requested_address: String) -> Result<String, String> {
+    let listener = TcpListener::bind(&requested_address)
+        .map_err(|err| format!("Failed to bind SMTP server on {requested_address}: {err}"))?;
+
+    let address = listener
+        .local_addr()
+        .map(|addr| addr.to_string())
+        .map_err(|err| format!("Failed to resolve SMTP server address: {err}"))?;
+    let control_listener = listener
+        .try_clone()
+        .map_err(|err| format!("Failed to clone SMTP listener for {address}: {err}"))?;
+
+    let generation = {
+        let mut control = SERVER_CONTROL.lock().unwrap();
+        if control.listener.is_some() {
+            return if control.stop_requested {
+                Err("SMTP server is stopping. Please try again in a moment.".into())
+            } else {
+                Ok(format!("SMTP server is already running on {}.", control.address))
+            };
+        }
+
+        let generation = SERVER_GENERATION.fetch_add(1, Ordering::SeqCst) + 1;
+        control.generation = generation;
+        control.address = address.clone();
+        control.listener = Some(control_listener);
+        control.stop_requested = false;
+        generation
+    };
+
+    SERVER_RUNNING.store(true, Ordering::SeqCst);
+
+    let address_for_thread = address.clone();
+    thread::spawn(move || run_server(listener, address_for_thread, generation));
+
+    Ok(format!("SMTP server started on {address}."))
+}
+
+fn run_server(listener: TcpListener, address: String, generation: u64) {
+    let mut server = Server::new(MyHandler::new());
+
+    if let Err(err) = server
+        .with_name("blade mail")
+        .with_tcp_listener(listener)
+        .with_ssl(SslConfig::None)
+    {
+        eprintln!("Failed to configure SMTP server on {address}: {err}");
+        clear_server_control(generation);
+        return;
+    }
+
+    println!("SMTP server is starting on {address}...");
+
+    match server.serve() {
+        Ok(_) => println!("SMTP server stopped on {address}."),
+        Err(err) => {
+            if is_stop_requested(generation) {
+                println!("SMTP server stopped on {address}.");
+            } else {
+                eprintln!("SMTP server stopped with error on {address}: {err}");
+            }
+        }
+    }
+
+    clear_server_control(generation);
+}
+
+fn stop_server_inner() -> Result<String, String> {
+    let address = {
+        let mut control = SERVER_CONTROL.lock().unwrap();
+        if control.listener.is_none() {
+            return Ok("SMTP server is not running.".into());
+        }
+
+        control.stop_requested = true;
+        let listener = control
+            .listener
+            .as_ref()
+            .ok_or_else(|| "SMTP server is not running.".to_string())?;
+        listener
+            .set_nonblocking(true)
+            .map_err(|err| format!("Failed to prepare SMTP shutdown on {}: {err}", control.address))?;
+        control.address.clone()
+    };
+
+    let _ = TcpStream::connect(&address);
+
+    for _ in 0..50 {
+        if !SERVER_RUNNING.load(Ordering::SeqCst) {
+            return Ok(format!("SMTP server stopped on {address}."));
+        }
+
+        thread::sleep(Duration::from_millis(20));
+    }
+
+    Err(format!("Timed out stopping SMTP server on {address}."))
+}
+
+fn is_stop_requested(generation: u64) -> bool {
+    let control = SERVER_CONTROL.lock().unwrap();
+    control.generation == generation && control.stop_requested
+}
+
+fn clear_server_control(generation: u64) {
+    let mut control = SERVER_CONTROL.lock().unwrap();
+    if control.generation == generation {
+        control.listener = None;
+        control.address.clear();
+        control.stop_requested = false;
+        SERVER_RUNNING.store(false, Ordering::SeqCst);
+    }
 }
 
 fn parse(raw: String) -> EmailPayload {
@@ -305,9 +393,6 @@ fn parse(raw: String) -> EmailPayload {
     payload
 }
 
-static MAIN_WINDOW: OnceCell<WebviewWindow> = OnceCell::new();
-static SERVER_RUNNING: AtomicBool = AtomicBool::new(false);
-
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_fs::init())
@@ -341,7 +426,10 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
-    use super::parse;
+    use super::{parse, start_server_inner, stop_server_inner, SERVER_CONTROL, SERVER_RUNNING};
+    use std::net::TcpListener;
+    use std::thread;
+    use std::time::Duration;
 
     #[test]
     fn parses_plain_text_email_without_panicking() {
@@ -375,5 +463,30 @@ mod tests {
         assert_eq!(payload.text, raw);
         assert!(payload.subject.is_empty());
         assert!(payload.from.is_empty());
+    }
+
+    #[test]
+    fn start_and_stop_server_releases_the_port() {
+        let started = start_server_inner("127.0.0.1:0".to_string()).unwrap();
+        assert!(started.contains("SMTP server started on 127.0.0.1:"));
+
+        let address = {
+            let control = SERVER_CONTROL.lock().unwrap();
+            control.address.clone()
+        };
+
+        for _ in 0..50 {
+            if SERVER_RUNNING.load(std::sync::atomic::Ordering::SeqCst) {
+                break;
+            }
+
+            thread::sleep(Duration::from_millis(10));
+        }
+
+        let stopped = stop_server_inner().unwrap();
+        assert_eq!(stopped, format!("SMTP server stopped on {address}."));
+        assert!(!SERVER_RUNNING.load(std::sync::atomic::Ordering::SeqCst));
+
+        TcpListener::bind(&address).expect("port should be released after stopping the server");
     }
 }
