@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { reactive, ref } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import type { Email } from '../lib/types'
 
 export type SmtpStatus = 'starting' | 'running' | 'stopping' | 'stopped' | 'error'
@@ -19,6 +19,25 @@ export const useAppStore = defineStore('appStore', () => {
   const smtpMessage = ref('SMTP server is stopped.')
   const smtpAddress = ref(DEFAULT_SMTP_ADDRESS)
   const smtpError = ref('')
+  const selectedSender = ref<string | null>(null)
+
+  const senders = computed(() => {
+    const sendersMap = new Map<string, string>()
+    emails.forEach(email => {
+      if (email.sender) {
+        sendersMap.set(email.sender[1], email.sender[0])
+      }
+    })
+    return Array.from(sendersMap.entries()).map(([email, name]) => ({ email, name }))
+  })
+
+  const filteredEmails = computed(() => {
+    if (!selectedSender.value) return emails
+    return emails.filter(email => {
+      if (!email.sender) return false
+      return email.sender[1] === selectedSender.value
+    })
+  })
 
   function create(email: Email) {
     emails.unshift(email)
@@ -86,6 +105,9 @@ export const useAppStore = defineStore('appStore', () => {
 
   return {
     emails,
+    filteredEmails,
+    selectedSender,
+    senders,
     openNewEmail,
     smtpStatus,
     smtpMessage,

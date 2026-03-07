@@ -145,7 +145,7 @@ const copyToClipboard = (text: string) => {
               v-for="(config, key) in configs"
               :key="key"
               @click="activeTab = key"
-              class="text-xs font-medium transition-colors whitespace-nowrap capitalize"
+              class="text-sm transition-colors whitespace-nowrap capitalize"
               :class="activeTab === key ? 'text-gray-900' : 'text-gray-400 hover:text-gray-700'"
             >
               {{ key === 'nodejs' ? 'Node.js' : key }}
@@ -165,7 +165,7 @@ const copyToClipboard = (text: string) => {
               </svg>
             </button>
           </div>
-          <pre class="p-5 overflow-x-auto text-xs font-mono leading-relaxed text-gray-600 select-all min-h-full">{{ configs[activeTab] }}</pre>
+          <pre class="p-5 overflow-x-auto text-[12px] font-mono leading-relaxed text-gray-600 select-all min-h-full">{{ configs[activeTab] }}</pre>
         </div>
       </div>
 

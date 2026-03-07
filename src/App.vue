@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import SmtpServer from "./components/SmtpServer.vue"
 import Mailbox from './components/Mailbox.vue'
+import Sidebar from './components/Sidebar.vue'
 import { RouterView } from "vue-router";
 import { onMounted } from "vue";
 import { useAppStore } from './stores/appStore'
@@ -17,6 +18,7 @@ onMounted(() => {
 <template>
   <div class="flex h-screen w-screen flex-col bg-white font-sans overflow-hidden">
     <div class="flex flex-1 overflow-hidden">
+      <Sidebar v-show="emails.length > 0" />
       <Mailbox v-show="emails.length > 0" />
 
       <div class="flex flex-col flex-1 h-full min-w-0 bg-white">
