@@ -42,9 +42,9 @@ export async function verify(license: string) {
       }
     )
 
-    const result = await response.json() as { valid: boolean }
+    const result = await response.json() as { is_valid: boolean }
 
-    return result.valid
+    return result.is_valid
   } catch (ex) {
     console.error(ex)
   }

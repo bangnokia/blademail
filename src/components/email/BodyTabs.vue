@@ -36,11 +36,11 @@
 
 <template>
     <div class="w-full h-full flex flex-col overflow-hidden bg-white">
-        <div class="flex items-center justify-between bg-gray-50 border-b border-gray-100 px-3 py-1 text-[11px] font-medium text-gray-600 shrink-0 select-none">
-            <ul class="flex items-center space-x-1">
+        <div class="flex items-center justify-between bg-white px-5 py-0 shrink-0 select-none">
+            <ul class="flex items-center gap-6">
                 <template v-for="tab in tabs" :key="tab">
-                    <li class="cursor-pointer rounded-md px-2.5 py-1 transition-colors hover:bg-gray-200/50" 
-                        :class="{ 'bg-white shadow-sm text-gray-900 font-semibold': activeTab === tab }"
+                    <li class="cursor-pointer py-3 text-[11px] font-semibold tracking-wider transition-colors"
+                        :class="activeTab === tab ? 'text-gray-900' : 'text-gray-400 hover:text-gray-600'"
                         @click="setActiveTab(tab)">
                         {{ tab.toUpperCase() }}
                         <span v-if="spamScore !== undefined && tab === 'Spam Assassin'"

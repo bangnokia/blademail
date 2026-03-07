@@ -58,10 +58,10 @@ function deleteEmail() {
 </script>
 
 <template>
-  <div class="relative h-full w-full overflow-auto bg-white" v-if="email" data-email-id="id" :key="id">
-    <Header :email="email" :size="size" @delete="deleteEmail" />
+  <div class="relative h-full w-full flex flex-col overflow-hidden bg-white" v-if="email" data-email-id="id" :key="id">
+    <Header :email="email" :size="size" @delete="deleteEmail" class="shrink-0 z-10" />
 
-    <main class="relative h-full w-full">
+    <main class="relative flex-1 min-h-0 w-full overflow-hidden">
       <BodyTabs :email="email" />
     </main>
   </div>

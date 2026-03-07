@@ -39,7 +39,7 @@ const smtpIndicatorClass = computed(() => {
         <span class="uppercase tracking-wider text-gray-500 font-semibold">SMTP</span>
       </div>
     </div>
-
+    
     <!-- license status -->
     <LicenseStatus />
   </div>
