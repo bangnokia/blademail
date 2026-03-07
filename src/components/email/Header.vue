@@ -10,7 +10,7 @@ const { email, size } = defineProps<{
   size?: number
 }>()
 
-const emit = defineEmits<{
+defineEmits<{
   (e: 'delete'): void
 }>()
 

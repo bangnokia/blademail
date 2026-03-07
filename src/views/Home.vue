@@ -142,7 +142,7 @@ const copyToClipboard = (text: string) => {
         <div class="bg-gray-50/80 px-4 py-3 border-b border-gray-100">
           <div class="flex gap-4 overflow-x-auto no-scrollbar">
             <button
-              v-for="(config, key) in configs"
+              v-for="(_config, key) in configs"
               :key="key"
               @click="activeTab = key"
               class="text-sm transition-colors whitespace-nowrap capitalize"
