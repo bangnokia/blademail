@@ -29,13 +29,12 @@ const smtpIndicatorClass = computed(() => {
         </label>
       </div>
 
-      <div class="flex items-center gap-2 text-[11px]">
+      <div
+        class="flex items-center gap-2 text-[11px]"
+        :title="appStore.smtpStatus === 'error' ? appStore.smtpMessage : undefined"
+      >
         <span :class="smtpIndicatorClass" class="h-2 w-2 rounded-full"></span>
-        <span class="uppercase tracking-wide text-gray-500">SMTP {{ appStore.smtpStatus }}</span>
-        <span :class="appStore.smtpError ? 'text-rose-500' : 'text-gray-700'">{{ appStore.smtpMessage }}</span>
-        <span v-if="appStore.smtpAddress && !appStore.smtpMessage.includes(appStore.smtpAddress)" class="text-gray-500">
-          {{ appStore.smtpAddress }}
-        </span>
+        <span class="uppercase tracking-wide text-gray-500">SMTP SERVER</span>
       </div>
     </div>
 
