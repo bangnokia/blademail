@@ -11,7 +11,7 @@ const isBlank = computed(() => store.filteredEmails.length === 0)
 </script>
 
 <template>
-  <div class="hidden h-full w-[260px] shrink-0 grow-0 flex-col border-r border-gray-200 bg-gray-50/90 text-gray-900 md:flex">
+  <div class="hidden h-full w-full shrink-0 grow-0 flex-col border-r border-gray-200 bg-gray-50/90 text-gray-900 md:flex">
     <!-- toolbar -->
     <div class="flex items-center justify-between px-3 py-2 shrink-0">
       <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2">Inbox</h2>

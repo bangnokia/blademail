@@ -11,7 +11,7 @@ function selectSender(sender: string | null) {
 </script>
 
 <template>
-  <div class="flex h-full w-[200px] shrink-0 flex-col border-r border-gray-200 bg-gray-100 text-gray-900">
+  <div class="flex h-full w-full shrink-0 flex-col border-r border-gray-200 bg-gray-100 text-gray-900">
     <div class="p-3">
       <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 mb-2">Mailboxes</h2>
 
