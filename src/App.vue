@@ -15,12 +15,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex h-screen w-screen flex-col bg-white font-sans">
-    <div class="flex h-full w-full overflow-auto">
+  <div class="flex h-screen w-screen flex-col bg-white font-sans overflow-hidden">
+    <div class="flex flex-1 overflow-hidden">
       <Mailbox v-show="emails.length > 0" />
-      <RouterView />
+      
+      <div class="flex flex-col flex-1 h-full min-w-0 bg-white">
+        <div class="flex-1 overflow-auto relative">
+          <RouterView />
+        </div>
+      </div>
     </div>
-    <div class="bottom-0 w-full shrink-0 grow-0">
+    
+    <div class="shrink-0 border-t border-gray-100 bg-gray-50/50 backdrop-blur-sm">
       <StatusBar />
     </div>
     <SmtpServer />
